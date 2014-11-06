@@ -41,5 +41,22 @@ class User{
 	 * constructor for User
 	 *
 	 */
+	public function  __construct($newUserId, $newEmail, $newPasswordHash, $newSalt, $newAuthKey, $newSecurityId, $newLoginSourceId){
+		try{
+			$this->setUserId($newUserId);
+			$this->setEmail($newEmail);
+			$this->setPasswordHash($newPasswordHash);
+			$this->setSalt($newSalt);
+			$this->setAuthKey($newAuthKey);
+			$this->setSecurityId($newSecurityId);
+			$this->setLoginSorceId($newLoginSourceId);
+		}catch(UnexpectedValueException $unexpectedValue){
+			//rethrow to the caller
+			throw(new UnexpectedValueException("Unable to construct User", 0, $unexpectedValue));
+		}catch(RangeException $range){
+			//rethrow to the caller
+			throw(new RangeException("Unable to construct User", 0, $range));
+		}
+	}
 }
 ?>
