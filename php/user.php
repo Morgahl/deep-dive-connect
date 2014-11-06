@@ -115,10 +115,22 @@ class User{
 	}
 
 	/**
-	 * @param mixed $passwordHash
+	 * sets the value of password
+	 *
+	 * @param string $newPasswordHash SHA512 PBKDF2 hash of the password
+	 * @throws RangeException when input isn't a valid SHA512 PBKDF2 hash
 	 */
-	public function setPasswordHash($passwordHash){
-		$this->passwordHash = $passwordHash;
+	public function setPasswordHash($newPasswordHash){
+		// verify the password is 128 hex characters
+		$newPasswordHash = trim($newPasswordHash);
+		$newPasswordHash = strtolower($newPasswordHash);
+		$filterOptions = array("options" => array("regexp" => "/^[\da-f]{128}$/"));
+		if(filter_var($newPasswordHash, FILTER_VALIDATE_REGEXP, $filterOptions) === false){
+			throw(new RangeException("password is not a valid SHA512 PBKDF2 hash"));
+		}
+
+		// assign passwordHash
+		$this->passwordHash = $newPasswordHash;
 	}
 
 	/**
