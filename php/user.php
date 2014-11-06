@@ -98,10 +98,20 @@ class User{
 	}
 
 	/**
-	 * @param mixed $email
+	 * sets the value of email
+	 *
+	 * @param string $newEmail email
+	 * @throws UnexpectedValueException if the input doesn't appear to be an email
 	 */
-	public function setEmail($email){
-		$this->email = $email;
+	public function setEmail($newEmail){
+		// sanitize the email as a likely email
+		$newEmail = trim($newEmail);
+		if(($newEmail = filter_var($newEmail, FILTER_SANITIZE_EMAIL)) == false){
+			throw(new UnexpectedValueException("email $newEmail does not appear to be an email address"));
+		}
+
+		// now that data has been sanitized assign it
+		$this->email = $newEmail;
 	}
 
 	/**
