@@ -259,8 +259,15 @@ class User{
 		}
 
 		//if security id is null pull value default from securityClass
-		if($this->securityId === null) {
-			$this->securityId = 0; //todo: get static method from securityClass to get security id if security id is null
+		if($this->securityId !== null) {
+			//confirm it exists in Security Class $exist
+			//todo: make static method in Security for comparing
+			if($exist === null){
+				throw(new UnexpectedValueException("security Id $securityId does not exist in Security table"));
+			}
+		}else{
+			//get default
+			$this->securityId = 0; //todo: need Security Static Method to get default
 		}
 
 
@@ -322,6 +329,16 @@ class User{
 			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 		}
 
+	}
+
+	/**
+	 * updates this User in mySQL
+	 *
+	 * @param resource $mysqli pointer to mySQL connection, by reference
+	 * @throws mysqli_sql_exception when mySQL related errors occur
+	 **/
+	public function update(&$mysqli){
+		//
 	}
 
 
