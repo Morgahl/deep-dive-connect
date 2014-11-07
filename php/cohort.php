@@ -42,7 +42,7 @@ class Cohort
    }
 
 //gets value of CohortID
-   public function setProductId($newCohortID)
+   public function setCohortID($newCohortID)
    {
       // zeroth, set allow the CohortID to be null if a new object
       if($newCohortID === null) {
