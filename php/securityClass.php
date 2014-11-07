@@ -1,5 +1,7 @@
 <?php
 
+// Joseph Bottone
+
 class SecurityClass
 {
 	// assigns the primary key
