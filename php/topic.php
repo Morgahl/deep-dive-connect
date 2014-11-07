@@ -254,4 +254,11 @@ class Topic {
 	public static function getTopicByTopicId(&$mysqli, $newTopicId) {
 		// TODO: implement mySQL select and topic of validated object based on passed topicId
 	}
+
+	/**
+	 * @param $mysqli
+	 */
+	public static function getRecentTopics(&$mysqli) {
+		// TODO: implement mySQL select and topic of validated object based on passed topicId
+	}
 }

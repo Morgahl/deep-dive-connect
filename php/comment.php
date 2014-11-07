@@ -8,31 +8,38 @@
  */
 class Comment {
 	/**
-	 * @var
+	 * @var $commentId INT
 	 */
 	private $commentId;
 	/**
-	 * @var
+	 * @var $topicId INT
 	 */
 	private $topicId;
 	/**
-	 * @var
+	 * @var $profileId INT
 	 */
 	private $profileId;
 	/**
-	 * @var
+	 * @var $commentDate DATETIME
 	 */
 	private $commentDate;
 	/**
-	 * @var
+	 * @var $commentSubject STRING
 	 */
 	private $commentSubject;
 	/**
-	 * @var
+	 * @var $commentBody STRING
 	 */
 	private $commentBody;
 
-
+	/**
+	 * @param $newCommentId
+	 * @param $newTopicId
+	 * @param $newProfileId
+	 * @param $newCommentDate
+	 * @param $newCommentSubject
+	 * @param $newCommentBody
+	 */
 	function __construct($newCommentId, $newTopicId, $newProfileId, $newCommentDate, $newCommentSubject, $newCommentBody) {
 		try{
 			$this->setCommentId($newCommentId);
@@ -50,6 +57,9 @@ class Comment {
 		}
 	}
 
+	/**
+	 * @return string
+	 */
 	function __toString() {
 		// process dates into strings
 		$commentDateString = $this->commentDate->format("Y-m-d H:i:s");
@@ -165,14 +175,48 @@ class Comment {
 	 * @param mixed $newCommentSubject
 	 */
 	public function setCommentSubject($newCommentSubject) {
-		// TODO: Implement setCommentSubject() method.
+		// commentSubject should never be null
+		if($newCommentSubject === null) {
+			throw(new UnexpectedValueException("Comment Subject must not be null"));
+		}
+
+		// sanitize string
+		$newCommentSubject = trim($newCommentSubject);
+		if(($newCommentSubject = filter_var($newCommentSubject, FILTER_SANITIZE_STRING)) === false) {
+			throw(new UnexpectedValueException("Not a valid string"));
+		}
+
+		// enforce 256 character limit to ensure no truncation of data when inserting to database
+		if(strlen($newCommentSubject) > 256) {
+			throw(new RangeException("Comment Subject must be 256 characters or less in length"));
+		}
+
+		// take topicSubject out of quarantine and assign it
+		$this->commentSubject = $newCommentSubject;
 	}
 
 	/**
 	 * @param mixed $newCommentBody
 	 */
 	public function setCommentBody($newCommentBody) {
-		// TODO: Implement setCommentBody() method.
+		// commentBody should never be null
+		if($newCommentBody === null) {
+			throw(new UnexpectedValueException("Comment Body must not be null"));
+		}
+
+		// sanitize string
+		$newCommentBody = trim($newCommentBody);
+		if(($newCommentBody = filter_var($newCommentBody, FILTER_SANITIZE_STRING)) === false) {
+			throw(new UnexpectedValueException("Not a valid string"));
+		}
+
+		// enforce 1024 character limit to ensure no truncation of data when inserting to database
+		if(strlen($newCommentBody) > 1024) {
+			throw(new RangeException("Comment Body must be 1024 characters or less in length"));
+		}
+
+		// take commentBody out of quarantine and assign it
+		$this->commentBody = $newCommentBody;
 	}
 
 	/**
@@ -213,7 +257,24 @@ class Comment {
 	 * @throws mysqli_sql_exception when a MySQL error occurs
 	 * @return OBJECT new Comment is returned or null if id specified is not found
 	 */
-	public function getCommentByCommentId(&$mysqli, $newCommentId) {
+	public static function getCommentByCommentId(&$mysqli, $newCommentId) {
 		// TODO: implement mySQL select and creation of validated object based on passed commentId
 	}
+
+	/**
+	 * @param $mysqli
+	 * @param $newTopicId
+	 */
+	public static function getCommentsByTopicId(&$mysqli, $newTopicId) {
+		// TODO: implement mySQL select and creation of validated array of Comment objects based on passed topicId
+	}
+
+	/**
+	 * @param $mysqli
+	 * @param $newProfileId
+	 */
+	public static function getCommentsByProfileId(&$mysqli, $newProfileId) {
+		// TODO: implement mySQL select and creation of validated array of Comment objects based on passed profileId
+	}
+
 }
