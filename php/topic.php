@@ -112,34 +112,148 @@ class Topic {
 	}
 
 	/**
-	 * @param mixed $profileId
+	 * Sets the value of profileId (profileId of creator)
+	 *
+	 * @param $newProfileId INT
+	 * @throws UnexpectedValueException if eventId is not an integer
+	 * @throws RangeException if eventId is not positive
 	 */
-	public function setProfileId($profileId) {
-		// TODO: Implement setProfileId() method.
-		$this->profileId = $profileId;
+	public function setProfileId($newProfileId) {
+		// profileId should never be null
+		if($newProfileId === null) {
+			throw(new UnexpectedValueException("Profile ID must not be null"));
+		}
+
+		// ensure that profileId is an int
+		if(($newProfileId = filter_var($newProfileId, FILTER_VALIDATE_INT)) === false) {
+			throw(new UnexpectedValueException("Profile ID $newProfileId is not numeric"));
+		}
+
+		// convert the profileId to int and enforce that it is positive
+		$newProfileId = intval($newProfileId);
+		if($newProfileId <= 0) {
+			throw(new RangeException("Profile ID $newProfileId is not positive"));
+		}
+
+		// take profileId out of quarantine and assign it
+		$this->profileId = $newProfileId;
 	}
 
 	/**
-	 * @param STRING $creationDate
+	 * Sets the value of creationDate from a valid date string in Y-m-d H:i:s format
+	 *
+	 * @param $newCreationDate STRING Y-m-d H:i:s format
+	 * @throws UnexpectedValueException when a parameter is not a valid date string in Y-m-d H:i:s format
 	 */
-	public function setCreationDate($creationDate) {
-		// TODO: Implement setCreationDate() method.
-		$this->creationDate = $creationDate;
+	public function setCreationDate($newCreationDate) {
+		// Sanitize Date input to Y-m-d H:i:s MySQL standard
+		$newCreationDate = trim($newCreationDate);
+		if (($newCreationDate = DateTime::createFromFormat("Y-m-d H:i:s", $newCreationDate)) === false) {
+			throw(new UnexpectedValueException("Start date is not valid. Please use Y-m-d H:i:s format"));
+		}
+
+		// take creationDate out of quarantine and assign it
+		$this->creationDate = $newCreationDate;
 	}
 
 	/**
-	 * @param STRING $topicBody
+	 * Sets the value of topicSubject
+	 *
+	 * @param $newTopicSubject STRING 256 character maximum length
+	 * @throws UnexpectedValueException when a parameter is of the wrong type
+	 * @throes RangeException when a parameter length is invalid
 	 */
-	public function setTopicBody($topicBody) {
-		// TODO: Implement setTopicBody() method.
-		$this->topicBody = $topicBody;
+	public function setTopicSubject($newTopicSubject) {
+		// topicSubject should never be null
+		if($newTopicSubject === null) {
+			throw(new UnexpectedValueException("Topic Subject must not be null"));
+		}
+
+		// sanitize string
+		$newTopicSubject = trim($newTopicSubject);
+		if(($newTopicSubject = filter_var($newTopicSubject, FILTER_SANITIZE_STRING)) === false) {
+			throw(new UnexpectedValueException("Not a valid string"));
+		}
+
+		// enforce 256 character limit to ensure no truncation of data when inserting to database
+		if(strlen($newTopicSubject) > 256) {
+			throw(new RangeException("Topic Subject must be 256 characters or less in length"));
+		}
+
+		// take topicSubject out of quarantine and assign it
+		$this->topicSubject = $newTopicSubject;
 	}
 
 	/**
-	 * @param STRING $topicSubject
+	 * Sets the value of topicBody
+	 *
+	 * @param $newTopicBody STRING 4096 character maximum length
+	 * @throws UnexpectedValueException when a parameter is of the wrong type
+	 * @throes RangeException when a parameter length is invalid
 	 */
-	public function setTopicSubject($topicSubject) {
-		// TODO: Implement setTopicSubject() method.
-		$this->topicSubject = $topicSubject;
+	public function setTopicBody($newTopicBody) {
+		// topicBody should never be null
+		if($newTopicBody === null) {
+			throw(new UnexpectedValueException("Topic Body must not be null"));
+		}
+
+		// sanitize string
+		$newTopicBody = trim($newTopicBody);
+		if(($newTopicBody = filter_var($newTopicBody, FILTER_SANITIZE_STRING)) === false) {
+			throw(new UnexpectedValueException("Not a valid string"));
+		}
+
+		// enforce 4096 character limit to ensure no truncation of data when inserting to database
+		if(strlen($newTopicBody) > 4096) {
+			throw(new RangeException("Topic Body must be 4096 characters or less in length"));
+		}
+
+		// take topicBody out of quarantine and assign it
+		$this->topicBody = $newTopicBody;
 	}
+
+	/**
+	 * Inserts this Topic into mySQL
+	 *
+	 * @param $mysqli OBJECT mySQL connection object
+	 * @throws mysqli_sql_exception when a MySQL error occurs
+	 */
+	public function insert(&$mysqli) {
+		// TODO: implement mySQL insert of validated object
+	}
+
+	/**
+	 * Updates this Topic in mySQL
+	 *
+	 * @param $mysqli OBJECT mySQL connection object
+	 * @throws mysqli_sql_exception when a MySQL error occurs
+	 */
+	public function update(&$mysqli) {
+		// TODO: implement mySQL update of validated object
+	}
+
+	/**
+	 * Deletes this Topic from mySQL
+	 *
+	 * @param $mysqli OBJECT mySQL connection object
+	 * @throws mysqli_sql_exception when a MySQL error occurs
+	 */
+	public function delete(&$mysqli) {
+		// TODO: implement mySQL deletion of validated object
+	}
+
+	/**
+	 * Creates a new Topic Object from mySQL base on passed topicId
+	 *
+	 * @param $mysqli OBJECT mySQL connection object
+	 * @param $newTopicId INT topicId to retrieve from mySQL
+	 * @throws mysqli_sql_exception when a MySQL error occurs
+	 * @return OBJECT new Topic is returned or null if id specified is not found
+	 */
+	public function getTopicByTopicId(&$mysqli, $newTopicId) {
+		// TODO: implement mySQL select and creation of validated object based on passed topicId
+		return(null);
+	}
+
+	// TODO: review for any additional methods needed
 }
