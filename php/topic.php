@@ -2,7 +2,7 @@
 /**
  * MySQL Enabled Topic
  *
- * This is a MySQL enabled container for Topic creation and handling.
+ * This is a MySQL enabled container for Topic topic and handling.
  *
  * @author Marc Hayes <marc.hayes.tech@gmail.com>
  */
@@ -16,9 +16,9 @@ class Topic {
 	 */
 	private $profileId;
 	/**
-	 * @var $creationDate DATETIME creation date for the Topic; format(Y-m-d H-i-s)
+	 * @var $topicDate DATETIME topic date for the Topic; format(Y-m-d H-i-s)
 	 */
-	private $creationDate;
+	private $topicDate;
 	/**
 	 * @var $topicSubject STRING this is the subject for the Topic, 256 character limit
 	 */
@@ -33,16 +33,16 @@ class Topic {
 	 *
 	 * @param $newTopicId INT topicId (or null if new object)
 	 * @param $newProfileId INT profileID (profileId of creator)
-	 * @param $newCreationDate STRING creation date of new Topic; format(Y-m-d H-i-s)
+	 * @param $newTopicDate STRING topic date of new Topic; format(Y-m-d H-i-s)
 	 * @param $newTopicSubject STRING subject of new Topic; 256 character limit
 	 * @param $newTopicBody STRING body of new Topic; 4096 character limit
 	 * @throws UnexpectedValueException when a parameter is of the wrong type
 	 * @throes RangeException when a parameter is invalid
 	 */
-	function __construct($newTopicId, $newProfileId, $newCreationDate, $newTopicSubject, $newTopicBody) {
+	function __construct($newTopicId, $newProfileId, $newTopicDate, $newTopicSubject, $newTopicBody) {
 		try{$this->setTopicId($newTopicId);
 			$this->setProfileId($newProfileId);
-			$this->setCreationDate($newCreationDate);
+			$this->setTopicDate($newTopicDate);
 			$this->setTopicSubject($newTopicSubject);
 			$this->setTopicBody($newTopicBody);
 		} catch(UnexpectedValueException $unexpectedValue) {
@@ -62,12 +62,12 @@ class Topic {
 	function __toString()
 	{
 		// convert datetime object to string
-		$creationDateString = $this->creationDate->format("Y-m-d H:i:s");
+		$topicDateString = $this->topicDate->format("Y-m-d H:i:s");
 
 		// return string
 		return("topicId: $this->topicId<br>" .
 			"profileId: $this->profileId<br>" .
-			"creationDate: $creationDateString<br>" .
+			"topicDate: $topicDateString<br>" .
 			"topicSubject: $this->topicSubject<br>" .
 			"topicBody: $this->topicBody<br>");
 	}
@@ -140,20 +140,20 @@ class Topic {
 	}
 
 	/**
-	 * Sets the value of creationDate from a valid date string in Y-m-d H:i:s format
+	 * Sets the value of topicDate from a valid date string in Y-m-d H:i:s format
 	 *
-	 * @param $newCreationDate STRING Y-m-d H:i:s format
+	 * @param $newTopicDate STRING Y-m-d H:i:s format
 	 * @throws UnexpectedValueException when a parameter is not a valid date string in Y-m-d H:i:s format
 	 */
-	public function setCreationDate($newCreationDate) {
+	public function setTopicDate($newTopicDate) {
 		// Sanitize Date input to Y-m-d H:i:s MySQL standard
-		$newCreationDate = trim($newCreationDate);
-		if (($newCreationDate = DateTime::createFromFormat("Y-m-d H:i:s", $newCreationDate)) === false) {
+		$newTopicDate = trim($newTopicDate);
+		if (($newTopicDate = DateTime::createFromFormat("Y-m-d H:i:s", $newTopicDate)) === false) {
 			throw(new UnexpectedValueException("Start date is not valid. Please use Y-m-d H:i:s format"));
 		}
 
-		// take creationDate out of quarantine and assign it
-		$this->creationDate = $newCreationDate;
+		// take topicDate out of quarantine and assign it
+		$this->topicDate = $newTopicDate;
 	}
 
 	/**
@@ -251,9 +251,6 @@ class Topic {
 	 * @return OBJECT new Topic is returned or null if id specified is not found
 	 */
 	public function getTopicByTopicId(&$mysqli, $newTopicId) {
-		// TODO: implement mySQL select and creation of validated object based on passed topicId
-		return(null);
+		// TODO: implement mySQL select and topic of validated object based on passed topicId
 	}
-
-	// TODO: review for any additional methods needed
 }

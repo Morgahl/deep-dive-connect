@@ -96,13 +96,12 @@ CREATE TABLE profileCohort (
 CREATE TABLE topic (
 	topicId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	profileId INT UNSIGNED NOT NULL,
-	creationDate DATETIME NOT NULL,
+	topicDate DATETIME NOT NULL,
 	topicSubject VARCHAR(256) NOT NULL,
 	topicBody VARCHAR(4096) NOT NULL,
 	PRIMARY KEY (topicId),
 	INDEX (profileId),
-	INDEX (creationDate),
-	INDEX (topicSubject),
+	INDEX (topicDate),
 	FOREIGN KEY (profileId) REFERENCES profile(profileId)
 );
 
@@ -111,11 +110,13 @@ CREATE TABLE comment (
 	commentId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	topicId INT UNSIGNED NOT NULL,
 	profileId INT UNSIGNED NOT NULL,
-	commentSubject VARCHAR(256) NULL,
-	commentBody VARCHAR(1024) NULL,
+	commentDate DATETIME NOT NULL,
+	commentSubject VARCHAR(256) NOT NULL,
+	commentBody VARCHAR(1024) NOT NULL,
 	PRIMARY KEY (commentId),
 	INDEX (topicId),
 	INDEX (profileId),
+	INDEX (commentDate),
 	INDEX (topicId, profileId),
 	FOREIGN KEY (profileId) REFERENCES profile(profileId),
 	FOREIGN KEY (topicId) REFERENCES topic(topicId)
