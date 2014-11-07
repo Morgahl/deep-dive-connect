@@ -287,8 +287,36 @@ class User{
 		$this->userId = $mysqli->insert_id;
 	}
 
+	/**
+	 * deletes this User from mySQL
+	 *
+	 * @param resources $mysqli pointer to mySQL connections, by reference
+	 * @throws mysqli_sql_exception when mySQL related errors occur
+	 **/
+	public function delete(&$mysqli){
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
 
+		// make sure userId is not null
+		if($this->userId === null){
+			throw(new mysqli_sql_exception("Unable to delete a user that does not exist"));
+		}
 
+		// create query template
+		$query 		= "DELETE FROM user WHERE userId = ?";
+		$statement	= $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		//bind the member variables to the place holder in the template
+		$wasClean = $statement->bind_param("i", $this->userId);
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+	}
 
 
 }
