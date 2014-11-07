@@ -258,7 +258,13 @@ class User{
 			throw(new mysqli_sql_exception("not a new user"));
 		}
 
-		//create query templateemail VARCHAR(256) NOT NULL,
+		//if security id is null pull value default from securityClass
+		if($this->securityId === null) {
+			$this->securityId = 0; //todo: get static method from securityClass to get security id if security id is null
+		}
+
+
+		//create query template email VARCHAR(256) NOT NULL,
 		$query 		= "INSERT INTO user(email, passwordHash, salt, authKey, securityId, LoginSourceId) VALUES(?,?,?,?,?,?)";
 		$statement 	= $mysqli->prepare($query);
 		if($statement === false) {
@@ -280,6 +286,8 @@ class User{
 		//update the null userId with what mySQL just gave us
 		$this->userId = $mysqli->insert_id;
 	}
+
+
 
 
 
