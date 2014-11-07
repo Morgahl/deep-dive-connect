@@ -77,28 +77,88 @@ class Comment {
 	 * @param mixed $newCommentId
 	 */
 	public function setCommentId($newCommentId) {
-		// TODO: Implement setCommentId() method.
+		// allow the commentId to be null if a new object
+		if($newCommentId === null) {
+			$this->commentId = null;
+			return;
+		}
+
+		// ensure that commentId is an int
+		if(filter_var($newCommentId, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("Comment ID $newCommentId is not numeric"));
+		}
+
+		// convert the commentId to int and enforce that it is positive
+		$newCommentId = intval($newCommentId);
+		if($newCommentId <= 0) {
+			throw(new RangeException("Comment ID $newCommentId is not positive"));
+		}
+
+		// take commentId out of quarantine and assign it
+		$this->commentId = $newCommentId;
 	}
 
 	/**
 	 * @param mixed $newTopicId
 	 */
 	public function setTopicId($newTopicId) {
-		// TODO: Implement setTopicId() method.
+		// topicId should never be null
+		if($newTopicId === null) {
+			throw(new UnexpectedValueException("Topic ID must not be null"));
+		}
+
+		// ensure that topicId is an int
+		if(($newTopicId = filter_var($newTopicId, FILTER_VALIDATE_INT)) === false) {
+			throw(new UnexpectedValueException("Topic ID $newTopicId is not numeric"));
+		}
+
+		// convert the topicId to int and enforce that it is positive
+		$newTopicId = intval($newTopicId);
+		if($newTopicId <= 0) {
+			throw(new RangeException("Topic ID $newTopicId is not positive"));
+		}
+
+		// take topicId out of quarantine and assign it
+		$this->topicId = $newTopicId;
 	}
 
 	/**
 	 * @param mixed $newProfileId
 	 */
 	public function setProfileId($newProfileId) {
-		// TODO: Implement setProfileId() method.
+		// profileId should never be null
+		if($newProfileId === null) {
+			throw(new UnexpectedValueException("Profile ID must not be null"));
+		}
+
+		// ensure that profileId is an int
+		if(($newProfileId = filter_var($newProfileId, FILTER_VALIDATE_INT)) === false) {
+			throw(new UnexpectedValueException("Profile ID $newProfileId is not numeric"));
+		}
+
+		// convert the profileId to int and enforce that it is positive
+		$newProfileId = intval($newProfileId);
+		if($newProfileId <= 0) {
+			throw(new RangeException("Profile ID $newProfileId is not positive"));
+		}
+
+		// take profileId out of quarantine and assign it
+		$this->profileId = $newProfileId;
 	}
 
 	/**
 	 * @param mixed $newCommentDate
 	 */
 	public function setCommentDate($newCommentDate) {
-		// TODO: Implement setCommentDate() method.
+		// Sanitize Date input to Y-m-d H:i:s MySQL standard
+		// this fails for badly formed strings and nulls
+		$newCommentDate = trim($newCommentDate);
+		if (($newCommentDate = DateTime::createFromFormat("Y-m-d H:i:s", $newCommentDate)) === false) {
+			throw(new UnexpectedValueException("Start date is not valid. Please use Y-m-d H:i:s format"));
+		}
+
+		// take topicDate out of quarantine and assign it
+		$this->commentDate = $newCommentDate;
 	}
 
 	/**
