@@ -226,12 +226,6 @@ class User{
 	 * @throws RangeException if profile id isn't positive
 	 */
 		public function setLoginSourceId($newLoginSourceId){
-			//allow the loginSource Id to be null if a new object
-			if($newLoginSourceId === null){
-				$this->loginSourceId = null;
-				return;
-			}
-
 			//ensure loginSource Id is an integer
 			if(filter_var($newLoginSourceId, FILTER_VALIDATE_INT) === false){
 				throw(new UnexpectedValueException("security id $newLoginSourceId is not numeric"));
@@ -245,6 +239,46 @@ class User{
 
 			//assign loginSource Id
 			$this->loginSourceId = $newLoginSourceId;
+	}
+
+	/**
+	 * insert this User to mySQL
+	 *
+	 * @param resource $mysqli pointer to mySQL connection, by reference
+	 * @throw mysqli_sql_exception when mySQL related errors occur.
+	 */
+	public function insert(&$mysqli){
+		//handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
+
+		// enforce the userId is null (i.e., don't insert a user that already exists)
+		if($this->userId !== null) {
+			throw(new mysqli_sql_exception("not a new user"));
+		}
+
+		//create query templateemail VARCHAR(256) NOT NULL,
+		$query 		= "INSERT INTO user(email, passwordHash, salt, authKey, securityId, LoginSourceId) VALUES(?,?,?,?,?,?)";
+		$statement 	= $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		//bind the member variables to the place holders in the template
+		$wasClean = $statement->bind_param("ssssii", $this->email, $this->passwordHash, $this->salt,
+																	$this->authKey, $this->securityId, $this->loginSourceId);
+		if($wasClean === false){
+			throw(new mysqli_sql_exception("unable to bind parameters"));
+		}
+
+		// execute the statement
+		if($statement->execute() === false){
+			throw(new mysqli_sql_exception("unable to execute mySQL statement"));
+		}
+
+		//update the null userId with what mySQL just gave us
+		$this->userId = $mysqli->insert_id;
 	}
 
 
