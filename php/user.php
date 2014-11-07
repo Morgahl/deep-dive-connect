@@ -261,9 +261,9 @@ class User{
 		//if security id is null pull value default from securityClass
 		if($this->securityId !== null) {
 			//confirm it exists in Security Class $exist
-			//todo: make static method in Security for comparing
+			//todo: make static method in Security search by id; if can't find throw
 			if($exist === null){
-				throw(new UnexpectedValueException("security Id $securityId does not exist in Security table"));
+				throw(new UnexpectedValueException("security Id $this->securityId does not exist in Security table"));
 			}
 		}else{
 			//get default
@@ -338,7 +338,42 @@ class User{
 	 * @throws mysqli_sql_exception when mySQL related errors occur
 	 **/
 	public function update(&$mysqli){
-		//
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
+
+		// enforce the userId is not null (i.e., don't update a user that hasn't been inserted)
+		if($this->userId === null) {
+			throw(new mysqli_sql_exception("Unable to update a user that does not exist"));
+		}
+
+		//todo:securityId update
+		//if(exist)
+			//you are good
+		//else
+			//throw exp
+
+		//create query template
+		$query 		= "UPDATE user SET email = ?, passwordHash = ?, salt = ?, authKey = ?, securityId = ?, loginSourceId = ? WHERE userId = ?";
+		$statement 	= $mysqli->prepare($query);
+		if($statement === false){
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		//bind the member variables to the place holders in the template
+		$wasClean = $statement->bind_param("ssssiii", $this->email, $this->passwordHash, $this->salt,
+																	$this->authKey, $this->securityId, $this->loginSourceId,
+																	$this->userId);
+		if($wasClean === false){
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		if($statement->execute() === false){
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
 	}
 
 
