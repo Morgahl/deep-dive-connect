@@ -28,9 +28,14 @@ class SecurityClass
 			$this->setcanEditOther($newCanEditOther);
 			$this->setcanPromote($newCanPromote);
 			$this->setsiteAdmin($newSiteAdmin);
-		} catch (Exception $exception) {
-			// ToDo: implement catchblock
+		}  catch(UnexpectedValueException $unexpectedValue) {
+	// rethrow to the seller
+throw(new UnexpectedValueException("Unable to construct securityId, 0, $unexpectedValue"));
+} catch(RangeException $range) {
+	// rethrow to the caller
+	throw(new RangeException("Unable to construct Author", 0, $range));
+}
 		}
-	}
+
 }
 ?>
