@@ -40,6 +40,7 @@ class User{
 	/**
 	 * Constructor of User
 	 *
+	 *
 	 * @param int $newUserId userId
 	 * @param string $newEmail email
 	 * @param string $newPasswordHash passwordHash
