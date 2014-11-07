@@ -38,8 +38,15 @@ class User{
 	private $loginSourceId;
 
 	/**
-	 * constructor for User
+	 * Constructor of User
 	 *
+	 * @param int $newUserId userId
+	 * @param string $newEmail email
+	 * @param string $newPasswordHash passwordHash
+	 * @param string $newSalt salt
+	 * @param string $newAuthKey salt
+	 * @param int $newSecurityId securityId
+	 * @param int $newLoginSourceId loginSourceId
 	 */
 	public function  __construct($newUserId, $newEmail, $newPasswordHash, $newSalt, $newAuthKey, $newSecurityId, $newLoginSourceId)
 	{
@@ -176,14 +183,16 @@ class User{
 			throw(new RangeException("authentication token is not 32 hexadecimal bytes"));
 		}
 
-		//asign authKey
+		//assign authKey
 		$this->authKey = $newAuthKey;
 	}
 
 	/**
 	 * security Id associated with user
 	 *
-	 * @param mixed $securityId
+	 * @param mixed $securityId int (null if new object)
+	 * @throws UnexpectedValueException if not an integer or null
+	 * @throws RangeException if profile id isn't positive
 	 */
 	public function setSecurityId($newSecurityId){
 		//todo: Do we want users automatically set to a default security id?
@@ -209,10 +218,32 @@ class User{
 	}
 
 	/**
-	 * @param mixed $loginSourceId
+	 * Sets the LoginSource of user
+	 *
+	 * @param mixed $loginSourceId int (null if new object)
+	 * @throws UnexpectedValueException if not an integer or null
+	 * @throws RangeException if profile id isn't positive
 	 */
-		public function setLoginSourceId($loginSourceId){
-		$this->loginSourceId = $loginSourceId;
+		public function setLoginSourceId($newLoginSourceId){
+			//allow the loginSource Id to be null if a new object
+			if($newLoginSourceId === null){
+				$this->loginSourceId = null;
+				return;
+			}
+
+			//ensure loginSource Id is an integer
+			if(filter_var($newLoginSourceId, FILTER_VALIDATE_INT) === false){
+				throw(new UnexpectedValueException("security id $newLoginSourceId is not numeric"));
+			}
+
+			//enforce loginSource id is an int and positive
+			$newLoginSourceId = intval($newLoginSourceId);
+			if($newLoginSourceId <= 0) {
+				throw(new RangeException("security id $newLoginSourceId is not positive"));
+			}
+
+			//assign loginSource Id
+			$this->loginSourceId = $newLoginSourceId;
 	}
 
 
