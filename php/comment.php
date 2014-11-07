@@ -33,13 +33,34 @@ class Comment {
 	private $commentBody;
 
 
-	function __construct() {
-		// TODO: Implement __construct() method.
+	function __construct($newCommentId, $newTopicId, $newProfileId, $newCommentDate, $newCommentSubject, $newCommentBody) {
+		try{
+			$this->setCommentId($newCommentId);
+			$this->setTopicId($newTopicId);
+			$this->setProfileId($newProfileId);
+			$this->setCommentDate($newCommentDate);
+			$this->setCommentSubject($newCommentSubject);
+			$this->setCommentBody($newCommentBody);
+		} catch(UnexpectedValueException $unexpectedValue) {
+			// rethrow to caller
+			throw(new UnexpectedValueException("Unable to construct Comment", 0, $unexpectedValue));
+		} catch(RangeException $range) {
+			// rethrow to caller
+			throw(new RangeException("Unable to construct Comment", 0, $range));
+		}
 	}
 
 	function __toString() {
-		// TODO: Implement __toString() method.
-		return("Fix Me");
+		// process dates into strings
+		$commentDateString = $this->commentDate->format("Y-m-d H:i:s");
+
+		// return string to caller
+		return("commentId: $this->commentId<br>" .
+			"topicId: $this->topicId<br>" .
+			"profileId: $this->profileId<br>" .
+			"commentDate: $commentDateString<br>" .
+			"commentSubject: $this->commentSubject<br>" .
+			"commentBody: $this->commentBody<br>");
 	}
 
 	/**

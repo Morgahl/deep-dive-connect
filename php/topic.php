@@ -147,6 +147,7 @@ class Topic {
 	 */
 	public function setTopicDate($newTopicDate) {
 		// Sanitize Date input to Y-m-d H:i:s MySQL standard
+		// this fails for badly formed strings and nulls
 		$newTopicDate = trim($newTopicDate);
 		if (($newTopicDate = DateTime::createFromFormat("Y-m-d H:i:s", $newTopicDate)) === false) {
 			throw(new UnexpectedValueException("Start date is not valid. Please use Y-m-d H:i:s format"));
@@ -250,7 +251,7 @@ class Topic {
 	 * @throws mysqli_sql_exception when a MySQL error occurs
 	 * @return OBJECT new Topic is returned or null if id specified is not found
 	 */
-	public function getTopicByTopicId(&$mysqli, $newTopicId) {
+	public static function getTopicByTopicId(&$mysqli, $newTopicId) {
 		// TODO: implement mySQL select and topic of validated object based on passed topicId
 	}
 }
