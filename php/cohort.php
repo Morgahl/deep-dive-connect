@@ -7,17 +7,18 @@
  */
 
 //Wrote Cohort class below; primary key is the cohortId;
-   class Cohort  {
+class Cohort
+{
 
-      private $cohortID;
+   private $cohortID;
 
-      private $startDate;
+   private $startDate;
 
-      private $endDate;
+   private $endDate;
 
-      private $location;
+   private $location;
 
-      private $description;
+   private $description;
 
 
 //** constructor below */
@@ -41,7 +42,8 @@
    }
 
 //gets value of CohortID
-   public function setProductId($newCohortID) {
+   public function setProductId($newCohortID)
+   {
       // zeroth, set allow the CohortID to be null if a new object
       if($newCohortID === null) {
          $this->cohortID = null;
@@ -49,8 +51,8 @@
       }
 
 //FilterVar here
-   if(filter_var($newCohortID, FILTER_VALIDATE_INT) === false) {
-      throw(new UnexpectedValueException("Cohort ID $newCohortID is not numeric"));
+      if(filter_var($newCohortID, FILTER_VALIDATE_INT) === false) {
+         throw(new UnexpectedValueException("Cohort ID $newCohortID is not numeric"));
       }
 
 //convert CohortID to an interger
@@ -62,14 +64,12 @@
 //remove CohortID from quarantine below
       $this->CohortID = $newCohortID;
    }
+
 //get value of CohortID return string--what's name of field/output, and string??
    public function getStartDate()
    {
       return ($this->startDate);
 
    }
-
-
-
-
+}
 ?>
