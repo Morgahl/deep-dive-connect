@@ -316,6 +316,12 @@ class User{
 		if($statement->execute() === false) {
 			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 		}
+
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
 	}
 
 
