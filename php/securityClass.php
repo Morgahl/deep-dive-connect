@@ -19,18 +19,18 @@ class SecurityClass
 
 	// here is the constructor
 	public function __construct($newSecurityId, $newDescription, $newCreateTopic, $newCanEditOther, $newCanPromote,
-	$newSiteAdmin) {
+										 $newSiteAdmin)
+	{
 		try {
 			$this->setsecurityId($newSecurityId);
 			$this->setdescription($newDescription);
-			$this->setcreateTopic($newCreateTopic)
+			$this->setcreateTopic($newCreateTopic);
 			$this->setcanEditOther($newCanEditOther);
 			$this->setcanPromote($newCanPromote);
 			$this->setsiteAdmin($newSiteAdmin);
-		} catch{
-		// ToDo: implement catchblock
+		} catch (Exception $exception) {
+			// ToDo: implement catchblock
 		}
 	}
-
-
+}
 ?>
