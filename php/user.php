@@ -29,11 +29,11 @@ class User{
 	 */
 	private $authKey;
 	/**
-	 * securityId identifies the users security clearances
+	 * securityId identifies the users security clearances; foreign key
 	 */
 	private $securityId;
 	/**
-	 * identifies whether user is logging in through site or external options
+	 * identifies whether user is logging in through site or external options; foreign key
 	 */
 	private $loginSourceId;
 
@@ -181,10 +181,31 @@ class User{
 	}
 
 	/**
+	 * security Id associated with user
+	 *
 	 * @param mixed $securityId
 	 */
-	public function setSecurityId($securityId){
-		$this->securityId = $securityId;
+	public function setSecurityId($newSecurityId){
+		//todo: Do we want users automatically set to a default security id?
+		//allow the securityId to be null if a new object
+		if($newSecurityId === null){
+			$this->securityId = null;
+			return;
+		}
+
+		//ensure securityId is an integer
+		if(filter_var($newSecurityId, FILTER_VALIDATE_INT) === false){
+			throw(new UnexpectedValueException("security id $newSecurityId is not numeric"));
+		}
+
+		//enforce security id is an int and positive
+		$newSecurityId = intval($newSecurityId);
+		if($newSecurityId <= 0) {
+			throw(new RangeException("security id $newSecurityId is not positive"));
+		}
+
+		//assign securityId
+		$this->securityId = $newSecurityId;
 	}
 
 	/**
