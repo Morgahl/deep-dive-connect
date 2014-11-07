@@ -120,3 +120,19 @@ CREATE TABLE comment (
 	FOREIGN KEY (profileId) REFERENCES profile(profileId),
 	FOREIGN KEY (topicId) REFERENCES topic(topicId)
 );
+
+-- Finally we add some seed data to relevant tables
+
+-- insert for security table
+INSERT INTO security (description, createTopic, canEditOther, canPromote, siteAdmin)
+	VALUES ('Newb', 0, 0, 0, 0),
+		('User', 1, 0, 0, 0),
+		('Moderator', 1, 1, 0, 0),
+		('Admin', 1, 1, 1, 1);
+
+-- insert for loginSource
+INSERT INTO loginSource (sourceName)
+	VALUES ('Facebook'),
+		('Twitter'),
+		('LinkedIn'),
+		('GooglePlus');
