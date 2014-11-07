@@ -106,7 +106,7 @@ class User{
 	public function setEmail($newEmail){
 		// sanitize the email as a likely email
 		$newEmail = trim($newEmail);
-		if(($newEmail = filter_var($newEmail, FILTER_SANITIZE_EMAIL)) == false){
+		if(($newEmail = filter_var($newEmail, FILTER_SANITIZE_EMAIL)) === false){
 			throw(new UnexpectedValueException("email $newEmail does not appear to be an email address"));
 		}
 
@@ -134,17 +134,49 @@ class User{
 	}
 
 	/**
-	 * @param mixed $salt
+	 * sets value for salt
+	 *
+	 * @param string $newSalt salt (64 hexadecimal bytes)
+	 * @throw RangeException whe input isn't 64 hexadecimal bytes
 	 */
-	public function setSalt($salt){
-		$this->salt = $salt;
+	public function setSalt($newSalt){
+		//verify the salt is 64 hex characters
+		$newSalt	=trim($newSalt);
+		$newSalt	=strtolower($newSalt);
+		$filterOptions = array("options" => array("regexp" => "/^[|da-f]{64}$/"));
+		if(filter_var($newSalt, FILTER_VALIDATE_REGEXP, $filterOptions) === false) {
+			throw(new RangeException("salt is not 64 hexadecimal bytes"));
+		}
+
+		// finally, take the salt out of quarantine
+		$this->salt = $newSalt;
 	}
 
+
+
 	/**
-	 * @param mixed $authKey
+	 * set value of authKey
+	 *
+	 * @param mixed $newAuthKey authentication token(32 hexadecimal bytes) or null
+	 * @throws RangeException when input isn't 32 hexadecimal bytes
 	 */
-	public function setAuthKey($authKey){
-		$this->authKey = $authKey;
+	public function setAuthKey($newAuthKey){
+		//zeroth, set allow the authentication token to be null if an active object
+		if($newAuthKey === null) {
+			$this->authKey = null;
+			return;
+		}
+
+		//verify authKey is 32 hex char
+		$newAuthKey	=trim($newAuthKey);
+		$newAuthKey	=strtolower($newAuthKey);
+		$filterOptions = array("options" => array("regexp" => "/^[\da-f]{32}$/"));
+		if(filter_var($newAuthKey, FILTER_VALIDATE_REGEXP, $filterOptions) === false){
+			throw(new RangeException("authentication token is not 32 hexadecimal bytes"));
+		}
+
+		//asign authKey
+		$this->authKey = $newAuthKey;
 	}
 
 	/**
@@ -160,7 +192,6 @@ class User{
 		public function setLoginSourceId($loginSourceId){
 		$this->loginSourceId = $loginSourceId;
 	}
-
 
 
 
