@@ -262,12 +262,12 @@ class User{
 		if($this->securityId !== null) {
 			//confirm it exists in Security Class $exist
 			//todo: make static method in Security search by id; if can't find throw
-			if($exist === null){
-				throw(new UnexpectedValueException("security Id $this->securityId does not exist in Security table"));
-			}
+			//if($exist === null){
+				//throw(new UnexpectedValueException("security Id $this->securityId does not exist in Security table"));
+			//}
 		}else{
 			//get default
-			$this->securityId = 0; //todo: need Security Static Method to get default
+			//$this->securityId = 0; //todo: need Security Static Method to get default
 		}
 
 
@@ -355,6 +355,8 @@ class User{
 			//throw exp
 
 		//create query template
+
+
 		$query 		= "UPDATE user SET email = ?, passwordHash = ?, salt = ?, authKey = ?, securityId = ?, loginSourceId = ? WHERE userId = ?";
 		$statement 	= $mysqli->prepare($query);
 		if($statement === false){
