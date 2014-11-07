@@ -10,6 +10,8 @@ class SecurityClass
 	private $securityId;
 	// names the description
 	private $description;
+	// assigns the isDefault
+	private $isDefault;
 	// name of createTopic
 	private $createTopic;
 	// name of canEditOther
@@ -80,6 +82,38 @@ throw(new UnexpectedValueException("Unable to construct securityId, 0, $unexpect
 		}
 
 		$this->description = $newDescription;
+
+	}
+
+
+
+
+
+	public function getisDefault() {
+		return ($this->isDefault);
+	}
+
+	public function setIsDefault($newIsDefault)
+	{
+		// allow the isDefault to be null if a new object
+
+		if($newIsDefault === null) {
+			$this->isDefault = null;
+			return;
+		}
+
+		//  ensure the isDefault is an integer
+
+		if(filter_var($newIsDefault, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("description $newIsDefault is not numeric"));
+		}
+
+		$newIsDefault = intval($newIsDefault);
+		if($newIsDefault <= 0) {
+			throw(new RangeException("isDefault $newIsDefault is not positive"));
+		}
+
+		$this->isDefault = $newIsDefault;
 
 	}
 
