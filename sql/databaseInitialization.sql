@@ -19,6 +19,7 @@ DROP TABLE IF EXISTS security;
 CREATE TABLE security (
 	securityId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	description VARCHAR(256) NOT NULL,
+	isDefault TINYINT NOT NULL,
 	createTopic TINYINT NOT NULL,
 	canEditOther TINYINT NOT NULL,
 	canPromote TINYINT NOT NULL,
@@ -125,11 +126,11 @@ CREATE TABLE comment (
 -- Finally we add some seed data to relevant tables
 
 -- insert for security table
-INSERT INTO security (description, createTopic, canEditOther, canPromote, siteAdmin)
-	VALUES ('Newb', 0, 0, 0, 0),
-		('User', 1, 0, 0, 0),
-		('Moderator', 1, 1, 0, 0),
-		('Admin', 1, 1, 1, 1);
+INSERT INTO security (description, isDefault, createTopic, canEditOther, canPromote, siteAdmin)
+	VALUES ('Newb', 1, 0, 0, 0, 0),
+		('User', 0, 1, 0, 0, 0),
+		('Moderator', 0, 1, 1, 0, 0),
+		('Admin', 0, 1, 1, 1, 1);
 
 -- insert for loginSource
 INSERT INTO loginSource (sourceName)
