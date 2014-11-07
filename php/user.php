@@ -171,6 +171,7 @@ class User{
 		$newAuthKey	=trim($newAuthKey);
 		$newAuthKey	=strtolower($newAuthKey);
 		$filterOptions = array("options" => array("regexp" => "/^[\da-f]{32}$/"));
+
 		if(filter_var($newAuthKey, FILTER_VALIDATE_REGEXP, $filterOptions) === false){
 			throw(new RangeException("authentication token is not 32 hexadecimal bytes"));
 		}
