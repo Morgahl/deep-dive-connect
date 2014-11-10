@@ -141,6 +141,30 @@ class Profile{
 		$this->userId = $newUserId;
 	}
 
+	/**
+	 * sets the value of first name
+	 *
+	 * @param string $newFirstName firstName
+	 * @throws UnexpectedValueException if the input does not appear to be an name
+	 * @throws RangeException if the input exceeds 64 characters
+	 */
+	public function setFirstName($newFirstName){
+		//first we take out the white space
+		$newFirstName = trim($newFirstName);
+
+		//Second we ensure that input is a string
+		if(filter_var($newFirstName, FILTER_SANITIZE_STRING) === false) {
+			throw(new UnexpectedValueException("First name $newFirstName is not string"));
+		}
+
+		//third make sure length is not greater than 64
+		if(strlen($newFirstName) > 64){
+			throw(new RangeException("First name $newFirstName exceeds 64 character limit"));
+		}
+
+		$this->firstName = $newFirstName;
+	}
+
 
 }
 
