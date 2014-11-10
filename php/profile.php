@@ -249,6 +249,36 @@ class Profile{
 
 	}
 
+	/**
+	 * sets description for Profile
+	 *
+	 * @param string $newDesc location
+	 * @throws UnexpectedValueException if the input does not appear to be a string
+	 * @throws RangeException if the input exceeds 4096 characters
+	 */
+	public function setDescription($newDesc){
+		//zeroth, allow the Description to be null if a new object
+		if($newDesc === null){
+			$this->description = null;
+			return;
+		}
+
+		//first, sanitize string from tags
+		if(filter_var($newDesc, FILTER_SANITIZE_STRING) === false){
+			throw(new UnexpectedValueException("location $newDesc doesn't appear to be string"));
+		}
+
+		//Ensure that description doesn't exceed 4096
+		if(strlen($newDesc) > 4096){
+			throw(new RangeException("description exceeds 256 character limit"));
+		}
+
+		// assign variable
+		$this->description = $newDesc;
+
+	}
+
+
 	//Todo Profile pic file name
 	//can you set up a place to upload pics ask dylan
 	//move_uploaded_file
