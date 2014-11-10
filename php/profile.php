@@ -220,6 +220,45 @@ class Profile{
 		$this->middleName = $newMiddleName;
 	}
 
+	/**
+	 * sets location to Profile
+	 *
+	 * @param string $newLocation location
+	 * @throws UnexpectedValueException if the input does not appear to be a string
+	 * @throws RangeException if the input exceeds 256 characters
+	 */
+	public function setLocation($newLocation){
+		//zeroth, allow the location to be null if a new object
+		if($newLocation === null){
+			$this->location = null;
+			return;
+		}
+
+		//first, sanitize string from tags
+		if(filter_var($newLocation, FILTER_SANITIZE_STRING) === false){
+			throw(new UnexpectedValueException("location $newLocation doesn't appear to be string"));
+		}
+
+		//Ensure that location doesn't exceed 256
+		if(strlen($newLocation) > 256){
+			throw(new RangeException("location $newLocation exceeds 256 character limit"));
+		}
+
+		// assign variable
+		$this->location = $newLocation;
+
+	}
+
+	//Todo Profile pic file name
+	//can you set up a place to upload pics ask dylan
+	//move_uploaded_file
+
+	//TODO profile pic file type
+	//in data base store mime type image/*
+	//take type from browser
+	//after taking that on faith; we through our faith away
+	//imgcreatefromfoo
+	//imgdestroy
 }
 
 
