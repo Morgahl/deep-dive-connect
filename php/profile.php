@@ -89,6 +89,35 @@ class Profile{
 		return ($this->$name);
 	}
 
+	/**
+	 * sets the value for profileId
+	 *
+	 * @param mixed $newProfileId profile id(or null if new object
+	 * @throws UnexpectedValueException if not an integer or null
+	 * @throws RangeException if profile id isn't positive
+	 */
+	public function setProfileId($newProfileId){
+		// zeroth, set allow the profile id to be null if a new object
+		if($newProfileId === null) {
+			$this->profileId = null;
+			return;
+		}
+
+		// first, make sure profile id is an integer
+		if(filter_var($newProfileId, FILTER_VALIDATE_INT)== false) {
+			throw(new UnexpectedValueException("profile id $newProfileId is not numeric"));
+		}
+
+		//second, enforce that user id is an integer and positive
+		$newProfileId = intval($newProfileId);
+		if($newProfileId <= 0){
+			throw(new RangeException("profile id $newProfileId is not positive"));
+		}
+
+		// finally after sanitizing data assign it
+		$this->profileId = $newProfileId;
+	}
+
 
 
 
