@@ -162,6 +162,7 @@ class Profile{
 			throw(new RangeException("First name $newFirstName exceeds 64 character limit"));
 		}
 
+		//assign value
 		$this->firstName = $newFirstName;
 	}
 
@@ -186,7 +187,37 @@ class Profile{
 			throw(new RangeException("First name $newLastName exceeds 64 character limit"));
 		}
 
+		//assign value
 		$this->lastName = $newLastName;
+	}
+
+	/**
+	 * sets the value of middle name
+	 *
+	 * @param string $newMiddleName middle name
+	 * @throws UnexpectedValueException if the input does not appear to be an name
+	 * @throws RangeException if the input exceeds 64 characters
+	 */
+	public function setMiddleName($newMiddleName){
+		//zeroth check to see if middle name is null
+		if($newMiddleName === null) {
+			$this->middleName = null;
+			return;
+		}
+		//first we take out the white space
+		$newMiddleName = trim($newMiddleName);
+
+		//Second we ensure that input is a string
+		if(filter_var($newMiddleName, FILTER_SANITIZE_STRING) === false) {
+			throw(new UnexpectedValueException("Middle name $newMiddleName is not string"));
+		}
+
+		//third make sure length is not greater than 64
+		if(strlen($newMiddleName) > 64){
+			throw(new RangeException("First name $newMiddleName exceeds 64 character limit"));
+		}
+
+		$this->middleName = $newMiddleName;
 	}
 
 }
