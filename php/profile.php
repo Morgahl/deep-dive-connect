@@ -44,6 +44,44 @@ class Profile{
 	 * File type of the profile picture associated with Profile
 	 **/
 	private $profilePicFileType;
+
+	/**
+	 * Constructor of Profile
+	 *
+	 * @param int $newProfileId profileId
+	 * @param int $newUserId userId
+	 * @param string $newFirstName firstName
+	 * @param string $newLastName lastName
+	 * @param string $newMiddleName middleName
+	 * @param string $newLocation location
+	 * @param string $newDesc description
+	 * @param string $newPicFileName profilePicFileName
+	 * @param string $newPicFileType profilePicFileType
+	 */
+	public function __construct(	$newProfileId, $newUserId, $newFirstName,
+											$newLastName, $newMiddleName, $newLocation,
+											$newDesc, $newPicFileName, $newPicFileType){
+		try{
+			$this->setProfileId($newProfileId);
+			$this->setUserId($newUserId);
+			$this->setFirstName($newFirstName);
+			$this->setLastName($newLastName);
+			$this->setMiddleName($newMiddleName);
+			$this->setLocation($newLocation);
+			$this->setDescription($newDesc);
+			$this->setProfilePicFileName($newPicFileName);
+			$this->setProfilePicFileType($newPicFileType);
+		}catch(UnexpectedValueException $unexpectedValue) {
+			//rethrow to the caller
+			throw(new UnexpectedValueException("Unable to construct Profile", 0, $unexpectedValue));
+		} catch(RangeException $range) {
+			//rethrow to the caller
+			throw(new RangeException("Unable to construct Profile", 0, $range));
+		}
+
+
+
+	}
 }
 
 

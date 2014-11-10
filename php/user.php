@@ -49,8 +49,7 @@ class User{
 	 * @param int $newSecurityId securityId
 	 * @param int $newLoginSourceId loginSourceId
 	 */
-	public function  __construct($newUserId, $newEmail, $newPasswordHash, $newSalt, $newAuthKey, $newSecurityId, $newLoginSourceId)
-	{
+	public function  __construct($newUserId, $newEmail, $newPasswordHash, $newSalt, $newAuthKey, $newSecurityId, $newLoginSourceId){
 		try {
 			$this->setUserId($newUserId);
 			$this->setEmail($newEmail);
