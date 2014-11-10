@@ -79,9 +79,19 @@ class Profile{
 			throw(new RangeException("Unable to construct Profile", 0, $range));
 		}
 
-
-
 	}
+
+	/**
+	 * magic method __get() gets the values from Profile
+	 * @return mixed int or string
+	 */
+	public function __get($name){
+		return ($this->$name);
+	}
+
+
+
+
 }
 
 
