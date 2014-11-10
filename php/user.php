@@ -196,7 +196,6 @@ class User{
 	 * @throws RangeException if profile id isn't positive
 	 */
 	public function setSecurityId($newSecurityId){
-		//todo: Do we want users automatically set to a default security id?
 		//allow the securityId to be null if a new object
 		if($newSecurityId === null){
 			$this->securityId = null;
