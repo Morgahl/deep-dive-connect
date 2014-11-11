@@ -1,9 +1,12 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: gnosis gnosis
- * Date: 11/7/2014
- * Time: 10:44 AM
+ * This a container for profileCohort class
+ *
+ * This class will identify elements of profileCohort class to link to Deep Dive Coders Alumni Site
+ * Created by Gerardo Medrano, adapted from template by Dylan McDonald
+ *
+ * Date: 11/9/2014
+ * Time: 4:12 PM
  **/
 
 
@@ -25,9 +28,13 @@ class profileCohort {
    private $role;
    /**
     * constructor for ProfileCohort below
-    * "@param" comments need to be entered
     *
-    *
+      @param string $newProfileCohortId Profile Cohort Id integer/number
+    * @param string $newCohortId Cohort Id integer/number
+    * @param string $newProfileId Profile Id integer/number
+    * @param string $newLocation Location string gives alum address info
+    * @throws UnexpectedValueException when a parameter is wrong type
+    * @throws RangeException when a parameter is invalid
     */
    public function __construct($newProfileCohortId, $newProfileId, $newCohortId, $newLocation, $newRole)
    {

@@ -33,7 +33,7 @@ class Cohort {
     * @param string $newEndDate End Date of Cohort
     * @param string $newLocation Location of Cohort
     * @param string $newDescription Description of Alumnus' activities
-    * @throws UnexpectedValueException when a parameter is wront type
+    * @throws UnexpectedValueException when a parameter is wrong type
     * @throws RangeException when a parameter is invalid
     **/
    public function __construct($newCohortID, $newStartDate, $newEndDate, $newLocation, $newDescription)
@@ -183,7 +183,6 @@ public function setEndDate($newEndDate) {
    $this->EndDate = $newEndDate;
 
 }
-
    /**
     * updates this Signup in mySQL
     *
@@ -196,34 +195,29 @@ public function setEndDate($newEndDate) {
          throw(new mysqli_sql_exception("input is not a mysqli object"));
       }
 
-      // enforce the signupId is not null (i.e., don't update a signup that hasn't been inserted)
-      if($this->signupId === null) {
-         throw(new mysqli_sql_exception("Unable to update a signup that does not exist"));
-      }
-
       // convert dates to strings
-      if($this->dateConfirmed === null) {
-         $dateConfirmed = null;
+      if($this->startDate === null) {
+         $startDate = null;
       } else {
-         $dateConfirmed = $this->dateConfirmed->format("Y-d-m H:i:s");
+         $startDate = $this->startDate->format("Y-d-m H:i:s");
       }
-      if($this->dateCreated === null) {
-         $dateCreated = null;
+      if($this->endDate === null) {
+         $endDate = null;
       } else {
-         $dateCreated = $this->dateCreated->format("Y-d-m H:i:s");
+         $endDate = $this->endDate->format("Y-d-m H:i:s");
       }
 
-      // create query template
-      $query     = "UPDATE signup SET firstName = ?, lastName = ?, email = ?, authToken = ?, dateCreated = ?, dateConfirmed = ? WHERE signupId = ?";
+      // create query template -- !!!TO DO Change fields or adapt query!!!!!
+      $query     = "UPDATE cohort SET StartDate = ?, EndDate = ?, WHERE cohort = ?";
       $statement = $mysqli->prepare($query);
+
       if($statement === false) {
          throw(new mysqli_sql_exception("Unable to prepare statement"));
       }
 
       // bind the member variables to the place holders in the template
-      $wasClean = $statement->bind_param("ssssssi",   $this->firstName, $this->lastName, $this->email,
-         $this->authToken, $dateCreated, $dateConfirmed, $this->signupId);
-      if($wasClean === false) {
+      $wasClean = $statement->bind_param("Place Holders",  $StartDate, $EndDate);
+      if($wasClean === false) {n
          throw(new mysqli_sql_exception("Unable to bind parameters"));
       }
 
@@ -284,7 +278,7 @@ public function setEndDate($newEndDate) {
 
    /**
     *Insert Profile Cohort to mySQL
-    * @param mysqli_sql_exception as mySql related errors occur
+    *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @param mysqli_sql_exception as mySql related errors occur
     *
     **/
    public function insert(&$mysqli) {
