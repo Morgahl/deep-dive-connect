@@ -128,6 +128,12 @@ class User{
 	 * @throws RangeException when input isn't a valid SHA512 PBKDF2 hash
 	 */
 	public function setPasswordHash($newPasswordHash){
+		//allow password to be null if coming from another login source
+		if($newPasswordHash === null){
+			$this->passwordHash = null;
+			return;
+		}
+
 		// verify the password is 128 hex characters
 		$newPasswordHash = trim($newPasswordHash);
 		$newPasswordHash = strtolower($newPasswordHash);
@@ -147,6 +153,12 @@ class User{
 	 * @throw RangeException whe input isn't 64 hexadecimal bytes
 	 */
 	public function setSalt($newSalt){
+		//all to be null
+		if($newSalt === null){
+			$this->salt = null;
+			return;
+		}
+
 		//verify the salt is 64 hex characters
 		$newSalt	=trim($newSalt);
 		$newSalt	=strtolower($newSalt);
