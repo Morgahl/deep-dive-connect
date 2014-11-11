@@ -57,7 +57,7 @@ class User{
 			$this->setSalt($newSalt);
 			$this->setAuthKey($newAuthKey);
 			$this->setSecurityId($newSecurityId);
-			$this->setLoginSorceId($newLoginSourceId);
+			$this->setLoginSourceId($newLoginSourceId);
 		} catch(UnexpectedValueException $unexpectedValue) {
 			//rethrow to the caller
 			throw(new UnexpectedValueException("Unable to construct User", 0, $unexpectedValue));
@@ -282,7 +282,7 @@ class User{
 
 
 		//create query template
-		$query 		= "INSERT INTO user(email, passwordHash, salt, authKey, securityId, LoginSourceId) VALUES(?,?,?,?,?,?)";
+		$query 		= "INSERT INTO user(email, passwordHash, salt, authKey, securityId, loginSourceId) VALUES(?,?,?,?,?,?)";
 		$statement 	= $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
