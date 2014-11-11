@@ -200,9 +200,9 @@ class Comment {
 	 * @throes RangeException when a parameter length is invalid
 	 */
 	public function setCommentSubject($newCommentSubject) {
-		// commentSubject should never be null
+		// commentSubject can be null when inheriting from topic
 		if($newCommentSubject === null) {
-			throw(new UnexpectedValueException("Comment Subject must not be null"));
+			return(null);
 		}
 
 		// sanitize string
@@ -275,16 +275,6 @@ class Comment {
 			throw(new mysqli_sql_exception("profileId cannot be null."));
 		}
 
-		// enforce commentDate is NOT null
-		if($this->commentDate === null) {
-			throw(new mysqli_sql_exception("commentDate cannot be null."));
-		}
-
-		// enforce commentSubject is NOT null
-		if($this->commentSubject === null) {
-			throw(new mysqli_sql_exception("commentSubject cannot be null."));
-		}
-
 		// enforce commentBody is NOT null
 		if($this->commentBody === null) {
 			throw(new mysqli_sql_exception("commentBody cannot be null."));
@@ -292,18 +282,15 @@ class Comment {
 
 		// create query template
 		$query = "INSERT INTO comment (topicId, profileId, commentDate, commentSubject, commentBody)
-					VALUES (?, ?, ?, ?, ?)";
+					VALUES (?, ?, NOW(), ?, ?)";
 
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
 
-		// prep date for mySQL entry
-		$commentDate = $this->commentDate->format("Y-m-d H:i:s");
-
 		// bind the variables to the place holders in the template
-		$wasClean = $statement->bind_param("iisss", $this->topicId, $this->profileId, $commentDate, $this->commentSubject, $this->commentBody);
+		$wasClean = $statement->bind_param("iiss", $this->topicId, $this->profileId, $this->commentSubject, $this->commentBody);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
@@ -345,16 +332,6 @@ class Comment {
 			throw(new mysqli_sql_exception("profileId cannot be null."));
 		}
 
-		// enforce commentDate is NOT null
-		if($this->commentDate === null) {
-			throw(new mysqli_sql_exception("commentDate cannot be null."));
-		}
-
-		// enforce commentSubject is NOT null
-		if($this->commentSubject === null) {
-			throw(new mysqli_sql_exception("commentSubject cannot be null."));
-		}
-
 		// enforce commentBody is NOT null
 		if($this->commentBody === null) {
 			throw(new mysqli_sql_exception("commentBody cannot be null."));
@@ -362,7 +339,7 @@ class Comment {
 
 		// create query template
 		$query = "UPDATE comment
-					SET topicId = ?, profileId = ?, commentDate = ?, commentSubject = ?, commentBody = ?
+					SET topicId = ?, profileId = ?, commentSubject = ?, commentBody = ?
 					WHERE commentId = ?";
 
 		$statement = $mysqli->prepare($query);
@@ -370,11 +347,8 @@ class Comment {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
 
-		// prep date for mySQL entry
-		$commentDate = $this->commentDate->format("Y-m-d H:i:s");
-
 		// bind the variables to the place holders in the template
-		$wasClean = $statement->bind_param("sssssi", $this->topicId, $this->profileId, $commentDate, $this->commentSubject, $this->commentBody);
+		$wasClean = $statement->bind_param("iiss", $this->topicId, $this->profileId, $this->commentSubject, $this->commentBody);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
@@ -630,7 +604,6 @@ class Comment {
 	 * @return ARRAY of Comment objects or null if no records found
 	 */
 	public static function getCommentsByProfileId(&$mysqli, $newProfileId, $limit, $page) {
-		// TODO: implement mySQL select and creation of validated array of Comment objects based on passed profileId
 		// handle degenerate cases
 		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
 			throw(new mysqli_sql_exception("Input is not a valid mysqli object"));
