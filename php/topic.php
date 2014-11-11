@@ -251,7 +251,9 @@ class Topic {
 		}
 
 		// create query template
-		$query = "INSERT INTO topic (profileId, topicDate, topicSubject, topicBody) VALUES (?, ?, ?, ?)";
+		$query = "INSERT INTO topic (profileId, topicDate, topicSubject, topicBody)
+					VALUES (?, ?, ?, ?)";
+
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
@@ -314,7 +316,10 @@ class Topic {
 		}
 
 		// create query template
-		$query = "UPDATE topic SET profileId = ?, topicDate = ?, topicSubject = ?, topicBody = ? WHERE topicId = ?";
+		$query = "UPDATE topic
+					SET profileId = ?, topicDate = ?, topicSubject = ?, topicBody = ?
+					WHERE topicId = ?";
+
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
@@ -354,7 +359,9 @@ class Topic {
 		}
 
 		// create query template
-		$query = "DELETE FROM topic WHERE topicId = ?";
+		$query = "DELETE FROM topic
+					WHERE topicId = ?";
+
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
@@ -374,7 +381,7 @@ class Topic {
 	}
 
 	/**
-	 * Creates a new Topic Object from mySQL base on passed topicId
+	 * Creates a new Topic Object from mySQL based on passed topicId
 	 *
 	 * @param $mysqli OBJECT mySQL connection object
 	 * @param $newTopicId INT topicId to retrieve from mySQL
@@ -382,17 +389,152 @@ class Topic {
 	 * @return OBJECT new Topic is returned or null if id specified is not found
 	 */
 	public static function getTopicByTopicId(&$mysqli, $newTopicId) {
-		// TODO: implement mySQL select and topic of validated object based on passed topicId
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("Input is not a valid mysqli object"));
+		}
+
+		// enforce that topicId is NOT null
+		if($newTopicId === null) {
+			throw(new UnexpectedValueException("topicId must not be null"));
+		}
+
+		// ensure that topicId is an int
+		if(filter_var($newTopicId, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("Topic ID $newTopicId is not numeric"));
+		}
+
+		// convert the event id to int and enforce that it is positive
+		$newTopicId = intval($newTopicId);
+		if($newTopicId <= 0) {
+			throw(new RangeException("Topic ID $newTopicId is not positive"));
+		}
+
+		// create query template
+		$query = "SELECT topicId, profileId, topicDate, topicSubject, topicBody
+					FROM topic
+					WHERE topicId = ?";
+
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// bind the variables to the place holders in the template
+		$wasClean = $statement->bind_param("i", $newTopicId);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		$result = $statement->execute();
+		if($result === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
+		// get result from the SELECT
+		$result = $statement->get_result();
+		if($result === false) {
+			throw(new mysqli_sql_exception("Unable to get result set"));
+		}
+
+		// since this is unique this will return only 1 row
+		$row = $result->fetch_assoc();
+
+		//convert assoc array to Topic object
+		if($row !== null) {
+			try {
+				$event = new Topic($row["topicId"], $row["profileId"], $row["topicDate"], $row["topicSubject"], $row["topicComment"]);
+			} catch(Exception $exception) {
+				// if the row could not be converted throw it
+				throw(new mysqli_sql_exception("Unable to process result set"));
+			}
+			// if we got here, the Topic is good
+			return($event);
+		} else {
+			// no result found return null
+			return(null);
+		}
 	}
 
 	/**
-	 * Returns an array of the 10 most recent topic objects.
+	 * Returns an array of the N most recent Topic objects based on most
+	 * recent commentDate in topic or topicDate if no commentDate is assoc.
 	 *
 	 * @param $mysqli OBJECT mySQL connection object
+	 * @param $limit INT top N records returned based on this int
 	 * @throws mysqli_sql_exception when a MySQL error occurs
-	 * @return OBJECT new Topic is returned or null if id specified is not found
+	 * @return OBJECT new array of Topics is returned or null if none are found
 	 */
-	public static function getRecentTopics(&$mysqli) {
-		// TODO: implement mySQL select and topic of validated object based on passed topicId
+	public static function getRecentTopics(&$mysqli, $limit) {
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("Input is not a valid mysqli object"));
+		}
+
+		// enforce that limit is NOT null
+		if($limit === null) {
+			throw(new UnexpectedValueException("Limit must not be null"));
+		}
+
+		// ensure that limit is an int
+		if(filter_var($limit, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("Limit $limit is not numeric"));
+		}
+
+		// convert the limit to int and enforce that it is positive
+		$limit = intval($limit);
+		if($limit <= 0) {
+			throw(new RangeException("Limit ID $limit is not positive"));
+		}
+
+		// create query template
+		$query = "SELECT t.topicId,
+ 						t.profileId,
+ 						COALESCE(MAX(c.commentDate), t.topicDate) AS topicDate,
+ 						t.topicSubject,
+ 						t.topicBody
+					FROM topic t
+					LEFT JOIN comment c ON t.topicId = c.topicId
+					GROUP BY t.topicId
+					ORDER BY COALESCE(MAX(c.commentDate), t.topicDate)DESC, t.topicId DESC
+					LIMIT ?;";
+
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// bind the variable to the place holder for the template
+		$wasClean = $statement->bind_param("i", $limit);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		$results = $statement->execute();
+		if($results === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
+		// get results
+		$results = $statement->get_result();
+		if($results->num_rows > 0) {
+			// retrieve results in bulk into an array
+			$results = $results->fetch_all(MYSQL_ASSOC);
+			if($results === false) {
+				throw(new mysqli_sql_exception("Unable to process result set"));
+			}
+
+			// step through results array and convert to Topic objects
+			foreach ($results as $index => $row) {
+				$results[$index] = new Topic($row["topicId"], $row["profileId"], $row["topicDate"], $row["topicSubject"], $row["topicBody"]);
+			}
+
+			// return resulting array of Event objects
+			return($results);
+		} else {
+			return(null);
+		}
 	}
 }
