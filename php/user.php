@@ -236,6 +236,12 @@ class User{
 	 * @throws RangeException if profile id isn't positive
 	 */
 		public function setLoginSourceId($newLoginSourceId){
+			//allow to be null
+			if($newLoginSourceId === null){
+				$this->loginSourceId = null;
+				return;
+			}
+
 			//ensure loginSource Id is an integer
 			if(filter_var($newLoginSourceId, FILTER_VALIDATE_INT) === false){
 				throw(new UnexpectedValueException("security id $newLoginSourceId is not numeric"));
