@@ -119,6 +119,7 @@ CREATE TABLE comment (
 	INDEX (profileId),
 	INDEX (commentDate),
 	INDEX (topicId, profileId),
+	INDEX (topicId, commentDate),
 	FOREIGN KEY (profileId) REFERENCES profile(profileId),
 	FOREIGN KEY (topicId) REFERENCES topic(topicId)
 );
