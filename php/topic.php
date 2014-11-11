@@ -220,7 +220,60 @@ class Topic {
 	 * @throws mysqli_sql_exception when a MySQL error occurs
 	 */
 	public function insert(&$mysqli) {
-		// TODO: implement mySQL insert of validated object
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("Input is not a valid mysqli object"));
+		}
+
+		// enforce topicId is null
+		if($this->topicId !== null) {
+			throw(new mysqli_sql_exception("Not a new topic"));
+		}
+
+		// enforce profileId is NOT null
+		if($this->profileId === null) {
+			throw(new mysqli_sql_exception("profileId cannot be null."));
+		}
+
+		// enforce topicDate is NOT null
+		if($this->topicDate === null) {
+			throw(new mysqli_sql_exception("topicDate cannot be null."));
+		}
+
+		// enforce topicSubject is NOT null
+		if($this->topicSubject === null) {
+			throw(new mysqli_sql_exception("topicSubject cannot be null."));
+		}
+
+		// enforce topicBody is NOT null
+		if($this->topicBody === null) {
+			throw(new mysqli_sql_exception("topicBody cannot be null."));
+		}
+
+		// create query template
+		$query = "INSERT INTO topic (profileId, topicDate, topicSubject, topicBody) VALUES (?, ?, ?, ?)";
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// prep date for mySQL entry
+		$topicDate = $this->topicDate->format("Y-m-d H:i:s");
+
+		// bind the variables to the place holders in the template
+		$wasClean = $statement->bind_param("isss", $this->profileId, $topicDate, $this->topicSubject, $this->topicBody);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		$result = $statement->execute();
+		if($result === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
+		// update the null topicId
+		$this->topicId = $mysqli->insert_id;
 	}
 
 	/**
@@ -230,7 +283,57 @@ class Topic {
 	 * @throws mysqli_sql_exception when a MySQL error occurs
 	 */
 	public function update(&$mysqli) {
-		// TODO: implement mySQL update of validated object
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("Input is not a valid mysqli object"));
+		}
+
+		// enforce topicId is NOT null
+		if($this->topicId === null) {
+			throw(new mysqli_sql_exception("topicId cannot be null."));
+		}
+
+		// enforce profileId is NOT null
+		if($this->profileId === null) {
+			throw(new mysqli_sql_exception("profileId cannot be null."));
+		}
+
+		// enforce topicDate is NOT null
+		if($this->topicDate === null) {
+			throw(new mysqli_sql_exception("topicDate cannot be null."));
+		}
+
+		// enforce topicSubject is NOT null
+		if($this->topicSubject === null) {
+			throw(new mysqli_sql_exception("topicSubject cannot be null."));
+		}
+
+		// enforce topicBody is NOT null
+		if($this->topicBody === null) {
+			throw(new mysqli_sql_exception("topicBody cannot be null."));
+		}
+
+		// create query template
+		$query = "UPDATE topic SET profileId = ?, topicDate = ?, topicSubject = ?, topicBody = ? WHERE topicId = ?";
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// prep date for mySQL entry
+		$topicDate = $this->topicDate->format("Y-m-d H:i:s");
+
+		// bind the variables to the place holders in the template
+		$wasClean = $statement->bind_param("ssssi", $this->profileId, $topicDate, $this->topicSubject, $this->topicBody, $this->topicId);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		$result = $statement->execute();
+		if($result === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
 	}
 
 	/**
@@ -240,7 +343,34 @@ class Topic {
 	 * @throws mysqli_sql_exception when a MySQL error occurs
 	 */
 	public function delete(&$mysqli) {
-		// TODO: implement mySQL deletion of validated object
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("Input is not a valid mysqli object"));
+		}
+
+		// enforce topicId is NOT null
+		if($this->topicId === null) {
+			throw(new mysqli_sql_exception("topicId cannot be null."));
+		}
+
+		// create query template
+		$query = "DELETE FROM topic WHERE topicId = ?";
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// bind the variables to the place holders in the template
+		$wasClean = $statement->bind_param("i", $this->topicId);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		$result = $statement->execute();
+		if($result === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
 	}
 
 	/**
