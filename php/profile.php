@@ -402,7 +402,59 @@ class Profile
 		$this->profileId = $mysqli->insert_id;
 	}
 
+	/**
+	 * deletes this Profile from mySQL
+	 * @param resources $mysqli pointer to mySQL connections, by reference
+	 * @throws mysqli_sql_exception when mySQL related errors occur
+	 **/
+	public function delete(&$mysqli){
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
+
+		// make sure profileId is not null
+		if($this->profileId === null){
+			throw(new mysqli_sql_exception("Unable to delete a user that does not exist"));
+		}
+
+		//create query template
+		$query = "DELETE FROM profile WHERE profileId = ?";
+		$statement = $mysqli->prepare($query);
+		if($statement === false){
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		//bind the member variables to the place holder in the template
+		$wasClean = $statement->bind_param("i", $this->profileId);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
+	}
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

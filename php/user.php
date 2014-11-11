@@ -318,8 +318,8 @@ class User{
 
 		//bind the member variables to the place holder in the template
 		$wasClean = $statement->bind_param("i", $this->userId);
-		if($statement->execute() === false) {
-			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
 
 		// execute the statement
