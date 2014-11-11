@@ -269,7 +269,7 @@ class User{
 		}
 
 
-		//create query template email VARCHAR(256) NOT NULL,
+		//create query template
 		$query 		= "INSERT INTO user(email, passwordHash, salt, authKey, securityId, LoginSourceId) VALUES(?,?,?,?,?,?)";
 		$statement 	= $mysqli->prepare($query);
 		if($statement === false) {

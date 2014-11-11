@@ -361,6 +361,47 @@ class Profile
 
 	}
 
+	/**
+	 * insert this Profile to mySQL
+	 *
+	 * @param resource $mysqli pointer to mySQL connection, by reference
+	 * @throw mysqli_sql_exception when mySQL related errors occur.
+	 **/
+	public function insert(&$mysqli){
+		//handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
+
+		// enforce the profileId is null (i.e., don't insert a user that already exists)
+		if($this->profileId !== null) {
+			throw(new mysqli_sql_exception("not a new profile"));
+		}
+
+		//create query template
+		$query = "INSERT INTO profile(userId, firstName, lastName, middleName, location, description, profilePicFileName, profilePicFileType) VALUES(?,?,?,?,?,?,?,?)";
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		//bind the member variables to the place holders in the template
+		$wasClean = $statement->bind_param("isssssss", $this->userId, $this->firstName, $this->lastName,
+														$this->middleName, $this->location, $this->description,
+														$this->profilePicFileName, $this->profilePicFileType);
+		if($wasClean === false){
+			throw(new mysqli_sql_exception("unable to bind parameters"));
+		}
+
+		// execute the statement
+		if($statement->execute() === false){
+			throw(new mysqli_sql_exception("unable to execute mySQL statement"));
+		}
+
+		//update the null profileId with what mySQL just gave us
+		$this->profileId = $mysqli->insert_id;
+	}
+
 }
 
 
