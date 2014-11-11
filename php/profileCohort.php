@@ -107,7 +107,6 @@ class profileCohort {
       $this->profileId = $newProfileId;
    }
 
-
    //gets value of CohortId
    //returns mixed CohortId
    public function getCohortId() {
