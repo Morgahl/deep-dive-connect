@@ -255,7 +255,67 @@ class Comment {
 	 * @throws mysqli_sql_exception when a MySQL error occurs
 	 */
 	public function insert(&$mysqli) {
-		// TODO: implement mySQL insert of validated object
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("Input is not a valid mysqli object"));
+		}
+
+		// enforce commentId is null
+		if($this->commentId !== null) {
+			throw(new mysqli_sql_exception("Not a new comment."));
+		}
+
+		// enforce topicId is NOT null
+		if($this->topicId === null) {
+			throw(new mysqli_sql_exception("topicId cannot be null."));
+		}
+
+		// enforce profileId is NOT null
+		if($this->profileId === null) {
+			throw(new mysqli_sql_exception("profileId cannot be null."));
+		}
+
+		// enforce commentDate is NOT null
+		if($this->commentDate === null) {
+			throw(new mysqli_sql_exception("commentDate cannot be null."));
+		}
+
+		// enforce commentSubject is NOT null
+		if($this->commentSubject === null) {
+			throw(new mysqli_sql_exception("commentSubject cannot be null."));
+		}
+
+		// enforce commentBody is NOT null
+		if($this->commentBody === null) {
+			throw(new mysqli_sql_exception("commentBody cannot be null."));
+		}
+
+		// create query template
+		$query = "INSERT INTO comment (topicId, profileId, commentDate, commentSubject, commentBody)
+					VALUES (?, ?, ?, ?, ?)";
+
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// prep date for mySQL entry
+		$commentDate = $this->commentDate->format("Y-m-d H:i:s");
+
+		// bind the variables to the place holders in the template
+		$wasClean = $statement->bind_param("iisss", $this->topicId, $this->profileId, $commentDate, $this->commentSubject, $this->commentBody);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		$result = $statement->execute();
+		if($result === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
+		// update the null commentId
+		$this->commentId = $mysqli->insert_id;
 	}
 
 	/**
@@ -265,7 +325,65 @@ class Comment {
 	 * @throws mysqli_sql_exception when a MySQL error occurs
 	 */
 	public function update(&$mysqli) {
-		// TODO: implement mySQL update of validated object
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("Input is not a valid mysqli object"));
+		}
+
+		// enforce commentId is NOT null
+		if($this->commentId === null) {
+			throw(new mysqli_sql_exception("Not a new comment."));
+		}
+
+		// enforce topicId is NOT null
+		if($this->topicId === null) {
+			throw(new mysqli_sql_exception("topicId cannot be null."));
+		}
+
+		// enforce profileId is NOT null
+		if($this->profileId === null) {
+			throw(new mysqli_sql_exception("profileId cannot be null."));
+		}
+
+		// enforce commentDate is NOT null
+		if($this->commentDate === null) {
+			throw(new mysqli_sql_exception("commentDate cannot be null."));
+		}
+
+		// enforce commentSubject is NOT null
+		if($this->commentSubject === null) {
+			throw(new mysqli_sql_exception("commentSubject cannot be null."));
+		}
+
+		// enforce commentBody is NOT null
+		if($this->commentBody === null) {
+			throw(new mysqli_sql_exception("commentBody cannot be null."));
+		}
+
+		// create query template
+		$query = "UPDATE comment
+					SET topicId = ?, profileId = ?, commentDate = ?, commentSubject = ?, commentBody = ?
+					WHERE commentId = ?";
+
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// prep date for mySQL entry
+		$commentDate = $this->commentDate->format("Y-m-d H:i:s");
+
+		// bind the variables to the place holders in the template
+		$wasClean = $statement->bind_param("sssssi", $this->topicId, $this->profileId, $commentDate, $this->commentSubject, $this->commentBody);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		$result = $statement->execute();
+		if($result === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
 	}
 
 	/**
@@ -275,7 +393,36 @@ class Comment {
 	 * @throws mysqli_sql_exception when a MySQL error occurs
 	 */
 	public function delete(&$mysqli) {
-		// TODO: implement mySQL deletion of validated object
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("Input is not a valid mysqli object"));
+		}
+
+		// enforce commentId is NOT null
+		if($this->commentId === null) {
+			throw(new mysqli_sql_exception("topicId cannot be null."));
+		}
+
+		// create query template
+		$query = "DELETE FROM comment
+					WHERE commentId = ?";
+
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// bind the variables to the place holders in the template
+		$wasClean = $statement->bind_param("i", $this->commentId);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		$result = $statement->execute();
+		if($result === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
 	}
 
 	/**
@@ -310,5 +457,4 @@ class Comment {
 	public static function getCommentsByProfileId(&$mysqli, $newProfileId) {
 		// TODO: implement mySQL select and creation of validated array of Comment objects based on passed profileId
 	}
-
 }
