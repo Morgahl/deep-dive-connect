@@ -7,7 +7,8 @@
  * @author Steven Chavez <schavez256@yahoo.com>
  * @see Profile
  **/
-class Profile{
+class Profile
+{
 	/**
 	 * profile id for Profile; Primary Key
 	 */
@@ -31,7 +32,7 @@ class Profile{
 	/**
 	 * location associated with Profile
 	 **/
-	private  $location;
+	private $location;
 	/**
 	 * Description associated with Profile
 	 **/
@@ -48,20 +49,21 @@ class Profile{
 	/**
 	 * Constructor of Profile
 	 *
-	 * @param int $newProfileId profileId
-	 * @param int $newUserId userId
-	 * @param string $newFirstName firstName
-	 * @param string $newLastName lastName
-	 * @param string $newMiddleName middleName
-	 * @param string $newLocation location
-	 * @param string $newDesc description
+	 * @param int    $newProfileId   profileId
+	 * @param int    $newUserId      userId
+	 * @param string $newFirstName   firstName
+	 * @param string $newLastName    lastName
+	 * @param string $newMiddleName  middleName
+	 * @param string $newLocation    location
+	 * @param string $newDesc        description
 	 * @param string $newPicFileName profilePicFileName
 	 * @param string $newPicFileType profilePicFileType
 	 */
-	public function __construct(	$newProfileId, $newUserId, $newFirstName,
-											$newLastName, $newMiddleName, $newLocation,
-											$newDesc, $newPicFileName, $newPicFileType){
-		try{
+	public function __construct($newProfileId, $newUserId, $newFirstName,
+										 $newLastName, $newMiddleName, $newLocation,
+										 $newDesc, $newPicFileName, $newPicFileType)
+	{
+		try {
 			$this->setProfileId($newProfileId);
 			$this->setUserId($newUserId);
 			$this->setFirstName($newFirstName);
@@ -71,7 +73,7 @@ class Profile{
 			$this->setDescription($newDesc);
 			$this->setProfilePicFileName($newPicFileName);
 			$this->setProfilePicFileType($newPicFileType);
-		}catch(UnexpectedValueException $unexpectedValue) {
+		} catch(UnexpectedValueException $unexpectedValue) {
 			//rethrow to the caller
 			throw(new UnexpectedValueException("Unable to construct Profile", 0, $unexpectedValue));
 		} catch(RangeException $range) {
@@ -85,7 +87,8 @@ class Profile{
 	 * magic method __get() gets the values from Profile
 	 * @return mixed int or string
 	 */
-	public function __get($name){
+	public function __get($name)
+	{
 		return ($this->$name);
 	}
 
@@ -96,7 +99,8 @@ class Profile{
 	 * @throws UnexpectedValueException if not an integer or null
 	 * @throws RangeException if profile id isn't positive
 	 */
-	public function setProfileId($newProfileId){
+	public function setProfileId($newProfileId)
+	{
 		// zeroth, set allow the profile id to be null if a new object
 		if($newProfileId === null) {
 			$this->profileId = null;
@@ -104,13 +108,13 @@ class Profile{
 		}
 
 		// first, make sure profile id is an integer
-		if(filter_var($newProfileId, FILTER_VALIDATE_INT)== false) {
+		if(filter_var($newProfileId, FILTER_VALIDATE_INT) == false) {
 			throw(new UnexpectedValueException("profile id $newProfileId is not numeric"));
 		}
 
 		//second, enforce that user id is an integer and positive
 		$newProfileId = intval($newProfileId);
-		if($newProfileId <= 0){
+		if($newProfileId <= 0) {
 			throw(new RangeException("profile id $newProfileId is not positive"));
 		}
 
@@ -125,15 +129,16 @@ class Profile{
 	 * @throws UnexpectedValueException if not an integer or null
 	 * @throws RangeException if user id isn't positive
 	 */
-	public function setUserId($newUserId){
+	public function setUserId($newUserId)
+	{
 		// first, make sure user id is an integer
-		if(filter_var($newUserId, FILTER_VALIDATE_INT)== false) {
+		if(filter_var($newUserId, FILTER_VALIDATE_INT) == false) {
 			throw(new UnexpectedValueException("user id $newUserId is not numeric"));
 		}
 
 		//second, enforce that user id is an integer and positive
 		$newUserId = intval($newUserId);
-		if($newUserId <= 0){
+		if($newUserId <= 0) {
 			throw(new RangeException("user id $newUserId is not positive"));
 		}
 
@@ -148,7 +153,8 @@ class Profile{
 	 * @throws UnexpectedValueException if the input does not appear to be an name
 	 * @throws RangeException if the input exceeds 64 characters
 	 */
-	public function setFirstName($newFirstName){
+	public function setFirstName($newFirstName)
+	{
 		//first we take out the white space
 		$newFirstName = trim($newFirstName);
 
@@ -158,7 +164,7 @@ class Profile{
 		}
 
 		//third make sure length is not greater than 64
-		if(strlen($newFirstName) > 64){
+		if(strlen($newFirstName) > 64) {
 			throw(new RangeException("First name $newFirstName exceeds 64 character limit"));
 		}
 
@@ -173,7 +179,8 @@ class Profile{
 	 * @throws UnexpectedValueException if the input does not appear to be an name
 	 * @throws RangeException if the input exceeds 64 characters
 	 */
-	public function setLastName($newLastName){
+	public function setLastName($newLastName)
+	{
 		//first we take out the white space
 		$newLastName = trim($newLastName);
 
@@ -183,7 +190,7 @@ class Profile{
 		}
 
 		//third make sure length is not greater than 64
-		if(strlen($newLastName) > 64){
+		if(strlen($newLastName) > 64) {
 			throw(new RangeException("First name $newLastName exceeds 64 character limit"));
 		}
 
@@ -198,7 +205,8 @@ class Profile{
 	 * @throws UnexpectedValueException if the input does not appear to be an name
 	 * @throws RangeException if the input exceeds 64 characters
 	 */
-	public function setMiddleName($newMiddleName){
+	public function setMiddleName($newMiddleName)
+	{
 		//zeroth check to see if middle name is null
 		if($newMiddleName === null) {
 			$this->middleName = null;
@@ -213,7 +221,7 @@ class Profile{
 		}
 
 		//third make sure length is not greater than 64
-		if(strlen($newMiddleName) > 64){
+		if(strlen($newMiddleName) > 64) {
 			throw(new RangeException("First name $newMiddleName exceeds 64 character limit"));
 		}
 
@@ -227,20 +235,21 @@ class Profile{
 	 * @throws UnexpectedValueException if the input does not appear to be a string
 	 * @throws RangeException if the input exceeds 256 characters
 	 */
-	public function setLocation($newLocation){
+	public function setLocation($newLocation)
+	{
 		//zeroth, allow the location to be null if a new object
-		if($newLocation === null){
+		if($newLocation === null) {
 			$this->location = null;
 			return;
 		}
 
 		//first, sanitize string from tags
-		if(filter_var($newLocation, FILTER_SANITIZE_STRING) === false){
+		if(filter_var($newLocation, FILTER_SANITIZE_STRING) === false) {
 			throw(new UnexpectedValueException("location $newLocation doesn't appear to be string"));
 		}
 
 		//Ensure that location doesn't exceed 256
-		if(strlen($newLocation) > 256){
+		if(strlen($newLocation) > 256) {
 			throw(new RangeException("location $newLocation exceeds 256 character limit"));
 		}
 
@@ -256,20 +265,21 @@ class Profile{
 	 * @throws UnexpectedValueException if the input does not appear to be a string
 	 * @throws RangeException if the input exceeds 4096 characters
 	 */
-	public function setDescription($newDesc){
+	public function setDescription($newDesc)
+	{
 		//zeroth, allow the Description to be null if a new object
-		if($newDesc === null){
+		if($newDesc === null) {
 			$this->description = null;
 			return;
 		}
 
 		//first, sanitize string from tags
-		if(filter_var($newDesc, FILTER_SANITIZE_STRING) === false){
+		if(filter_var($newDesc, FILTER_SANITIZE_STRING) === false) {
 			throw(new UnexpectedValueException("location $newDesc doesn't appear to be string"));
 		}
 
 		//Ensure that description doesn't exceed 4096
-		if(strlen($newDesc) > 4096){
+		if(strlen($newDesc) > 4096) {
 			throw(new RangeException("description exceeds 256 character limit"));
 		}
 
@@ -278,10 +288,34 @@ class Profile{
 
 	}
 
+	/**
+	 * sets profilePicFileName for Profile
+	 *
+	 * no parameters because username is created from
+	 * other variables in Profile class
+	 *
+	 **/
+	public function setProfilePicFileName($newPicFileName){
+		//zeroth, set allow the PicFileName to be null if null
+		if($newPicFileName === null){
+			$this->profilePicFileName = null;
+			return;
+		}
 
-	//Todo Profile pic file name
-	//can you set up a place to upload pics ask dylan
-	//move_uploaded_file
+		//make directory to upload to
+		$uploadDir = "/uploads";	//TODO: not real directory for uploads
+
+		if((move_uploaded_file($newPicFileName, $uploadDir)) === false){
+			throw(new UnexpectedValueException("file name $newPicFileName is not a valid upload file"));
+		}
+
+		//assign value
+		$this->profilePicFileName = $newPicFileName;
+
+		//Todo Profile pic file name
+		//can you set up a place to upload pics ask dylan
+		//move_uploaded_file
+	}
 
 	//TODO profile pic file type
 	//in data base store mime type image/*
@@ -289,9 +323,9 @@ class Profile{
 	//after taking that on faith; we through our faith away
 	//imgcreatefromfoo
 	//imgdestroy
+
+
 }
-
-
 
 
 
