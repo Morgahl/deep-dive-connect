@@ -23,7 +23,7 @@ class Cohort {
    //location of alum; string includes present city and state info
    private $location;
 
-   //open-ended thread escribing the alumnus' profile, job status, etc.
+   //open-ended thread describing the alumnus' profile, job status, etc.
    private $description;
 
 
