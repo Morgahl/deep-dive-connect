@@ -32,7 +32,7 @@ class Topic {
 	 * Constructor for Topic
 	 *
 	 * @param $newTopicId INT topicId (or null if new object)
-	 * @param $newProfileId INT profileID (profileId of creator)
+	 * @param $newProfileId INT profileId (profileId of creator)
 	 * @param $newTopicDate STRING topic date of new Topic; format(Y-m-d H-i-s)
 	 * @param $newTopicSubject STRING subject of new Topic; 256 character limit
 	 * @param $newTopicBody STRING body of new Topic; 4096 character limit
@@ -57,7 +57,7 @@ class Topic {
 	/**
 	 * Magic method that returns object state as a string
 	 *
-	 * @return string returns object state as a string
+	 * @return STRING returns object state as a string
 	 */
 	function __toString()
 	{
@@ -86,8 +86,8 @@ class Topic {
 	 * Sets the value of topicId
 	 *
 	 * @param $newTopicId INT topic Id (or null if new object)
-	 * @throws UnexpectedValueException if eventId is not an integer
-	 * @throws RangeException if eventId is not positive
+	 * @throws UnexpectedValueException if profileId is not an integer
+	 * @throws RangeException if profileId is not positive
 	 */
 	public function setTopicId($newTopicId) {
 		// allow the topicId to be null if a new object
@@ -115,8 +115,8 @@ class Topic {
 	 * Sets the value of profileId (profileId of creator)
 	 *
 	 * @param $newProfileId INT
-	 * @throws UnexpectedValueException if eventId is not an integer
-	 * @throws RangeException if eventId is not positive
+	 * @throws UnexpectedValueException if profileId is not an integer
+	 * @throws RangeException if profileId is not positive
 	 */
 	public function setProfileId($newProfileId) {
 		// profileId should never be null
@@ -256,7 +256,11 @@ class Topic {
 	}
 
 	/**
-	 * @param $mysqli
+	 * Returns an array of the 10 most recent topic objects.
+	 *
+	 * @param $mysqli OBJECT mySQL connection object
+	 * @throws mysqli_sql_exception when a MySQL error occurs
+	 * @return OBJECT new Topic is returned or null if id specified is not found
 	 */
 	public static function getRecentTopics(&$mysqli) {
 		// TODO: implement mySQL select and topic of validated object based on passed topicId

@@ -8,37 +8,41 @@
  */
 class Comment {
 	/**
-	 * @var $commentId INT
+	 * @var $commentId INT commentId for the Comment; this is the Primary Key
 	 */
 	private $commentId;
 	/**
-	 * @var $topicId INT
+	 * @var $topicId INT topicId for the Comment; FK to topic table
 	 */
 	private $topicId;
 	/**
-	 * @var $profileId INT
+	 * @var $profileId INT profileId for the Comment; FK to the profile table
 	 */
 	private $profileId;
 	/**
-	 * @var $commentDate DATETIME
+	 * @var $commentDate DATETIME comment date for the Comment; format(Y-m-d H:i:s)
 	 */
 	private $commentDate;
 	/**
-	 * @var $commentSubject STRING
+	 * @var $commentSubject STRING this is the subject of the comment; 256 character limit
 	 */
 	private $commentSubject;
 	/**
-	 * @var $commentBody STRING
+	 * @var $commentBody STRING this is the subject of the comment; 1024 character limit
 	 */
 	private $commentBody;
 
 	/**
-	 * @param $newCommentId
-	 * @param $newTopicId
-	 * @param $newProfileId
-	 * @param $newCommentDate
-	 * @param $newCommentSubject
-	 * @param $newCommentBody
+	 * Constructor for Comment
+	 *
+	 * @param $newCommentId INT commentId (or null if new object)
+	 * @param $newTopicId INT topicId (topicId of creator)
+	 * @param $newProfileId INT profileId (profileId of creator)
+	 * @param $newCommentDate STRING date of new Topic; format(Y-m-d H-i-s)
+	 * @param $newCommentSubject STRING subject of new Comment; 256 character limit
+	 * @param $newCommentBody STRING subject of new Comment; 1024 character limit
+	 * @throws UnexpectedValueException when a parameter is of the wrong type
+	 * @throes RangeException when a parameter is invalid
 	 */
 	function __construct($newCommentId, $newTopicId, $newProfileId, $newCommentDate, $newCommentSubject, $newCommentBody) {
 		try{
@@ -58,7 +62,9 @@ class Comment {
 	}
 
 	/**
-	 * @return string
+	 * Magic method that returns object state as a string
+	 *
+	 * @return STRING returns object state as a string
 	 */
 	function __toString() {
 		// process dates into strings
@@ -84,7 +90,11 @@ class Comment {
 	}
 
 	/**
-	 * @param mixed $newCommentId
+	 * Sets the value of commentId
+	 *
+	 * @param $newCommentId INT commentId (or null if new object)
+	 * @throws UnexpectedValueException if commentId is not an integer
+	 * @throws RangeException if commentId is not positive
 	 */
 	public function setCommentId($newCommentId) {
 		// allow the commentId to be null if a new object
@@ -109,7 +119,11 @@ class Comment {
 	}
 
 	/**
-	 * @param mixed $newTopicId
+	 * Sets the value of topicId (topicId of creator)
+	 *
+	 * @param $newTopicId INT topicId (topicId of creator)
+	 * @throws UnexpectedValueException if topicId is not an integer
+	 * @throws RangeException if topicId is not positive
 	 */
 	public function setTopicId($newTopicId) {
 		// topicId should never be null
@@ -133,7 +147,11 @@ class Comment {
 	}
 
 	/**
-	 * @param mixed $newProfileId
+	 * Sets the value of profileId (profileId of creator)
+	 *
+	 * @param $newProfileId INT profileId (profileId of creator)
+	 * @throws UnexpectedValueException if profileId is not an integer
+	 * @throws RangeException if profileId is not positive
 	 */
 	public function setProfileId($newProfileId) {
 		// profileId should never be null
@@ -157,7 +175,10 @@ class Comment {
 	}
 
 	/**
-	 * @param mixed $newCommentDate
+	 * Sets the value of commentDate from a valid date string in Y-m-d H:i:s format
+	 *
+	 * @param $newCommentDate STRING Y-m-d H:i:s format
+	 * @throws UnexpectedValueException when a parameter is not a valid date string in Y-m-d H:i:s format
 	 */
 	public function setCommentDate($newCommentDate) {
 		// Sanitize Date input to Y-m-d H:i:s MySQL standard
@@ -167,12 +188,16 @@ class Comment {
 			throw(new UnexpectedValueException("Start date is not valid. Please use Y-m-d H:i:s format"));
 		}
 
-		// take topicDate out of quarantine and assign it
+		// take commentDate out of quarantine and assign it
 		$this->commentDate = $newCommentDate;
 	}
 
 	/**
-	 * @param mixed $newCommentSubject
+	 * Sets the value of commentSubject
+	 *
+	 * @param $newCommentSubject STRING 256 character maximum length
+	 * @throws UnexpectedValueException when a parameter is of the wrong type
+	 * @throes RangeException when a parameter length is invalid
 	 */
 	public function setCommentSubject($newCommentSubject) {
 		// commentSubject should never be null
@@ -191,12 +216,16 @@ class Comment {
 			throw(new RangeException("Comment Subject must be 256 characters or less in length"));
 		}
 
-		// take topicSubject out of quarantine and assign it
+		// take commentSubject out of quarantine and assign it
 		$this->commentSubject = $newCommentSubject;
 	}
 
 	/**
-	 * @param mixed $newCommentBody
+	 * Sets the value of commentBody
+	 *
+	 * @param $newCommentBody STRING 1024 character maximum length
+	 * @throws UnexpectedValueException when a parameter is of the wrong type
+	 * @throes RangeException when a parameter length is invalid
 	 */
 	public function setCommentBody($newCommentBody) {
 		// commentBody should never be null
@@ -262,14 +291,19 @@ class Comment {
 	}
 
 	/**
-	 * @param $mysqli
+	 * Returns an array of Comment object based on passed topicId objects.
+	 *
+	 *  @param $mysqli
 	 * @param $newTopicId
+	 * @return OBJECT
 	 */
 	public static function getCommentsByTopicId(&$mysqli, $newTopicId) {
 		// TODO: implement mySQL select and creation of validated array of Comment objects based on passed topicId
 	}
 
 	/**
+	 * Returns an array of Comment object based on passed profileId objects.
+	 *
 	 * @param $mysqli
 	 * @param $newProfileId
 	 */
