@@ -235,11 +235,6 @@ class Topic {
 			throw(new mysqli_sql_exception("profileId cannot be null."));
 		}
 
-		// enforce topicDate is NOT null
-		if($this->topicDate === null) {
-			throw(new mysqli_sql_exception("topicDate cannot be null."));
-		}
-
 		// enforce topicSubject is NOT null
 		if($this->topicSubject === null) {
 			throw(new mysqli_sql_exception("topicSubject cannot be null."));
@@ -252,18 +247,15 @@ class Topic {
 
 		// create query template
 		$query = "INSERT INTO topic (profileId, topicDate, topicSubject, topicBody)
-					VALUES (?, ?, ?, ?)";
+					VALUES (?, NOW(), ?, ?)";
 
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
 
-		// prep date for mySQL entry
-		$topicDate = $this->topicDate->format("Y-m-d H:i:s");
-
 		// bind the variables to the place holders in the template
-		$wasClean = $statement->bind_param("isss", $this->profileId, $topicDate, $this->topicSubject, $this->topicBody);
+		$wasClean = $statement->bind_param("iss", $this->profileId, $this->topicSubject, $this->topicBody);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
@@ -300,11 +292,6 @@ class Topic {
 			throw(new mysqli_sql_exception("profileId cannot be null."));
 		}
 
-		// enforce topicDate is NOT null
-		if($this->topicDate === null) {
-			throw(new mysqli_sql_exception("topicDate cannot be null."));
-		}
-
 		// enforce topicSubject is NOT null
 		if($this->topicSubject === null) {
 			throw(new mysqli_sql_exception("topicSubject cannot be null."));
@@ -317,7 +304,7 @@ class Topic {
 
 		// create query template
 		$query = "UPDATE topic
-					SET profileId = ?, topicDate = ?, topicSubject = ?, topicBody = ?
+					SET profileId = ?, topicSubject = ?, topicBody = ?
 					WHERE topicId = ?";
 
 		$statement = $mysqli->prepare($query);
@@ -329,7 +316,7 @@ class Topic {
 		$topicDate = $this->topicDate->format("Y-m-d H:i:s");
 
 		// bind the variables to the place holders in the template
-		$wasClean = $statement->bind_param("ssssi", $this->profileId, $topicDate, $this->topicSubject, $this->topicBody, $this->topicId);
+		$wasClean = $statement->bind_param("issi", $this->profileId, $this->topicSubject, $this->topicBody, $this->topicId);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
@@ -497,7 +484,7 @@ class Topic {
 					FROM topic t
 					LEFT JOIN comment c ON t.topicId = c.topicId
 					GROUP BY t.topicId
-					ORDER BY COALESCE(MAX(c.commentDate), t.topicDate)DESC, t.topicId DESC
+					ORDER BY COALESCE(MAX(c.commentDate), t.topicDate) DESC, t.topicId DESC
 					LIMIT ?;";
 
 		$statement = $mysqli->prepare($query);
