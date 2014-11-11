@@ -322,6 +322,7 @@ class Profile
 		//if file type is null let it be null
 		if($newPicFileType === null){
 			$this->profilePicFileType = null;
+			return;
 		}
 
 		//check file type given by browser and see if it matches

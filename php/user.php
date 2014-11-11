@@ -162,7 +162,7 @@ class User{
 		//verify the salt is 64 hex characters
 		$newSalt	=trim($newSalt);
 		$newSalt	=strtolower($newSalt);
-		$filterOptions = array("options" => array("regexp" => "/^[|da-f]{64}$/"));
+		$filterOptions = array("options" => array("regexp" => "/^[\da-f]{64}$/"));
 		if(filter_var($newSalt, FILTER_VALIDATE_REGEXP, $filterOptions) === false) {
 			throw(new RangeException("salt is not 64 hexadecimal bytes"));
 		}
@@ -295,8 +295,7 @@ class User{
 		}
 
 		//bind the member variables to the place holders in the template
-		$wasClean = $statement->bind_param("ssssii", $this->email, $this->passwordHash, $this->salt,
-																	$this->authKey, $this->securityId, $this->loginSourceId);
+		$wasClean = $statement->bind_param("ssssii", $this->email, $this->passwordHash, $this->salt, $this->authKey, $this->securityId, $this->loginSourceId);
 		if($wasClean === false){
 			throw(new mysqli_sql_exception("unable to bind parameters"));
 		}
