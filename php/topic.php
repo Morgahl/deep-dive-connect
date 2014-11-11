@@ -444,13 +444,13 @@ class Topic {
 		//convert assoc array to Topic object
 		if($row !== null) {
 			try {
-				$topic = new Topic($row["topicId"], $row["profileId"], $row["topicDate"], $row["topicSubject"], $row["topicComment"]);
+				$topics = new Topic($row["topicId"], $row["profileId"], $row["topicDate"], $row["topicSubject"], $row["topicBody"]);
 			} catch(Exception $exception) {
 				// if the row could not be converted throw it
 				throw(new mysqli_sql_exception("Unable to process result set"));
 			}
 			// if we got here, the Topic is good
-			return($topic);
+			return($topics);
 		} else {
 			// no result found return null
 			return(null);
@@ -464,7 +464,7 @@ class Topic {
 	 * @param $mysqli OBJECT mySQL connection object
 	 * @param $limit INT top N records returned based on this int
 	 * @throws mysqli_sql_exception when a MySQL error occurs
-	 * @return OBJECT new array of Topics is returned or null if none are found
+	 * @return ARRAY new array of Topics is returned or null if none are found
 	 */
 	public static function getRecentTopics(&$mysqli, $limit) {
 		// handle degenerate cases
