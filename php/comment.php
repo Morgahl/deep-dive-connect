@@ -456,9 +456,9 @@ class Comment {
 		}
 
 		// create query template
-		$query = "SELECT topicId, profileId, topicDate, topicSubject, topicBody
-					FROM topic
-					WHERE topicId = ?";
+		$query = "SELECT commentId, topicId, profileId, commentDate, commentSubject, commentBody
+					FROM comment
+					WHERE commentId = ?";
 
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
@@ -486,15 +486,15 @@ class Comment {
 		// since this is unique this will return only 1 row
 		$row = $result->fetch_assoc();
 
-		//convert assoc array to Topic object
+		//convert assoc array to Comment object
 		if($row !== null) {
 			try {
-				$comment = new Topic($row["topicId"], $row["profileId"], $row["topicDate"], $row["topicSubject"], $row["topicComment"]);
+				$comment = new Comment($row["commentId"], $row["topicId"], $row["profileId"], $row["commentDate"], $row["commentSubject"], $row["commentBody"]);
 			} catch(Exception $exception) {
 				// if the row could not be converted throw it
 				throw(new mysqli_sql_exception("Unable to process result set"));
 			}
-			// if we got here, the Topic is good
+			// if we got here, the Comment is good
 			return($comment);
 		} else {
 			// no result found return null
@@ -505,21 +505,237 @@ class Comment {
 	/**
 	 * Returns an array of Comment object based on passed topicId objects.
 	 *
-	 *  @param $mysqli
-	 * @param $newTopicId
-	 * @return OBJECT
+	 * @param $mysqli OBJECT mySQL connection object
+	 * @param $newTopicId INT topicId to retrieve comments for from mySQL
+	 * @param $limit INT top N records returned based on this int
+	 * @param $page INT page of records being sought
+	 * @return ARRAY of Comment objects or null if no records found
 	 */
-	public static function getCommentsByTopicId(&$mysqli, $newTopicId) {
-		// TODO: implement mySQL select and creation of validated array of Comment objects based on passed topicId
+	public static function getCommentsByTopicId(&$mysqli, $newTopicId, $limit, $page) {
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("Input is not a valid mysqli object"));
+		}
+
+		// enforce that topicId is NOT null
+		if($newTopicId === null) {
+			throw(new UnexpectedValueException("topicId must not be null"));
+		}
+
+		// ensure that topicId is an int
+		if(filter_var($newTopicId, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("Topic ID $newTopicId is not numeric"));
+		}
+
+		// convert the topicId to int and enforce that it is positive
+		$newTopicId = intval($newTopicId);
+		if($newTopicId <= 0) {
+			throw(new RangeException("Topic ID $newTopicId is not positive"));
+		}
+
+		// enforce that limit is NOT null
+		if($limit === null) {
+			throw(new UnexpectedValueException("limit must not be null"));
+		}
+
+		// ensure that limit is an int
+		if(filter_var($limit, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("Limit $limit is not numeric"));
+		}
+
+		// convert the limit to int and enforce that it is positive
+		$limit = intval($limit);
+		if($limit <= 0) {
+			throw(new RangeException("Limit $limit is not positive"));
+		}
+
+		// enforce that page is NOT null
+		if($page === null) {
+			throw(new UnexpectedValueException("page must not be null"));
+		}
+
+		// ensure that page is an int
+		if(filter_var($page, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("Page $page is not numeric"));
+		}
+
+		// convert the page to int and enforce that it is positive
+		$page = intval($page);
+		if($page <= 0) {
+			throw(new RangeException("page $page is not positive"));
+		}
+
+		// create query template
+		$query = "SELECT commentId, topicId, profileId, commentDate, commentSubject, commentBody
+					FROM comment
+					WHERE topicId = ?
+					ORDER BY commentDate
+					LIMIT ?
+					OFFSET ?";
+
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// prep offset from page and limit values
+		$offset = ($page - 1) * $limit;
+
+		// bind the variables to the place holders in the template
+		$wasClean = $statement->bind_param("iii", $newTopicId, $limit, $offset);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		$results = $statement->execute();
+		if($results === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
+		// get result from the SELECT
+		$results = $statement->get_result();
+		if($results === false) {
+			throw(new mysqli_sql_exception("Unable to get result set"));
+		}
+
+		// get results
+		$results = $statement->get_result();
+		if($results->num_rows > 0) {
+			// retrieve results in bulk into an array
+			$results = $results->fetch_all(MYSQL_ASSOC);
+			if($results === false) {
+				throw(new mysqli_sql_exception("Unable to process result set"));
+			}
+
+			// step through results array and convert to Comment objects
+			foreach ($results as $index => $row) {
+				$results[$index] = new Comment($row["commentId"], $row["topicId"], $row["profileId"], $row["commentDate"], $row["commentSubject"], $row["commentBody"]);
+			}
+
+			// return resulting array of Comment objects
+			return($results);
+		} else {
+			return(null);
+		}
 	}
 
 	/**
 	 * Returns an array of Comment object based on passed profileId objects.
 	 *
-	 * @param $mysqli
-	 * @param $newProfileId
+	 * @param $mysqli OBJECT mySQL connection object
+	 * @param $newProfileId INT profileId to retrieve comments for from mySQL
+	 * @param $limit INT top N records returned based on this int
+	 * @param $page INT page of records being sought
+	 * @return ARRAY of Comment objects or null if no records found
 	 */
-	public static function getCommentsByProfileId(&$mysqli, $newProfileId) {
+	public static function getCommentsByProfileId(&$mysqli, $newProfileId, $limit, $page) {
 		// TODO: implement mySQL select and creation of validated array of Comment objects based on passed profileId
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("Input is not a valid mysqli object"));
+		}
+
+		// enforce that profileId is NOT null
+		if($newProfileId === null) {
+			throw(new UnexpectedValueException("profileId must not be null"));
+		}
+
+		// ensure that profileId is an int
+		if(filter_var($newProfileId, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("Profile ID $newProfileId is not numeric"));
+		}
+
+		// convert the profileId to int and enforce that it is positive
+		$newProfileId = intval($newProfileId);
+		if($newProfileId <= 0) {
+			throw(new RangeException("Profile ID $newProfileId is not positive"));
+		}
+
+		// enforce that limit is NOT null
+		if($limit === null) {
+			throw(new UnexpectedValueException("limit must not be null"));
+		}
+
+		// ensure that limit is an int
+		if(filter_var($limit, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("Limit $limit is not numeric"));
+		}
+
+		// convert the limit to int and enforce that it is positive
+		$limit = intval($limit);
+		if($limit <= 0) {
+			throw(new RangeException("Limit $limit is not positive"));
+		}
+
+		// enforce that page is NOT null
+		if($page === null) {
+			throw(new UnexpectedValueException("page must not be null"));
+		}
+
+		// ensure that page is an int
+		if(filter_var($page, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("Page $page is not numeric"));
+		}
+
+		// convert the page to int and enforce that it is positive
+		$page = intval($page);
+		if($page <= 0) {
+			throw(new RangeException("page $page is not positive"));
+		}
+
+		// create query template
+		$query = "SELECT commentId, topicId, profileId, commentDate, commentSubject, commentBody
+					FROM comment
+					WHERE profileId = ?
+					ORDER BY commentDate
+					LIMIT ?
+					OFFSET ?";
+
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// prep offset from page and limit values
+		$offset = ($page - 1) * $limit;
+
+		// bind the variables to the place holders in the template
+		$wasClean = $statement->bind_param("iii", $newProfileId, $limit, $offset);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		$results = $statement->execute();
+		if($results === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
+		// get result from the SELECT
+		$results = $statement->get_result();
+		if($results === false) {
+			throw(new mysqli_sql_exception("Unable to get result set"));
+		}
+
+		// get results
+		$results = $statement->get_result();
+		if($results->num_rows > 0) {
+			// retrieve results in bulk into an array
+			$results = $results->fetch_all(MYSQL_ASSOC);
+			if($results === false) {
+				throw(new mysqli_sql_exception("Unable to process result set"));
+			}
+
+			// step through results array and convert to Comment objects
+			foreach ($results as $index => $row) {
+				$results[$index] = new Comment($row["commentId"], $row["topicId"], $row["profileId"], $row["commentDate"], $row["commentSubject"], $row["commentBody"]);
+			}
+
+			// return resulting array of Comment objects
+			return($results);
+		} else {
+			return(null);
+		}
 	}
 }
