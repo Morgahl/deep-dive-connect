@@ -434,7 +434,72 @@ class Comment {
 	 * @return OBJECT new Comment is returned or null if id specified is not found
 	 */
 	public static function getCommentByCommentId(&$mysqli, $newCommentId) {
-		// TODO: implement mySQL select and creation of validated object based on passed commentId
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("Input is not a valid mysqli object"));
+		}
+
+		// enforce that newCommentId is NOT null
+		if($newCommentId === null) {
+			throw(new UnexpectedValueException("commentId must not be null"));
+		}
+
+		// ensure that newCommentId is an int
+		if(filter_var($newCommentId, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("Comment ID $newCommentId is not numeric"));
+		}
+
+		// convert the newCommentId to int and enforce that it is positive
+		$newCommentId = intval($newCommentId);
+		if($newCommentId <= 0) {
+			throw(new RangeException("Comment ID $newCommentId is not positive"));
+		}
+
+		// create query template
+		$query = "SELECT topicId, profileId, topicDate, topicSubject, topicBody
+					FROM topic
+					WHERE topicId = ?";
+
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// bind the variables to the place holders in the template
+		$wasClean = $statement->bind_param("i", $newCommentId);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		$result = $statement->execute();
+		if($result === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
+		// get result from the SELECT
+		$result = $statement->get_result();
+		if($result === false) {
+			throw(new mysqli_sql_exception("Unable to get result set"));
+		}
+
+		// since this is unique this will return only 1 row
+		$row = $result->fetch_assoc();
+
+		//convert assoc array to Topic object
+		if($row !== null) {
+			try {
+				$comment = new Topic($row["topicId"], $row["profileId"], $row["topicDate"], $row["topicSubject"], $row["topicComment"]);
+			} catch(Exception $exception) {
+				// if the row could not be converted throw it
+				throw(new mysqli_sql_exception("Unable to process result set"));
+			}
+			// if we got here, the Topic is good
+			return($comment);
+		} else {
+			// no result found return null
+			return(null);
+		}
 	}
 
 	/**
