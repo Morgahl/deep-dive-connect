@@ -295,17 +295,18 @@ class Profile
 	 * other variables in Profile class
 	 *
 	 **/
-	public function setProfilePicFileName($newPicFileName){
+	public function setProfilePicFileName($newPicFileName)
+	{
 		//zeroth, set allow the PicFileName to be null if null
-		if($newPicFileName === null){
+		if($newPicFileName === null) {
 			$this->profilePicFileName = null;
 			return;
 		}
 
 		//make directory to upload to
-		$uploadDir = "/uploads";	//TODO: not real directory for uploads
+		$uploadDir = "/uploads";   //TODO: not real directory for uploads
 
-		if((move_uploaded_file($newPicFileName, $uploadDir)) === false){
+		if((move_uploaded_file($newPicFileName, $uploadDir)) === false) {
 			throw(new UnexpectedValueException("file name $newPicFileName is not a valid upload file"));
 		}
 
@@ -317,13 +318,48 @@ class Profile
 		//move_uploaded_file
 	}
 
-	//TODO profile pic file type
-	//in data base store mime type image/*
-	//take type from browser
-	//after taking that on faith; we through our faith away
-	//imgcreatefromfoo
-	//imgdestroy
+	public function setProfilePicFileType($newPicFileType){
+		//if file type is null let it be null
+		if($newPicFileType === null){
+			$this->profilePicFileType = null;
+		}
 
+		//check file type given by browser and see if it matches
+		//one of the three png, jpg, gif.
+		if($newPicFileType == "png"){
+
+			$imgResourceId = imagecreatefrompng($newPicFileType);
+			if($imgResourceId === false){
+				throw(new UnexpectedValueException("file type $newPicFileType is not png"));
+			}
+		}
+		elseif($newPicFileType == "jpeg"){
+			$imgResourceId = imagecreatefromjpeg($newPicFileType);
+			if($imgResourceId === false) {
+				throw(new UnexpectedValueException("file type $newPicFileType is not jpeg"));
+			}
+		}
+		elseif($newPicFileType == "gif"){
+			$imgResourceId = imagecreatefromgif($newPicFileType);
+			if($imgResourceId === false){
+				throw(new UnexpectedValueException("file type $newPicFileType is not gif"));
+			}
+		}
+		else{
+			throw(new UnexpectedValueException("file type $newPicFileType is not supported"));
+		}
+
+		//free any memory associated with image
+		imagedestroy($newPicFileType);
+
+	/*TODO profile pic file type
+	in data base store mime type image/*
+	take type from browser
+	after taking that on faith; we through our faith away
+	imgcreatefromfoo
+	imgdestroy*/
+
+	}
 
 }
 
