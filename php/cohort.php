@@ -284,7 +284,7 @@ public function setEndDate($newEndDate) {
 
    /**
     *Insert Profile Cohort to mySQL
-    * @paran mysqli_sql_exception when mySql related errors occur
+    * @param mysqli_sql_exception as mySql related errors occur
     *
     **/
    public function insert(&$mysqli) {
