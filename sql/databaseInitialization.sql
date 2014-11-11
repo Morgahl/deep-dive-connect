@@ -112,7 +112,7 @@ CREATE TABLE comment (
 	topicId INT UNSIGNED NOT NULL,
 	profileId INT UNSIGNED NOT NULL,
 	commentDate DATETIME NOT NULL,
-	commentSubject VARCHAR(256) NOT NULL,
+	commentSubject VARCHAR(256),
 	commentBody VARCHAR(1024) NOT NULL,
 	PRIMARY KEY (commentId),
 	INDEX (topicId),
