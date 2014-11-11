@@ -436,6 +436,42 @@ class Profile
 			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 		}
 
+		/**
+		 * updates this Profile in mySQL
+		 *
+		 * @param resource $mysqli pointer to mySQL connection, by reference
+		 * @throws mysqli_sql_exception when mySQL related errors occur
+		 **/
+		public function update(&$mysqli){
+			// handle degenerate cases
+			if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+				throw(new mysqli_sql_exception("input is not a mysqli object"));
+			}
+
+			// enforce the profileId is not null (i.e., don't update a user that hasn't been inserted)
+			if($this->profileId === null) {
+				throw(new mysqli_sql_exception("Unable to update a user that does not exist"));
+			}
+
+			//create query template
+			$query = "UPDATE profile SET userId = ?, firstName = ?, lastName = ?, middleName = ?, location = ?, description = ?, profilePicFileName = ?, profilePicFileType =? WHERE profileId = ?";
+			$statement = $mysqli->prepare($query);
+			if($statement === false){
+				throw(new mysqli_sql_exception("Unable to prepare statement"));
+			}
+
+			//bind the member variables to the place holders in the template
+			$wasClean = $statement->bind_param("isssssssi", $this->userId, $this->firstName, $this->lastName, $this->middleName, $this->location, $this->description, $this->profilePicFileName, $this->profilePicFileType, $this->profileId);
+			if($wasClean === false){
+				throw(new mysqli_sql_exception("Unable to bind parameters"));
+			}
+
+			// execute the statement
+			if($statement->execute() === false){
+				throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+			}
+		}
+
 	}
 
 }

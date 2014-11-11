@@ -352,9 +352,8 @@ class User{
 		//else
 			//throw exp
 
+
 		//create query template
-
-
 		$query 		= "UPDATE user SET email = ?, passwordHash = ?, salt = ?, authKey = ?, securityId = ?, loginSourceId = ? WHERE userId = ?";
 		$statement 	= $mysqli->prepare($query);
 		if($statement === false){
@@ -362,9 +361,7 @@ class User{
 		}
 
 		//bind the member variables to the place holders in the template
-		$wasClean = $statement->bind_param("ssssiii", $this->email, $this->passwordHash, $this->salt,
-																	$this->authKey, $this->securityId, $this->loginSourceId,
-																	$this->userId);
+		$wasClean = $statement->bind_param("ssssiii", $this->email, $this->passwordHash, $this->salt, $this->authKey, $this->securityId, $this->loginSourceId, $this->userId);
 		if($wasClean === false){
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
