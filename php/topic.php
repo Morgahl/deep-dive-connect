@@ -404,7 +404,7 @@ class Topic {
 			throw(new UnexpectedValueException("Topic ID $newTopicId is not numeric"));
 		}
 
-		// convert the event id to int and enforce that it is positive
+		// convert the topicId to int and enforce that it is positive
 		$newTopicId = intval($newTopicId);
 		if($newTopicId <= 0) {
 			throw(new RangeException("Topic ID $newTopicId is not positive"));
@@ -427,30 +427,30 @@ class Topic {
 		}
 
 		// execute the statement
-		$result = $statement->execute();
-		if($result === false) {
+		$results = $statement->execute();
+		if($results === false) {
 			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 		}
 
 		// get result from the SELECT
-		$result = $statement->get_result();
-		if($result === false) {
+		$results = $statement->get_result();
+		if($results === false) {
 			throw(new mysqli_sql_exception("Unable to get result set"));
 		}
 
 		// since this is unique this will return only 1 row
-		$row = $result->fetch_assoc();
+		$row = $results->fetch_assoc();
 
 		//convert assoc array to Topic object
 		if($row !== null) {
 			try {
-				$event = new Topic($row["topicId"], $row["profileId"], $row["topicDate"], $row["topicSubject"], $row["topicComment"]);
+				$topic = new Topic($row["topicId"], $row["profileId"], $row["topicDate"], $row["topicSubject"], $row["topicComment"]);
 			} catch(Exception $exception) {
 				// if the row could not be converted throw it
 				throw(new mysqli_sql_exception("Unable to process result set"));
 			}
 			// if we got here, the Topic is good
-			return($event);
+			return($topic);
 		} else {
 			// no result found return null
 			return(null);
@@ -531,7 +531,7 @@ class Topic {
 				$results[$index] = new Topic($row["topicId"], $row["profileId"], $row["topicDate"], $row["topicSubject"], $row["topicBody"]);
 			}
 
-			// return resulting array of Event objects
+			// return resulting array of Topic objects
 			return($results);
 		} else {
 			return(null);
