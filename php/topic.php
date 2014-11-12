@@ -73,13 +73,48 @@ class Topic {
 	}
 
 	/**
-	 * Magic method for getting state information
+	 * Returns topicId
 	 *
-	 * @param $name STRING name of instance variable
-	 * @return mixed returns value of variable requested by name
+	 * @return INT or NULL if new object
 	 */
-	public function __get($name) {
-		return($this->$name);
+	public function getTopicId() {
+		return $this->topicId;
+	}
+
+	/**
+	 * Returns profileId
+	 *
+	 * @return INT
+	 */
+	public function getProfileId() {
+		return $this->profileId;
+	}
+
+	/**
+	 * Returns topicDate
+	 *
+	 * @return DATETIME
+	 */
+	public function getTopicDate() {
+		return $this->topicDate;
+	}
+
+	/**
+	 * Returns topicBody
+	 *
+	 * @return STRING
+	 */
+	public function getTopicBody() {
+		return $this->topicBody;
+	}
+
+	/**
+	 * Returns topicSubject
+	 *
+	 * @return STRING
+	 */
+	public function getTopicSubject() {
+		return $this->topicSubject;
 	}
 
 	/**
