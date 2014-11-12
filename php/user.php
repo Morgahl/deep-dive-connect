@@ -346,6 +346,14 @@ class User{
 			throw(new mysqli_sql_exception("not a new user"));
 		}
 
+		//enforce: if hash, authkey, and salt are null loginsource is not null and vice versa
+		if($this->loginSourceId !== null && ($this->passwordHash !== null || $this->authKey !== null || $this->salt !== null)){
+			throw(new UnexpectedValueException("Sign up with external source or internal not both"));
+		}
+		elseif($this->loginSourceId === null && ($this->passwordHash === null || $this->authKey === null || $this->salt === null)){
+			throw(new UnexpectedValueException("Sign up with external source or internal not both"));
+		}
+
 		//if security id is null pull value default from securityClass
 		if($this->securityId !== null) {
 			//confirm it exists in Security Class $exist
@@ -435,6 +443,14 @@ class User{
 		// enforce the userId is not null (i.e., don't update a user that hasn't been inserted)
 		if($this->userId === null) {
 			throw(new mysqli_sql_exception("Unable to update a user that does not exist"));
+		}
+
+		//enforce: if hash, authkey, and salt are null loginsource is not null and vice versa
+		if($this->loginSourceId !== null && ($this->passwordHash !== null || $this->authKey !== null || $this->salt !== null)){
+			throw(new UnexpectedValueException("Sign up with external source or internal not both"));
+		}
+		elseif($this->loginSourceId === null && ($this->passwordHash === null || $this->authKey === null || $this->salt === null)){
+			throw(new UnexpectedValueException("Sign up with external source or internal not both"));
 		}
 
 		//todo:securityId update
