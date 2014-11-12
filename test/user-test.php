@@ -5,13 +5,19 @@ require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 
 // then require the class under scrutiny
 require_once("../php/user.php");
+require_once("../php/loginSource.php");
 
 // the UserTest is a container for all our tests
 class UserTest extends UnitTestCase {
 	//variable to hold the mySQL connection
 	private $mysqli = null;
 	//variable to hold the test database row
+	//todo: make place holder for security and login so you can make objects.
 	private $user = null;
+
+	//TODO: APPLY ONCE SECURITY AND LOGINSOURCE OBJECTS CAN BE CREATED
+	//private $securtiy = null;
+	//private $loginSource = null;
 
 	// a few "global" variables for the creating test data
 	private $EMAIL	= "unit@test.com";
@@ -27,6 +33,10 @@ class UserTest extends UnitTestCase {
 	public function setUp() {
 		// connect to mySQL
 		$this->mysqli = MysqliConfiguration::getMysqli();
+
+		//Todo: create foreign key objects
+
+
 
 		// randomize the salt, hash, and authkey
 		$this->SALT		= bin2hex(openssl_random_pseudo_bytes(32));
@@ -63,15 +73,16 @@ class UserTest extends UnitTestCase {
 		$this->user->insert($this->mysqli);
 
 		// finally compare the fields
-		$this->assertNotNull($this->user-> __get("userId"));
-		$this->assertTrue($this->user-> __get("userId") >0);
-		$this->assertIdentical($this->user-> __get("email"), 				$this->EMAIL);
-		$this->assertIdentical($this->user-> __get("passwordHash"), 	$this->HASH);
-		$this->assertIdentical($this->user-> __get("salt"), 				$this->SALT);
-		$this->assertIdentical($this->user-> __get("authKey"),			$this->AUTHKEY);
-		$this->assertIdentical($this->user-> __get("securityId"), 		$this->SECURITYID);
-		$this->assertIdentical($this->user-> __get("loginSourceId"),	$this->LOGINSOURCEID);
+		$this->assertNotNull($this->user->getUserId());
+		$this->assertTrue($this->user->getUserId() >0);
+		$this->assertIdentical($this->user->getEmail(), 				$this->EMAIL);
+		$this->assertIdentical($this->user->getPasswordHash(), 	$this->HASH);
+		$this->assertIdentical($this->user->getSalt(), 				$this->SALT);
+		$this->assertIdentical($this->user->getAuthKey(),			$this->AUTHKEY);
+		$this->assertIdentical($this->user->getSecurityId(), 		$this->SECURITYID);
+		$this->assertIdentical($this->user->getLoginSourceId(),	$this->LOGINSOURCEID);
 	}
+
 
 	//test updating a User in mySQL
 	public function testUpdateUser(){
@@ -90,16 +101,17 @@ class UserTest extends UnitTestCase {
 		$this->user->update($this->mysqli);
 
 		// finally, compare the fields
-		$this->assertNotNull($this->user-> __get("userId"));
-		$this->assertTrue($this->user-> __get("userId") > 0);
-		$this->assertIdentical($this->user-> __get("email"), $newEmail);
-		$this->assertIdentical($this->user-> __get("passwordHash"), 	$this->HASH);
-		$this->assertIdentical($this->user-> __get("salt"), 				$this->SALT);
-		$this->assertIdentical($this->user-> __get("authKey"),			$this->AUTHKEY);
-		$this->assertIdentical($this->user-> __get("securityId"), 		$this->SECURITYID);
-		$this->assertIdentical($this->user-> __get("loginSourceId"),	$this->LOGINSOURCEID);
+		$this->assertNotNull($this->user->getUserId());
+		$this->assertTrue($this->user->getUserId() > 0);
+		$this->assertIdentical($this->user->getEmail(), $newEmail);
+		$this->assertIdentical($this->user->getPasswordHash(), 	$this->HASH);
+		$this->assertIdentical($this->user->getSalt(), 				$this->SALT);
+		$this->assertIdentical($this->user->getAuthKey(),			$this->AUTHKEY);
+		$this->assertIdentical($this->user->getSecurityId(), 		$this->SECURITYID);
+		$this->assertIdentical($this->user->getLoginSourceId(),	$this->LOGINSOURCEID);
 
 	}
+
 
 	//test deleting a User
 	public function testDeleteUser(){
@@ -113,15 +125,42 @@ class UserTest extends UnitTestCase {
 		$this->user->insert($this->mysqli);
 
 		// fourth, verify the User was inserted
-		$this->assertNotNull($this->user-> __get("userId"));
-		$this->assertTrue($this->user->__get("userId") > 0);
+		$this->assertNotNull($this->user->getUserId());
+		$this->assertTrue($this->user->getUserId() > 0);
 
 		// fifth, delete the user
 		$this->user->delete($this->mysqli);
 		$this->user = null;
 
 		//finally, try to get the user and assert we didn't get a thing
-		//TODO: get user by email
+		$hopefulUser = User::getUserByEmail($this->mysqli, $this->EMAIL);
+		$this->assertNull($hopefulUser);
+	}
+
+	// test grabbing a User from mySQL
+	public function testGetUserByEmail() {
+		// first, verify mySQL connected OK
+		$this->assertNotNull($this->mysqli);
+
+		// second, create a user to post to mySQL
+		$this->user = new User(null, $this->EMAIL, $this->HASH, $this->SALT, $this->AUTHKEY, $this->SECURITYID, $this->LOGINSOURCEID);
+
+		// third, insert the user to mySQL
+		$this->user->insert($this->mysqli);
+
+		// fourth, get the user using the static method
+		$staticUser = User::getUserByEmail($this->mysqli, $this->EMAIL);
+
+		// finally, compare the fields
+		$this->assertNotNull($staticUser->getUserId());
+		$this->assertTrue($staticUser->getUserId() > 0);
+		$this->assertIdentical($staticUser->getUserId(),              $this->user->getUserId());
+		$this->assertIdentical($this->user->getEmail(),  $this->EMAIL);
+		$this->assertIdentical($this->user->getPasswordHash(), 	$this->HASH);
+		$this->assertIdentical($this->user->getSalt(), 				$this->SALT);
+		$this->assertIdentical($this->user->getAuthKey(),			$this->AUTHKEY);
+		$this->assertIdentical($this->user->getSecurityId(), 		$this->SECURITYID);
+		$this->assertIdentical($this->user->getLoginSourceId(),	$this->LOGINSOURCEID);
 	}
 }
 ?>
