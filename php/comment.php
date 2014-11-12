@@ -80,13 +80,57 @@ class Comment {
 	}
 
 	/**
-	 * Magic method for getting state information
+	 * Returns commentId
 	 *
-	 * @param $name STRING name of instance variable
-	 * @return mixed returns value of variable requested by name
+	 * @return INT or NULL if new object
 	 */
-	public function __get($name) {
-		return($this->$name);
+	public function getCommentId() {
+		return $this->commentId;
+	}
+
+	/**
+	 * Returns topicId
+	 *
+	 * @return INT
+	 */
+	public function getTopicId() {
+		return $this->topicId;
+	}
+
+	/**
+	 * Returns profileId
+	 *
+	 * @return INT
+	 */
+	public function getProfileId() {
+		return $this->profileId;
+	}
+
+	/**
+	 * Returns commentDate
+	 *
+	 * @return DATETIME
+	 */
+	public function getCommentDate() {
+		return $this->commentDate;
+	}
+
+	/**
+	 * Returns commentSubject
+	 *
+	 * @return STRING
+	 */
+	public function getCommentSubject() {
+		return $this->commentSubject;
+	}
+
+	/**
+	 * Returns commentBody
+	 *
+	 * @return STRING
+	 */
+	public function getCommentBody() {
+		return $this->commentBody;
 	}
 
 	/**
