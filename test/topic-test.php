@@ -15,8 +15,8 @@ require_once("../php/topic.php");
 // require classes that table needs FK data from
 require_once("../php/user.php");
 require_once("../php/profile.php");
-require_once("../php/securityClass.php");
-require_once("../php/loginSource.php");
+//require_once("../php/securityClass.php");
+//require_once("../php/loginSource.php");
 
 // require mysqli connection object
 require_once("/etc/apache2/capstone-mysql/ddconnect.php");
@@ -58,16 +58,17 @@ Maecenas quis lobortis massa. Suspendisse ultricies aliquet dui, sit amet pharet
 		// connect to mySQL
 		$this->mysqli =  MysqliConfiguration::getMysqli();
 
-		//create new securityClass
-		$this->securityClasses = new SecurityClass(null, "Uber Newb",0,0,0,0,0);
-		$this->securityClasses->insert($this->profiles);
+//		//create new securityClass
+//		$this->securityClasses = new SecurityClass(null, "Uber Newb",0,0,0,0,0);
+//		$this->securityClasses->insert($this->profiles);
+//
+//		// create new loginSource
+//		$this->loginSources = new LoginSource(null,"thingy.com");
+//		$this->loginSources->insert($this->mysqli);
 
-		// create new loginSource
-		$this->loginSources = new LoginSource(null,"thingy.com");
-		$this->loginSources->insert($this->mysqli);
-
+		// TODO: set this to use securityClass and loginSourceID from above objects
 		// create new user
-		$this->users = new User(null, "1@1.com", null, null, null, $this->securityClasses->getSecurityId(), $this->loginSources->getLoginSourceId());
+		$this->users = new User(null, "1@1.com", null, null, null, 1, null);
 		$this->users->insert($this->mysqli);
 
 		// create new profile
@@ -88,11 +89,12 @@ Maecenas quis lobortis massa. Suspendisse ultricies aliquet dui, sit amet pharet
 
 		// delete user object from DB
 		$this->users->delete($this->mysqli);
-		// delete loginSource object from DB
-		$this->loginSources->delete($this->mysqli);
 
-		// delete securityClass object from DB
-		$this->securityClasses->delete($this->mysqli);
+//		// delete loginSource object from DB
+//		$this->loginSources->delete($this->mysqli);
+//
+//		// delete securityClass object from DB
+//		$this->securityClasses->delete($this->mysqli);
 	}
 
 	// test topic creation and insertion
@@ -101,82 +103,189 @@ Maecenas quis lobortis massa. Suspendisse ultricies aliquet dui, sit amet pharet
 		$this->assertNotNull($this->mysqli);
 
 		// second, create a topic to post to mySQL
-		$this->topics = new Topic(null, $this->profiles->getProfileId, null, $this->topicSubject, $this->topicBody);
+		$this->topics = new Topic(null, $this->profiles->getProfileId(), null, $this->topicSubject, $this->topicBody);
 
 		// third, insert topic into mySQL
 		$this->topics->insert($this->mysqli);
 
 		// forth, rebuild class from mySQL data for the object
-		$this->topics = $this->topics->getTopicByTopicId($this->mysqli, $this->topics->getTopicId);
+		$this->topics = $this->topics->getTopicByTopicId($this->mysqli, $this->topics->getTopicId());
 
 		//finally, compare the fields
 		// topicId
-		$this->assertNotNull($this->topics->getTopicId);
-		$this->assertTrue($this->topics->getTopicId > 0);
+		$this->assertNotNull($this->topics->getTopicId());
+		$this->assertTrue($this->topics->getTopicId() > 0);
 		// profileId
-		$this->assertNotNull($this->topics->getProfileId);
-		$this->assertTrue($this->topics->getProfileId > 0);
-		$this->assertIdentical($this->topics->getProfileId,		$this->profiles->getProfileId);
+		$this->assertNotNull($this->topics->getProfileId());
+		$this->assertTrue($this->topics->getProfileId() > 0);
+		$this->assertIdentical($this->topics->getProfileId(),		$this->profiles->getProfileId());
 		// topicDate
-		$this->assertNotNull($this->topics->getTopicDate);
+		$this->assertNotNull($this->topics->getTopicDate());
 		// topicSubject
-		$this->assertNotNull($this->topics->getTopicSubject);
-		$this->assertIdentical($this->topics->getTopicSubject,	$this->topicSubject);
+		$this->assertNotNull($this->topics->getTopicSubject());
+		$this->assertIdentical($this->topics->getTopicSubject(),	$this->topicSubject);
 		// topicBody
-		$this->assertNotNull($this->topics->getTopicBody);
-		$this->assertIdentical($this->topics->getTopicBody,		$this->topicBody);
+		$this->assertNotNull($this->topics->getTopicBody());
+		$this->assertIdentical($this->topics->getTopicBody(),		$this->topicBody);
 	}
 
 	public function testUpdateTopic() {
 		// value to set for topicSubject
 		$newSubject = "This is a test change.";
 
-		// first confirm that mySQL connection is OK
+		// confirm that mySQL connection is OK
 		$this->assertNotNull($this->mysqli);
 
-		// second, create a topic to post to mySQL
-		$this->topics = new Topic(null, $this->profiles->getProfileId, null, $this->topicSubject, $this->topicBody);
+		// create a topic to post to mySQL
+		$this->topics = new Topic(null, $this->profiles->getProfileId(), null, $this->topicSubject, $this->topicBody);
 
-		// third, insert topic into mySQL
+		// insert topic into mySQL
 		$this->topics->insert($this->mysqli);
 
-		// forth, rebuild class from mySQL data for the object
-		$this->topics = $this->topics->getTopicByTopicId($this->mysqli, $this->topics->getTopicId);
+		// rebuild class from mySQL data for the object
+		$this->topics = $this->topics->getTopicByTopicId($this->mysqli, $this->topics->getTopicId());
 
-		// fifth change a value then push update
+		// change a value then push update
 		$this->topics->setTopicSubject($newSubject);
 		$this->topics->update($this->mysqli);
 
 		// forth, rebuild class from mySQL data for the object
-		$this->topics = $this->topics->getTopicByTopicId($this->mysqli, $this->topics->getTopicId);
+		$this->topics = $this->topics->getTopicByTopicId($this->mysqli, $this->topics->getTopicId());
 
-		//finally, compare the fields
+		//compare the fields
 		// topicId
-		$this->assertNotNull($this->topics->getTopicId);
-		$this->assertTrue($this->topics->getTopicId > 0);
+		$this->assertNotNull($this->topics->getTopicId());
+		$this->assertTrue($this->topics->getTopicId() > 0);
 		// profileId
-		$this->assertNotNull($this->topics->getProfileId);
-		$this->assertTrue($this->topics->getProfileId > 0);
-		$this->assertIdentical($this->topics->getProfileId,		$this->profiles->getProfileId);
+		$this->assertNotNull($this->topics->getProfileId());
+		$this->assertTrue($this->topics->getProfileId() > 0);
+		$this->assertIdentical($this->topics->getProfileId(),		$this->profiles->getProfileId());
 		// topicDate
-		$this->assertNotNull($this->topics->getTopicDate);
+		$this->assertNotNull($this->topics->getTopicDate());
 		// topicSubject
-		$this->assertNotNull($this->topics->getTopicSubject);
-		$this->assertIdentical($this->topics->getTopicSubject,	$newSubject);
+		$this->assertNotNull($this->topics->getTopicSubject());
+		$this->assertIdentical($this->topics->getTopicSubject(),	$newSubject);
 		// topicBody
-		$this->assertNotNull($this->topics->getTopicBody);
-		$this->assertIdentical($this->topics->getTopicBody,		$this->topicBody);
+		$this->assertNotNull($this->topics->getTopicBody());
+		$this->assertIdentical($this->topics->getTopicBody(),		$this->topicBody);
 	}
 
 	public function testDeleteTopic() {
-		//TODO: implement testDeleteTopic
+		// confirm that mySQL connection is OK
+		$this->assertNotNull($this->mysqli);
+
+		// create a topic to post to mySQL
+		$this->topics = new Topic(null, $this->profiles->getProfileId(), null, $this->topicSubject, $this->topicBody);
+
+		// insert topic into mySQL
+		$this->topics->insert($this->mysqli);
+
+		// rebuild class from mySQL data for the object
+		$this->topics = $this->topics->getTopicByTopicId($this->mysqli, $this->topics->getTopicId());
+
+		//assert that object exists and is valid
+		// topicId
+		$this->assertNotNull($this->topics->getTopicId());
+		$this->assertTrue($this->topics->getTopicId() > 0);
+		// profileId
+		$this->assertNotNull($this->topics->getProfileId());
+		$this->assertTrue($this->topics->getProfileId() > 0);
+		$this->assertIdentical($this->topics->getProfileId(),		$this->profiles->getProfileId());
+		// topicDate
+		$this->assertNotNull($this->topics->getTopicDate());
+		// topicSubject
+		$this->assertNotNull($this->topics->getTopicSubject());
+		$this->assertIdentical($this->topics->getTopicSubject(),	$this->topicSubject);
+		// topicBody
+		$this->assertNotNull($this->topics->getTopicBody());
+		$this->assertIdentical($this->topics->getTopicBody(),		$this->topicBody);
+
+		// delete object
+		$this->topics->delete($this->mysqli);
+
+		// get now deleted topic
+		$this->topics = $this->topics->getTopicByTopicId($this->mysqli, $this->topics->getTopicId());
+
+		// assert null
+		$this->assertNull($this->topics);
 	}
 
 	public function testGetTopicByTopicId() {
-		//TODO: implement testGetTopicByTopicId
+		// first confirm that mySQL connection is OK
+		$this->assertNotNull($this->mysqli);
+
+		// second, create a topic to post to mySQL
+		$this->topics = new Topic(null, $this->profiles->getProfileId(), null, $this->topicSubject, $this->topicBody);
+
+		// third, insert topic into mySQL
+		$this->topics->insert($this->mysqli);
+
+		// forth, unlike insert test we rebuild object into a brand new object
+		$newTopics = $this->topics->getTopicByTopicId($this->mysqli, $this->topics->getTopicId());
+
+		//finally, compare the fields
+		// topicId
+		$this->assertNotNull($newTopics->getTopicId());
+		$this->assertTrue($newTopics->getTopicId() > 0);
+		// profileId
+		$this->assertNotNull($newTopics->getProfileId());
+		$this->assertTrue($newTopics->getProfileId() > 0);
+		$this->assertIdentical($newTopics->getProfileId(),		$this->profiles->getProfileId());
+		// topicDate
+		$this->assertNotNull($newTopics->getTopicDate());
+		// topicSubject
+		$this->assertNotNull($newTopics->getTopicSubject());
+		$this->assertIdentical($newTopics->getTopicSubject(),	$this->topicSubject);
+		// topicBody
+		$this->assertNotNull($newTopics->getTopicBody());
+		$this->assertIdentical($newTopics->getTopicBody(),		$this->topicBody);
 	}
 
 	public function testGetRecentTopics() {
-		//TODO: implement testGetRecentTopics
+		// count of topics
+		$count = 10;
+
+		// test mySQL object
+		$this->assertNotNull($this->mysqli);
+
+
+		// creat and insert 10 objects via looped instantiation
+		for ($i = 0; $i <= $count - 1; $i++){
+			$this->topics = new Topic(null, $this->profiles->getProfileId(), null, "This is subject $i", "This is comment $i");
+			$this->topics->insert($this->mysqli);
+			sleep(1);
+		}
+
+		// retrieve new array of objects via getRecentTopics()
+		$newTopics = Topic::getRecentTopics($this->mysqli, $count);
+
+		// loop thorugh test of array of retrieved topics
+		foreach ($newTopics as $i => $prop){
+			$count--;
+			// topicId
+			$this->assertNotNull($newTopics[$i]->getTopicId());
+			$this->assertTrue($newTopics[$i]->getTopicId() > 0);
+			// profileId
+			$this->assertNotNull($newTopics[$i]->getProfileId());
+			$this->assertTrue($newTopics[$i]->getProfileId() > 0);
+			$this->assertIdentical($newTopics[$i]->getProfileId(),		$this->profiles->getProfileId());
+			// topicDate
+			$this->assertNotNull($newTopics[$i]->getTopicDate());
+			// topicSubject
+			$this->assertNotNull($newTopics[$i]->getTopicSubject());
+			$this->assertIdentical($newTopics[$i]->getTopicSubject(),	"This is subject $count");
+			// topicBody
+			$this->assertNotNull($newTopics[$i]->getTopicBody());
+			$this->assertIdentical($newTopics[$i]->getTopicBody(),		"This is comment $count");
+		}
+
+		// delete topic records from database
+		foreach($newTopics as $i => $prop) {
+			$newTopics[$i]->delete($this->mysqli);
+		}
+
+		// manual trash collection :D
+		$topics = null;
+
 	}
 }
