@@ -131,6 +131,7 @@ Maecenas quis lobortis massa. Suspendisse ultricies aliquet dui, sit amet pharet
 		$this->assertIdentical($this->topics->getTopicBody(),		$this->topicBody);
 	}
 
+	// test topic update
 	public function testUpdateTopic() {
 		// value to set for topicSubject
 		$newSubject = "This is a test change.";
@@ -172,6 +173,7 @@ Maecenas quis lobortis massa. Suspendisse ultricies aliquet dui, sit amet pharet
 		$this->assertIdentical($this->topics->getTopicBody(),		$this->topicBody);
 	}
 
+	// test topic deletion
 	public function testDeleteTopic() {
 		// confirm that mySQL connection is OK
 		$this->assertNotNull($this->mysqli);
@@ -212,6 +214,7 @@ Maecenas quis lobortis massa. Suspendisse ultricies aliquet dui, sit amet pharet
 		$this->assertNull($this->topics);
 	}
 
+	// test topic creation from DB
 	public function testGetTopicByTopicId() {
 		// first confirm that mySQL connection is OK
 		$this->assertNotNull($this->mysqli);
@@ -243,6 +246,7 @@ Maecenas quis lobortis massa. Suspendisse ultricies aliquet dui, sit amet pharet
 		$this->assertIdentical($newTopics->getTopicBody(),		$this->topicBody);
 	}
 
+	// test return of array of topic objects
 	public function testGetRecentTopics() {
 		// count of topics
 		$count = 10;
@@ -287,7 +291,6 @@ Maecenas quis lobortis massa. Suspendisse ultricies aliquet dui, sit amet pharet
 		}
 
 		// manual trash collection :D
-		$topics = null;
-
+		$newTopics = null;
 	}
 }
