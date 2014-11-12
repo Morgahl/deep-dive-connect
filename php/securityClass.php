@@ -22,7 +22,7 @@ class SecurityClass
 	private $siteAdmin;
 
 	// here is the constructor
-	public function __construct($newSecurityId, $newDescription, $newCreateTopic, $newCanEditOther, $newCanPromote,
+	public function __construct($newSecurityId, $IsDefault, $newDescription, $newCreateTopic, $newCanEditOther, $newCanPromote,
 										 $newSiteAdmin)
 	{
 		try {
