@@ -22,7 +22,7 @@ class SecurityClass
 	private $siteAdmin;
 
 	// here is the constructor
-	public function __construct($newSecurityId, $IsDefault, $newDescription, $newCreateTopic, $newCanEditOther, $newCanPromote,
+	public function __construct($newSecurityId, $newDescription, $newIsDefault, $newCreateTopic, $newCanEditOther, $newCanPromote,
 										 $newSiteAdmin)
 	{
 		try {
@@ -60,6 +60,10 @@ class SecurityClass
 	}
 
 
+
+
+
+
 	public function getDescription()
 	{
 		return ($this->description);
@@ -67,23 +71,21 @@ class SecurityClass
 
 	public function setDescription($newDescription)
 	{
-		// allow the description to be null if a new object
-
+		// description should never be null
 		if($newDescription === null) {
-			$this->description = null;
-			return;
+			throw(new UnexpectedValueException("Topic Body must not be null"));
+		}
+// sanitize string
+		$newDescription = trim($newDescription);
+		if(($newDescription = filter_var($newDescription, FILTER_SANITIZE_STRING)) === false) {
+			throw(new UnexpectedValueException("Not a valid string"));
 		}
 
-		//  ensure the description is an integer
-		if(filter_var($newDescription, FILTER_VALIDATE_INT) === false) {
-			throw(new UnexpectedValueException("description $newDescription is not numeric"));
+		// enforce 256 character limit to ensure no truncation of data when inserting to database
+		if(strlen($newDescription) > 256) {
+			throw(new RangeException("Topic Body must be 256 characters or less in length"));
 		}
-
-		$newDescription = intval($newDescription);
-		if($newDescription <= 0) {
-			throw(new RangeException("securityId $newDescription is not positive"));
-		}
-
+	// take topicBody out of quarantine and assign it
 		$this->description = $newDescription;
 
 	}
@@ -114,6 +116,7 @@ class SecurityClass
 			throw(new RangeException("isDefault $newIsDefault is not positive"));
 		}
 
+	// take topicBody out of quarantine and assign it
 		$this->isDefault = $newIsDefault;
 
 	}
@@ -144,6 +147,7 @@ class SecurityClass
 			throw(new RangeException("createTopic $newCreateTopic is not positive"));
 		}
 
+		// take topicBody out of quarantine and assign it
 		$this->createTopict = $newCreateTopic;
 	}
 
@@ -175,6 +179,7 @@ class SecurityClass
 			throw(new RangeException("canEditOther $newCanEditOther is not positive"));
 		}
 
+	// take topicBody out of quarantine and assign it
 		$this->canEditOther = $newCanEditOther;
 
 	}
@@ -209,11 +214,10 @@ class SecurityClass
 			throw(new RangeException("CanPromote $newCanPromote is not positive"));
 		}
 
+		// take topicBody out of quarantine and assign it
 		$this->canCanPromote = $newCanPromote;
 
 	}
-
-
 
 
 	public function getSiteAdmin()
@@ -241,6 +245,7 @@ class SecurityClass
 			throw(new RangeException("siteAdmin $newSiteAdmin is not positive"));
 		}
 
+		// take topicBody out of quarantine and assign it
 		$this->canSiteAdmin = $newSiteAdmin;
 
 	}
