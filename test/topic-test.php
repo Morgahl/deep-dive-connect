@@ -59,6 +59,7 @@ Maecenas quis lobortis massa. Suspendisse ultricies aliquet dui, sit amet pharet
 		// connect to mySQL
 		$this->mysqli =  MysqliConfiguration::getMysqli();
 
+		// TODO: set this to use securityClass and loginSourceID from above objects
 //		//create new securityClass
 //		$this->securityClasses = new SecurityClass(null, "Uber Newb",0,0,0,0,0);
 //		$this->securityClasses->insert($this->profiles);
@@ -67,7 +68,6 @@ Maecenas quis lobortis massa. Suspendisse ultricies aliquet dui, sit amet pharet
 //		$this->loginSources = new LoginSource(null,"thingy.com");
 //		$this->loginSources->insert($this->mysqli);
 
-		// TODO: set this to use securityClass and loginSourceID from above objects
 		// create new user
 		$this->users = new User(null, "1@1.com", null, null, null, 1, null);
 		$this->users->insert($this->mysqli);
@@ -91,6 +91,7 @@ Maecenas quis lobortis massa. Suspendisse ultricies aliquet dui, sit amet pharet
 		// delete user object from DB
 		$this->users->delete($this->mysqli);
 
+		// TODO: bring these back in
 //		// delete loginSource object from DB
 //		$this->loginSources->delete($this->mysqli);
 //
