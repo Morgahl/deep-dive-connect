@@ -225,6 +225,12 @@ class Comment {
 	 * @throws UnexpectedValueException when a parameter is not a valid date string in Y-m-d H:i:s format
 	 */
 	public function setCommentDate($newCommentDate) {
+		// allow topicDate to be null
+		if($newCommentDate === null) {
+			$this->commentDate = null;
+			return;
+		}
+
 		// Sanitize Date input to Y-m-d H:i:s MySQL standard
 		// this fails for badly formed strings and nulls
 		$newCommentDate = trim($newCommentDate);
@@ -318,6 +324,13 @@ class Comment {
 		if($this->profileId === null) {
 			throw(new mysqli_sql_exception("profileId cannot be null."));
 		}
+
+		// enforce commentDate is null
+		if($this->commentDate !== null) {
+			throw(new mysqli_sql_exception("New comments must not have a date."));
+		}
+
+		// we are not checking null or not for commentSubject as both are valid
 
 		// enforce commentBody is NOT null
 		if($this->commentBody === null) {

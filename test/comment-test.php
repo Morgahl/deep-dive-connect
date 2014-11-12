@@ -43,9 +43,7 @@ class CommentTest extends UnitTestCase
 
 	// "globals" used for testing
 	private $commentSubject 	= "Nunc ac augue a nisl ultricies finibus vel vitae nulla. Etiam accumsan sem blandit ultricies posuere. Nam hendrerit risus vitae dolor porta rutrum congue ac dolor. Cras nisi orci, eleifend et aliquam eu, accumsan sed metus. Cras sed tortor purus cras amet.";
-	private $commentBody			= "
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus leo enim, pulvinar quis nulla id, commodo commodo mi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed sed risus fermentum, maximus sem consectetur, elementum erat. Maecenas porta nisl nec rhoncus viverra. Maecenas pellentesque ante enim, a hendrerit arcu fringilla ut. Integer sed erat vitae lorem commodo rutrum placerat tincidunt diam. Nullam convallis elementum odio, sit amet fermentum sem. Ut eget ultrices libero, eu pellentesque nunc.
+	private $commentBody			= "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus leo enim, pulvinar quis nulla id, commodo commodo mi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed sed risus fermentum, maximus sem consectetur, elementum erat. Maecenas porta nisl nec rhoncus viverra. Maecenas pellentesque ante enim, a hendrerit arcu fringilla ut. Integer sed erat vitae lorem commodo rutrum placerat tincidunt diam. Nullam convallis elementum odio, sit amet fermentum sem. Ut eget ultrices libero, eu pellentesque nunc.
 
 Maecenas malesuada eget lacus quis tempus. Pellentesque tincidunt interdum neque, eu commodo quam bibendum maximus. Aliquam ut tortor at erat rhoncus scelerisque vestibulum ultrices tortor. Curabitur quis turpis a libero facilisis blandit nec vitae diam. Praesent sit amet molestie dolor. Maecenas posuere turpis nulla, eu ultrices eros egestas ut.";
 
@@ -66,7 +64,7 @@ Maecenas malesuada eget lacus quis tempus. Pellentesque tincidunt interdum neque
 //		$this->loginSources->insert($this->mysqli);
 
 		// create new user
-		$this->users = new User(null, "1@1.com", null, null, null, 1, null);
+		$this->users = new User(null, "1@1.com", null, null, null, 1, 1);
 		$this->users->insert($this->mysqli);
 
 		// create new profile
@@ -75,6 +73,7 @@ Maecenas malesuada eget lacus quis tempus. Pellentesque tincidunt interdum neque
 
 		// create new topic
 		$this->topics = new Topic(null, $this->profiles->getProfileId(), null, "Place holder Topic Subject.", "Place holder Topic Body.");
+		$this->topics->insert($this->mysqli);
 	}
 
 	// tearDown() is a method that is run after each test
@@ -105,7 +104,38 @@ Maecenas malesuada eget lacus quis tempus. Pellentesque tincidunt interdum neque
 
 	// test comment creation and insertion
 	public function testInsertComment() {
-		// TODO: implement testInsertComment
+		// first confirm that mySQL connection is OK
+		$this->assertNotNull($this->mysqli);
+
+		// second, create a comment to post to mySQL
+		$this->comments = new Comment(null, $this->topics->getTopicId(), $this->profiles->getProfileId(), null, $this->commentSubject, $this->commentBody);
+
+		// third, insert comment into mySQL
+		$this->comments->insert($this->mysqli);
+
+		// forth, rebuild class from mySQL data for the object
+		$this->comments = $this->comments->getCommentByCommentId($this->mysqli, $this->comments->getCommentId());
+
+		//finally, compare the fields
+		// commentId
+		$this->assertNotNull($this->comments->getCommentId());
+		$this->assertTrue($this->comments->getCommentId() > 0);
+		// topicId
+		$this->assertNotNull($this->comments->getTopicId());
+		$this->assertTrue($this->comments->gettopicId() > 0);
+		$this->assertIdentical($this->comments->getTopicId(),		$this->topics->getTopicId());
+		// profileId
+		$this->assertNotNull($this->comments->getProfileId());
+		$this->assertTrue($this->comments->getProfileId() > 0);
+		$this->assertIdentical($this->comments->getProfileId(),		$this->profiles->getProfileId());
+		// topicDate
+		$this->assertNotNull($this->comments->getCommentDate());
+		// topicSubject
+		$this->assertNotNull($this->comments->getCommentSubject());
+		$this->assertIdentical($this->comments->getCommentSubject(),	$this->commentSubject);
+		// topicBody
+		$this->assertNotNull($this->comments->getCommentBody());
+		$this->assertIdentical($this->comments->getCommentBody(),		$this->commentBody);
 	}
 
 	// test comment update
