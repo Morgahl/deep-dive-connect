@@ -88,21 +88,24 @@ class profileCohort {
    public function getProfileId() {
       return ($this->profileId);
    }
-   /**set the value of ProfileId**/
+   //**set the value of ProfileId**/
    public function setProfileId($newProfileId) {
       if($newProfileId === null) {
          $this->profileId = null;
          return;
       }
+
       //filter_var for ProfileId
       if(filter_var($newProfileId, FILTER_VALIDATE_INT) === false) {
          throw(new UnexpectedValueException("Profile Id $newProfileId is not numeric"));
       }
+
       //convert the ProfileCohortId to an integer and enforce it is positive
       $newProfileId = intval($newProfileId);
       if($newProfileId <= 0) {
          throw(new RangeException("Profile Id $newProfileId is not positive"));
       }
+
       //take the Profile Cohort Id out of quarantine
       $this->profileId = $newProfileId;
    }
@@ -110,14 +113,14 @@ class profileCohort {
    //gets value of CohortId
    //returns mixed CohortId
    public function getCohortId() {
-      return ($this->CohortId);
+      return ($this->cohortId);
    }
 
    //set CohortId
    public function setCohortId($newCohortId)
    {
       if($newCohortId === null) {
-         $this->CohortId = null;
+         $this->cohortId = null;
          return;
       }
       //filter_var for CohortId
@@ -128,10 +131,11 @@ class profileCohort {
       $newCohortId = intval($newCohortId);
       if($newCohortId <= 0) {
          throw(new RangeException("Profile Id $newCohortId is not positive"));
-         //take the Profile Cohort Id out of quarantine
-         $this->CohortId = $newCohortId;
       }
+         //take the Profile CohortId out of quarantine
+         $this->cohortId = $newCohortId;
    }
+
 
    //Get and Set for location
    public function getLocation()
@@ -162,8 +166,8 @@ class profileCohort {
       // then just take the role out of quarantine
 
       $this->role = $newRole;
-
    }
+
    /**
     * Insert Profile Cohort to mySQL
     * @param mysqli_sql_exception when mySql related errors occur
@@ -172,7 +176,7 @@ class profileCohort {
    public function insert(&$mysqli)
    {
 
-      if(gettype(mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+      if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
          throw(new mysqli_sql_exception("input is not a mysqli object"));
       }
 
@@ -183,7 +187,7 @@ class profileCohort {
 
 
       //create a query template Profile Cohort ID
-      $query = "INSERT INTO profileCohortId (cohortId,profileId,location,role) VALUES(?,?,?,?)";
+      $query = "INSERT INTO profileCohort(cohortId, profileId,location, role) VALUES(?,?,?,?)";
       $statement = $mysqli->prepare($query);
       if($statement === false) {
          throw(new mysqli_sql_exception("Unable to prepare statement"));
@@ -191,7 +195,7 @@ class profileCohort {
 
 
       //bind the member variables to place holders in template
-      $wasClean = $statement->bind_param("ssd", $this->cohortId,$this->profileId,$this->location,$this->role);
+      $wasClean = $statement->bind_param("ssdi", $this->cohortId,$this->profileId,$this->location,$this->role);
       if($wasClean === false) {
          throw(new mysqli_sql_exception("Unable to bind parameters"));
       }
@@ -214,7 +218,7 @@ class profileCohort {
  **/
    public function delete(&$mysqli) {
       //handle degenerate cases
-      if(gettype(mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+      if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
          throw(new mysqli_sql_exception("input is not a mysqli object"));
       }
 
@@ -297,7 +301,7 @@ $this->CohortId = $mysqli->insert_id;
  * @param resource $mysqli pointer to mySQL connection, by reference
  * @throws mysqli_sql_exception when mySQL related errors occur
  **/
-   public static function getCohortIdByName(&$mysqli, $CohortId) {
+   public static function getCohortIdByName(&$mysqli, $cohortId) {
    // handle degenerate cases
    if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
       throw(new mysqli_sql_exception("input is not a mysqli object"));
@@ -307,19 +311,16 @@ $this->CohortId = $mysqli->insert_id;
       $cohortId = trim($cohortId);
       $cohortId = filter_var($cohortId, FILTER_SANITIZE_NUMBER_INT);
 
-   }
-
       // create query template
-      $query     = "SELECT profileCohortId, cohortId,    profileId, location, role FROM ProfileCohort WHERE cohortId LIKE ?";
-      $statement = $mysqli->prepare($query);
+      $query     =   "SELECT profileCohortId, cohortId, profileId, location, role FROM ProfileCohort WHERE cohortId LIKE ?";
+      $statement =   $mysqli->prepare($query);
       if($statement === false) {
          throw(new mysqli_sql_exception("Unable to prepare statement"));
    }
 
       // bind the member variables to the place holders in the template
-
-      $wasClean = $statement->bind_param("iiiss",  $this->productName, $this->description,
-      $this->price,       $this->productId);
+      $wasClean = $statement->bind_param("ssii",$this->cohortId, $this->profileId,
+                                                $this->location,$this->role);
    if($wasClean === false) {
       throw(new mysqli_sql_exception("Unable to bind parameters"));
    }
@@ -351,8 +352,7 @@ $this->CohortId = $mysqli->insert_id;
          $query     = "SELECT profileCohortId, profileId, location, role FROM profileCohort WHERE cohortId LIKE ?";
          $statement = $mysqli->prepare($query);
               if($statement === false) {
-                 throw(new mysqli_sql_exception("Unable to prepare statement"));
-              }
+                 throw(new mysqli_sql_exception("Unable to prepare statement"));}
 
         // bind the cohortId to the place holder in the template
         $cohortId = "%cohortId%";
@@ -398,8 +398,8 @@ $this->CohortId = $mysqli->insert_id;
            return($profileCohorts);
         }
     }
-}
-?>
+
+
 
 
 
