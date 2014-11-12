@@ -21,28 +21,25 @@ class profileCohort {
    //names ProfileId for alum
    private $profileId;
 
-   //names location of alum
-   private $location;
-
    //names role of alum
    private $role;
+
    /**
     * constructor for ProfileCohort below
     *
       @param string $newProfileCohortId Profile Cohort Id integer/number
     * @param string $newCohortId Cohort Id integer/number
     * @param string $newProfileId Profile Id integer/number
-    * @param string $newLocation Location string gives alum address info
+    * @param string $newRole indicates current job role or status of alum
     * @throws UnexpectedValueException when a parameter is wrong type
     * @throws RangeException when a parameter is invalid
     */
-   public function __construct($newProfileCohortId, $newProfileId, $newCohortId, $newLocation, $newRole)
+   public function __construct($newProfileCohortId, $newProfileId, $newCohortId, $newRole)
    {
       try {
          $this->setProfileCohortId($newProfileCohortId);
          $this->setProfileId($newProfileId);
          $this->setCohortId($newCohortId);
-         $this->setLocation($newLocation);
          $this->setRole($newRole);
 
       } catch(UnexpectedValueException $unexpectedValue) {
@@ -111,11 +108,9 @@ class profileCohort {
    }
 
    //gets value of CohortId
-   //returns mixed CohortId
    public function getCohortId() {
       return ($this->cohortId);
    }
-
    //set CohortId
    public function setCohortId($newCohortId)
    {
@@ -137,22 +132,6 @@ class profileCohort {
    }
 
 
-   //Get and Set for location
-   public function getLocation()
-   {
-      return ($this->location);
-   }
-
-   public function setLocation($newLocation)
-   {
-      // filter the location as a generic string
-      $newLocation = trim($newLocation);
-      $newLocation = filter_var($newLocation, FILTER_SANITIZE_STRING);
-
-      // then just take the location out of quarantine
-      $this->location = $newLocation;
-   }
-
    //Get and Set for role
    public function getRole(){
       return ($this->role);
@@ -169,8 +148,8 @@ class profileCohort {
    }
 
    /**
-    * Insert Profile Cohort to mySQL
-    * @param mysqli_sql_exception when mySql related errors occur
+    * Insert profileCohort to mySQL
+    * @param mysqli_sql_exception-mySql related errors occur
     *
     **/
    public function insert(&$mysqli)
@@ -185,17 +164,15 @@ class profileCohort {
          throw(new mysqli_sql_exception("input is not a mysqli object"));
       }
 
-
-      //create a query template Profile Cohort ID
-      $query = "INSERT INTO profileCohort(cohortId, profileId,location, role) VALUES(?,?,?,?)";
+      //create a query template - into ProfileCohort
+      $query = "INSERT INTO profileCohort(profileCohortId,cohortId, profileId, role) VALUES(?,?,?,?)";
       $statement = $mysqli->prepare($query);
       if($statement === false) {
          throw(new mysqli_sql_exception("Unable to prepare statement"));
       }
 
-
       //bind the member variables to place holders in template
-      $wasClean = $statement->bind_param("ssdi", $this->cohortId,$this->profileId,$this->location,$this->role);
+      $wasClean = $statement->bind_param("iiis",$this->profileCohortId, $this->profileId, $this->cohortId, $this->role);
       if($wasClean === false) {
          throw(new mysqli_sql_exception("Unable to bind parameters"));
       }
@@ -209,13 +186,14 @@ class profileCohort {
       $this->profileCohortId = $mysqli->insert_id;
 }
 
-/**
- * deletes CohortId from mySQL
- *
- * @param resource $mysqli pointer to mySQL connection, by reference
- * @throws mysqli_sql_exception when mySQL related errors occur
- *
- **/
+   /**
+    * deletes ProfileCohort from mySQL
+    *
+    * @param resource $mysqli pointer to mySQL connection, by reference
+    * @throws mysqli_sql_exception when mySQL related errors occur
+    *
+    **/
+
    public function delete(&$mysqli) {
       //handle degenerate cases
       if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
@@ -223,8 +201,8 @@ class profileCohort {
       }
 
       //enforce Cohort ID is null
-      if($this->CohortId !== null) {
-         throw(new mysqli_sql_exception("Unable to prepare a CohortId "));
+      if($this->cohortId !== null) {
+         throw(new mysqli_sql_exception("Unable to prepare a cohortId "));
       }
 
 
@@ -235,7 +213,7 @@ class profileCohort {
          throw(new mysqli_sql_exception("Unable to prepare statement"));
       }
 
-     //bind the member variables to place holders in template
+      //bind the member variables to place holders in template
       $wasClean = $statement->bind_param("i", $this->profileCohortId);
       if($wasClean === false) {
          throw(new mysqli_sql_exception("Unable to bind parameters"));
@@ -249,10 +227,9 @@ class profileCohort {
    }
 
 
-   /**
-   * update the null Cohort Id with Mysql output
-   * $this->CohortId = $mysqli->insert_id;
 
+   /**
+   * updates nulls with Mysql output
    *
    * @param resource $mysqli pointer to mySQL connection, by reference
    * @throws mysqli_sql_exception when mySQL related errors occur
@@ -260,96 +237,239 @@ class profileCohort {
    **/
       public function update(&$mysqli) {
 
-      // handle degenerate class
-      if(gettype(mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
-         throw(new mysqli_sql_exception("input is not a mysqli object"));
-      }
+         // handle degenerate class
+         if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+            throw(new mysqli_sql_exception("input is not a mysqli object"));
+         }
 
       //enforce Cohort ID is not null
-      if($this->CohortId !== null) {
-         throw(new mysqli_sql_exception("unable to update cohort information that does not exist"));
-}
+         if($this->cohortId !== null) {
+            throw(new mysqli_sql_exception("unable to update cohort information that does not exist"));
+         }
 
-      //create a query template for Cohort ID
-      $query      =  "UPDATE profileCohort SET cohortId = ?, profileId = ?, location = ?,role = ? WHERE profileCohortId = ?";
+      //create a query template for cohortId
+      $query      =  "UPDATE profileCohort SET cohortId = ?, profileId = ?,role = ? WHERE profileCohortId = ?";
       $statement  =  $mysqli ->prepare($query);
          if($statement === false) {
             throw(new mysqli_sql_exception("Unable to prepare statement"));
-       }
+         }
 
-      //bind the member variables to place holders in template CohortId, ProfileId, location, role
-      $wasClean = $statement->bind_param("i",$this->CohortId, $this->profileId,
-                                          $this->location, $this->role);
+      //bind the member variables to place holders in template profileCohortId, profileId, cohortId, role
+      $wasClean = $statement->bind_param("i",$this->profileCohortId, $this->cohortId,
+                                             $this->profileId, $this->role);
          if($wasClean === false) {
             throw(new mysqli_sql_exception("Unable to bind parameters"));
 
-   }
+         }
 
       //execute the statement
       if($statement->execute() === false) {
          throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
-   }
+         }
 
-// update the null Cohort Id with Mysql output
-$this->CohortId = $mysqli->insert_id;
+      // update the null Cohort Id with Mysql output
+      $this->cohortId = $mysqli->insert_id;
+}
+
+
+   /**
+    * gets List of Cohort Attendees by ProfileId
+    * @param resource $mysqli pointer to mySQL connection, by reference
+    * @return null
+    * @throws mysqli_sql_exception when mySQL related errors occur
+    * array of objects
+    **/
+   public static function getAttendeesByProfileId(&$mysqli, $profileId) {
+      // handle degenerate cases
+      if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+         throw(new mysqli_sql_exception("input is not a mysqli object"));
       }
 
-
-/**
- * gets the ProfileCohort by name
- *
- * @param resource $mysqli pointer to mySQL connection, by reference
- * @throws mysqli_sql_exception when mySQL related errors occur
- **/
-   public static function getCohortIdByName(&$mysqli, $cohortId) {
-   // handle degenerate cases
-   if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
-      throw(new mysqli_sql_exception("input is not a mysqli object"));
-   }
-
       // sanitize the description before searching
-      $cohortId = trim($cohortId);
-      $cohortId = filter_var($cohortId, FILTER_SANITIZE_NUMBER_INT);
+      $profileId = trim($profileId);
+      $profileId = filter_var($profileId, FILTER_SANITIZE_NUMBER_INT);
 
-      // create query template
-      $query     =   "SELECT profileCohortId, cohortId, profileId, location, role FROM ProfileCohort WHERE cohortId LIKE ?";
+      // create query template for profileId
+      $query     =   "SELECT profileCohortId, profileId, cohortId, role FROM profileCohort WHERE profileId = ?";
       $statement =   $mysqli->prepare($query);
       if($statement === false) {
          throw(new mysqli_sql_exception("Unable to prepare statement"));
-   }
+      }
 
       // bind the member variables to the place holders in the template
-      $wasClean = $statement->bind_param("ssii",$this->cohortId, $this->profileId,
-                                                $this->location,$this->role);
-   if($wasClean === false) {
-      throw(new mysqli_sql_exception("Unable to bind parameters"));
-   }
+      $wasClean = $statement->bind_param("i",$profileId);
+      if($wasClean === false) {
+         throw(new mysqli_sql_exception("Unable to bind parameters"));
+      }
 
-   // execute the statement
-   if($statement->execute() === false) {
-      throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+      // execute the statement
+      if($statement->execute() === false) {
+         throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+      }
+
+      // get results
+      $results = $statement->get_result();
+      if($results->num_rows > 0) {
+         // retrieve results in bulk into an array
+         $results = $results->fetch_all(MYSQL_ASSOC);
+         if($results === false) {
+            throw(new mysqli_sql_exception("Unable to process result set"));
+         }
+
+         // step through results array and convert to ProfileCohort objects
+         foreach ($results as $index => $row) {
+            $results[$index] = new ProfileCohort($row["profileCohortId"], $row["profileId"], $row["cohortId"], $row["role"]);
+         }
+
+         // return resulting array of ProfileCohort objects
+         return($results);
+      } else {
+         return(null);
+      }
    }
-}
 
       /**
-       * gets the Cohort by name
+       * gets List of Cohort Attendees by cohortId
+       * @param resource $mysqli pointer to mySQL connection, by reference
+       * @return null
+       * @throws mysqli_sql_exception when mySQL related errors occur
+       * array of objects
+       **/
+         public static function getAttendeesByCohort(&$mysqli, $cohortId) {
+            // handle degenerate cases
+            if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+               throw(new mysqli_sql_exception("input is not a mysqli object"));
+         }
+
+         // sanitize the description before searching
+         $cohortId = trim($cohortId);
+         $cohortId = filter_var($cohortId, FILTER_SANITIZE_NUMBER_INT);
+
+         // create query template for cohortId
+         $query     =   "SELECT profileCohortId, profileId, cohortId, role FROM profileCohort WHERE cohortId = ?";
+         $statement =   $mysqli->prepare($query);
+         if($statement === false) {
+            throw(new mysqli_sql_exception("Unable to prepare statement"));
+         }
+
+         // bind the member variables to the place holders in the template
+         $wasClean = $statement->bind_param("i",$cohortId);
+         if($wasClean === false) {
+            throw(new mysqli_sql_exception("Unable to bind parameters"));
+         }
+
+         // execute the statement
+         if($statement->execute() === false) {
+            throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+         }
+
+         // get results
+         $results = $statement->get_result();
+         if($results->num_rows > 0) {
+            // retrieve results in bulk into an array
+            $results = $results->fetch_all(MYSQL_ASSOC);
+            if($results === false) {
+               throw(new mysqli_sql_exception("Unable to process result set"));
+         }
+
+            // step through results array and convert to ProfileCohort objects
+            foreach ($results as $index => $row) {
+               $results[$index] = new ProfileCohort($row["profileCohortId"], $row["profileId"], $row["cohortId"], $row["role"]);
+         }
+
+            // return resulting array of ProfileCohort objects
+            return($results);
+         } else {
+            return(null);
+         }
+   }
+
+
+         /**
+          * gets List of Cohort Attendees by role
+          * @param
+          * @param resource $mysqli pointer to mySQL connection, by reference
+          * @return null
+          * @throws mysqli_sql_exception when mySQL related errors occur
+          *
+          **/
+         public static function getAttendeesByRole(&$mysqli, $role) {
+            // handle degenerate cases
+            if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+               throw(new mysqli_sql_exception("input is not a mysqli object"));
+            }
+
+            // sanitize the role before searching
+            $role = trim($role);
+            $role = filter_var($role, FILTER_SANITIZE_STRING);
+
+            // create query template for role
+            $query     =   "SELECT profileCohortId, profileId, cohortId, role FROM profileCohort WHERE role = ?";
+            $statement =   $mysqli->prepare($query);
+            if($statement === false) {
+               throw(new mysqli_sql_exception("Unable to prepare statement"));
+            }
+
+            // bind the member variables to the place holders in the template
+            $wasClean = $statement->bind_param("s", $role);
+            if($wasClean === false) {
+               throw(new mysqli_sql_exception("Unable to bind parameters"));
+            }
+
+            // execute the statement
+            if($statement->execute() === false) {
+               throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+            }
+
+            // get results
+            $results = $statement->get_result();
+            if($results->num_rows > 0) {
+
+               // retrieve results in bulk into an array
+               $results = $results->fetch_all(MYSQL_ASSOC);
+               if($results === false) {
+                  throw(new mysqli_sql_exception("Unable to process result set"));
+               }
+
+               // step through results array and convert to ProfileCohort objects
+               foreach ($results as $index => $row) {
+                  $results[$index] = new ProfileCohort($row["profileCohortId"], $row["profileId"], $row["cohortId"], $row["role"]);
+               }
+
+               // return resulting array of ProfileCohort objects
+               return($results);
+            } else {
+               return(null);
+            }
+
+      }
+}
+
+
+
+
+
+
+
+
+       /* gets the cohortId by number
        *
        * @param resource $mysqli pointer to mySQL connection, by reference
-       * @param string $productName name to search for
-       * @return mixed array of Products found, Product found, or null if not found
+       * @param string $cohortId CohortId to search for
+       * @return mixed array of id numbers or null if not found
        * @throws mysqli_sql_exception when mySQL related errors occur
-       **/
-         public static function getCohortByName(&$mysqli, $CohortName){
+
+         public static function getProfileIdByName(&$mysqli, $profileId) {
           // handle degenerate cases
          if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
             throw(new mysqli_sql_exception("input is not a mysqli object"));
          }
-         // sanitize the description before searching
-          $cohortName = trim($cohortName);
-          $cohortName = filter_var($CohortName, FILTER_SANITIZE_STRING);
+         // sanitize before searching
+          $profileId = trim($profileId);
+          $profileId = filter_var($profileId, FILTER_SANITIZE_NUMBER_INT);
 
          // create query template
-         $query     = "SELECT profileCohortId, profileId, location, role FROM profileCohort WHERE cohortId LIKE ?";
+         $query     = "SELECT profileId, cohortId, role FROM profileCohort WHERE cohortId LIKE ?";
          $statement = $mysqli->prepare($query);
               if($statement === false) {
                  throw(new mysqli_sql_exception("Unable to prepare statement"));}
@@ -373,11 +493,10 @@ $this->CohortId = $mysqli->insert_id;
         }
 
         // builds array of fields below
-        $ProfileCohorts = array();
-        while(($row = $result->fetch_assoc()) !== null) {
-           try {
-              $ProfileCohort    = new ProfileCohort($row["profileCohortId"], $row["cohortId"], $row["profileId"], $row["location"],$row ["role"]);
-
+            $ProfileCohorts = array();
+             while(($row = $result->fetch_assoc()) !== null) {
+                try {
+              $profileCohort    = new profileCohort($row["profileCohortId"],$row["profileId"], $row["cohortId"], $row ["role"]);
               $profileCohorts[] = $profileCohort;
            }
            catch(Exception $exception) {
@@ -385,42 +504,25 @@ $this->CohortId = $mysqli->insert_id;
               throw(new mysqli_sql_exception("Unable to convert row to Profile Cohort", 0, $exception));
            }
         }
-        // count the results in the array and return:
-        // 1) null if 0 results
-        // 2) a single object if 1 result
-        // 3) the entire array if > 1 result
-        $numberOfProfileCohorts = count($profileCohorts);
-        if($numberOfProfileCohorts === 0) {
-           return(null);
-        } else if($numberOfProfileCohorts === 1) {
-           return($profileCohorts[0]);
-        } else {
-           return($profileCohorts);
-        }
-    }
 
+           // count the results in the array and return:
+           // 1) null if 0 results
+           // 2) a single object if 1 result
+           // 3) the entire array if > 1 result
+           $numberOfProfileCohorts = count($profileCohorts);
+           if($numberOfProfileCohorts === 0) {
+              return(null);
 
+           } else if($numberOfProfileCohorts === 1) {
+              return($profileCohorts[0]);
 
+           } else {
+              return($profileCohorts);
 
+           }
+       }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+**/
 
 
 
