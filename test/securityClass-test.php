@@ -1,30 +1,38 @@
 <?php
+
+// Author Joseph Bottone
+// http://josephmichaelbottone.com
+// bottone.joseph@gmail.com
+// thundermedia.com
+
 // first require the SimpleTest framework
 require_once("/usr/lib/php5/simpletest/autorun.php");
+
 // then require the class under scrutiny
 require_once("../php/securityClass.php");
 
 // the UserTest is a container for all our tests
-class SecurityClassTest extends UnitTestCase {
+class UserTest extends UnitTestCase {
 	// variable to hold the mySQL connection
 	private $mysqli = null;
 	// variable to hold the test database row
-	private $security   = null;
+	private $user   = null;
 
 	// a few "global" variables for creating test data
+	private $SECURITYID      = "unit-test@example.net";
 	private $DESCRIPTION   = "ChedGeek5";
 	private $ISDEFAULT       = null;
 	private $CREATETOPIC = null;
 	private $CANEDITOTHER       = null;
-	private $CANPROMOTE       = null;
+	private $CANPROMOTE = null;
 	private $SITEADMIN       = null;
 
 	// setUp() is a method that is run before each test
-
+	// here, we use it to connect to mySQL and to calculate the salt, hash, and authenticationToken
 	public function setUp() {
 		// connect to mySQL
 		mysqli_report(MYSQLI_REPORT_STRICT);
-		$this->mysqli = new mysqli("localhost", "store_dylan", "deepdive", "store_dylan");
+		$this->mysqli = new mysqli("/etc/apache2/capstone-mysql/ddconnect.php"");
 
 		// randomize the salt, hash, and authentication token
 		$this->SALT       = bin2hex(openssl_random_pseudo_bytes(32));
@@ -36,12 +44,14 @@ class SecurityClassTest extends UnitTestCase {
 	// here, we use it to delete the test record and disconnect from mySQL
 	public function tearDown() {
 		// delete the user if we can
-		if($this->security !== null) {
-			$this->security->delete($this->mysqli);
-			$this->security = null;
+		if($this->user !== null) {
+			$this->user->delete($this->mysqli);
+			$this->user = null;
 		}
 
-		// removed the disconnect
+		// DEACTTIVATED disconnect from mySQL
+		// if($this->mysqli !== null) {
+		// $this->mysqli->close();
 
 	}
 
@@ -138,3 +148,4 @@ class SecurityClassTest extends UnitTestCase {
 		$this->assertIdentical($staticUser->getAuthenticationToken(), $this->AUTH_TOKEN);
 	}
 }
+?>
