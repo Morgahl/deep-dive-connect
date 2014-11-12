@@ -100,7 +100,7 @@ Maecenas quis lobortis massa. Suspendisse ultricies aliquet dui, sit amet pharet
 	}
 
 	// test topic creation and insertion
-	public function testInsertNewTopic() {
+	public function testInsertTopic() {
 		// first confirm that mySQL connection is OK
 		$this->assertNotNull($this->mysqli);
 
