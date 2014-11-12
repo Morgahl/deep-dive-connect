@@ -464,6 +464,72 @@ class User{
 
 	}
 
+	/**
+	 * gets the user by email
+	 *
+	 * @param resource $mysqli pointer to mySQL connection, by reference
+	 * @param string $email email to search for
+	 * @return mixed User found or null if not found
+	 * @throws mysqli_sql_exception when mySQL related errors occur
+	 **/
+	public static function getUserByEmail(&$mysqli, $email){
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
+
+		// sanitize the Email before searching
+		$email = trim($email);
+		$email = filter_var($email, FILTER_SANITIZE_EMAIL);
+
+		//create query template
+		$query	= "SELECT userId, email, passwordHash, salt, authKey, securityId, loginSourceId FROM user WHERE email = ?";
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// bind the email to the place holder in the template
+		$wasClean = $statement->bind_param("s", $email);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
+		// get result from the SELECT query *pounds fists*
+		$result = $statement->get_result();
+		if($result === false) {
+			throw(new mysqli_sql_exception("Unable to get result set"));
+		}
+
+		// since this is a unique field, this will only return 0 or 1 results. So...
+		// 1) if there's a result, we can make it into a User object normally
+		// 2) if there's no result, we can just return null
+		$row = $result->fetch_assoc(); // fetch_assoc() returns a row as an associative array
+
+		// convert the associative array to a User
+		if($row !== null) {
+			try{
+				$user = new User($row["userId"], $row["email"], $row["passwordHash"], $row["salt"], $row["authKey"], $row["securityId"], $row["loginSourceId"]);
+			}
+			catch(Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new mysqli_sql_exception("Unable to convert row to User", 0, $exception));
+			}
+			// if we got here, the User is good - return it
+			return($user);
+		} else {
+			// 404 User not found - return null instead
+			return(null);
+		}
+	}
+
+
+
 
 }
 ?>
