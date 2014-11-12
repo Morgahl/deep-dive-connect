@@ -33,35 +33,35 @@ class ProfileTest extends UnitTestCase{
 		// connect to mySQL
 		$this->mysqli = MysqliConfiguration::getMysqli();
 
-		//create new user object
+		// create new user object
 		$this->user = new User(null, "jack@chan.com", null, null, null, 1, 1);
 
-		//insert user into MySQL
+		// insert user into MySQL
 		$this->user->insert($this->mysqli);
 
-		//second get userId from user object and assign it to USERID
+		// second get userId from user object and assign it to USERID
 		$this->USERID = $this->user->getUserId();
 
 	}
 
 	// tearDown() is a method that is run after each test
 	public function tearDown(){
-		//delete the profile if we can
+		// delete the profile if we can
 		if($this->profile !== null){
 			$this->profile->delete($this->mysqli);
 			$this->profile = null;
 		}
 
-		//delete user
+		// delete user
 		if($this->user !== null){
 			$this->user->delete($this->mysqli);
 			$this->user = null;
 		}
 	}
 
-	//test creating a new Profile and inserting it to mySQL
+	// test creating a new Profile and inserting it to mySQL
 	public function testInsertNewProfile(){
-		//first, verify mySQL connect OK
+		// first, verify mySQL connect OK
 		$this->assertNotNull($this->mysqli);
 
 
@@ -71,7 +71,7 @@ class ProfileTest extends UnitTestCase{
 		// fourth, insert the profile to mySQL
 		$this->profile->insert($this->mysqli);
 
-		//finally, compare the fields
+		// finally, compare the fields
 		$this->assertNotNull($this->profile->getProfileId());
 		$this->assertTrue($this->profile->getProfileId() > 0);
 		$this->assertIdentical($this->profile->getUserId(), $this->USERID);
@@ -85,19 +85,19 @@ class ProfileTest extends UnitTestCase{
 
 	}
 
-	//test updating a profile in mySQL
+	// test updating a profile in mySQL
 	public function testUpdateUser(){
-		//first, verify mySQL connect OK
+		// first, verify mySQL connect OK
 		$this->assertNotNull($this->mysqli);
 
 
-		// third, create a user to post to mySQL
+		// second, create a user to post to mySQL
 		$this->profile = new Profile(null, $this->USERID, $this->FNAME, $this->LNAME, $this->MNAME, $this->LOCATION, $this->DESCRIPTION, $this->FILENAME,$this->FILETYPE);
 
-		// fourth, insert profile to mySQL
+		// third insert profile to mySQL
 		$this->profile->insert($this->mysqli);
 
-		// fifth, update the user and post the changes
+		// fourth, update the user and post the changes
 		$newFName = "Steven";
 		$this->profile->setFirstName($newFName);
 		$newLName = "Vigil";
@@ -113,10 +113,10 @@ class ProfileTest extends UnitTestCase{
 		$newFileType = "jpeg";
 		$this->profile->setProfilePicFileType($newFileType);
 
-		//update object
+		// update object
 		$this->profile->update($this->mysqli);
 
-		//finally, compare the fields
+		// finally, compare the fields
 		$this->assertNotNull($this->profile->getProfileId());
 		$this->assertTrue($this->profile->getProfileId() > 0);
 		$this->assertIdentical($this->profile->getUserId(), $this->USERID);
@@ -127,7 +127,29 @@ class ProfileTest extends UnitTestCase{
 		$this->assertIdentical($this->profile->getDescription(), $newDesc);
 		$this->assertIdentical($this->profile->getProfilePicFileName(), $newFileName);
 		$this->assertIdentical($this->profile->getProfilePicFileType(), $newFileType);
+	}
 
+	// test deleting a Profile
+	public function testDeleteProfile(){
+		// first, verify mySQL connect OK
+		$this->assertNotNull($this->mysqli);
+
+
+		// second, create a user to post to mySQL
+		$this->profile = new Profile(null, $this->USERID, $this->FNAME, $this->LNAME, $this->MNAME, $this->LOCATION, $this->DESCRIPTION, $this->FILENAME,$this->FILETYPE);
+
+		// third, insert the profile to mySQL
+		$this->profile->insert($this->mysqli);
+
+		// fourth, verify the profile was inserted
+		$this->assertNotNull($this->profile->getProfileId());
+		$this->assertTrue($this->profile->getProfileId() > 0);
+
+		// fifth, delete profile
+		$this->profile->delete($this->mysqli);
+		$this->profile = null;
+
+		//TODO: make getProfileByUserId
 
 	}
 }
