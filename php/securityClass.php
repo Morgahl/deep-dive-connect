@@ -3,6 +3,7 @@
 // Author Joseph Bottone
 // http://josephmichaelbottone.com
 // bottone.joseph@gmail.com
+// thundermedia.com
 
 class SecurityClass
 {
@@ -83,9 +84,9 @@ class SecurityClass
 
 		// enforce 256 character limit to ensure no truncation of data when inserting to database
 		if(strlen($newDescription) > 256) {
-			throw(new RangeException("Topic Body must be 256 characters or less in length"));
+			throw(new RangeException("Description must be 256 characters or less in length"));
 		}
-	// take topicBody out of quarantine and assign it
+	// take description out of quarantine and assign it
 		$this->description = $newDescription;
 
 	}
@@ -116,7 +117,7 @@ class SecurityClass
 			throw(new RangeException("isDefault $newIsDefault is not positive"));
 		}
 
-	// take topicBody out of quarantine and assign it
+	// take isDefault out of quarantine and assign it
 		$this->isDefault = $newIsDefault;
 
 	}
@@ -147,7 +148,7 @@ class SecurityClass
 			throw(new RangeException("createTopic $newCreateTopic is not positive"));
 		}
 
-		// take topicBody out of quarantine and assign it
+		// take createTopic out of quarantine and assign it
 		$this->createTopict = $newCreateTopic;
 	}
 
@@ -179,7 +180,7 @@ class SecurityClass
 			throw(new RangeException("canEditOther $newCanEditOther is not positive"));
 		}
 
-	// take topicBody out of quarantine and assign it
+	// take canEditOther out of quarantine and assign it
 		$this->canEditOther = $newCanEditOther;
 
 	}
@@ -214,7 +215,7 @@ class SecurityClass
 			throw(new RangeException("CanPromote $newCanPromote is not positive"));
 		}
 
-		// take topicBody out of quarantine and assign it
+		// take canPromote out of quarantine and assign it
 		$this->canCanPromote = $newCanPromote;
 
 	}
@@ -245,7 +246,7 @@ class SecurityClass
 			throw(new RangeException("siteAdmin $newSiteAdmin is not positive"));
 		}
 
-		// take topicBody out of quarantine and assign it
+		// take siteAdmin out of quarantine and assign it
 		$this->canSiteAdmin = $newSiteAdmin;
 
 	}
