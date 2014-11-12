@@ -4,6 +4,7 @@
 // http://josephmichaelbottone.com
 // bottone.joseph@gmail.com
 // thundermedia.com
+// Unit test for SecurityClass
 
 // first require the SimpleTest framework
 require_once("/usr/lib/php5/simpletest/autorun.php");
