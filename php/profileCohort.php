@@ -146,7 +146,7 @@ class profileCohort {
       $newLocation = filter_var($newLocation, FILTER_SANITIZE_STRING);
 
       // then just take the location out of quarantine
-      $this->Location = $newLocation;
+      $this->location = $newLocation;
    }
 
    //Get and Set for role
@@ -165,197 +165,264 @@ class profileCohort {
 
    }
    /**
-    *Insert Profile Cohort to mySQL
-    * @paran mysqli_sql_exception when mySql related errors occur
+    * Insert Profile Cohort to mySQL
+    * @param mysqli_sql_exception when mySql related errors occur
     *
     **/
-   public function insert(&$mysqli) {
+   public function insert(&$mysqli)
+   {
+
+      if(gettype(mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+         throw(new mysqli_sql_exception("input is not a mysqli object"));
+      }
+
+      //enforce the Profile Cohort ID is null
+      if($this->profileCohortId !== null) {
+         throw(new mysqli_sql_exception("input is not a mysqli object"));
+      }
+
+
+      //create a query template Profile Cohort ID
+      $query = "INSERT INTO profileCohortId (cohortId,profileId,location,role) VALUES(?,?,?,?)";
+      $statement = $mysqli->prepare($query);
+      if($statement === false) {
+         throw(new mysqli_sql_exception("Unable to prepare statement"));
+      }
+
+
+      //bind the member variables to place holders in template
+      $wasClean = $statement->bind_param("ssd", $this->cohortId,$this->profileId,$this->location,$this->role);
+      if($wasClean === false) {
+         throw(new mysqli_sql_exception("Unable to bind parameters"));
+      }
+
+      //execute the statement
+      if($statement->execute() === false) {
+         throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+      }
+
+      // update the null Profile Cohort Id with Mysql output
+      $this->profileCohortId = $mysqli->insert_id;
+}
+
+/**
+ * deletes CohortId from mySQL
+ *
+ * @param resource $mysqli pointer to mySQL connection, by reference
+ * @throws mysqli_sql_exception when mySQL related errors occur
+ *
+ **/
+   public function delete(&$mysqli) {
+      //handle degenerate cases
+      if(gettype(mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+         throw(new mysqli_sql_exception("input is not a mysqli object"));
+      }
+
+      //enforce Cohort ID is null
+      if($this->CohortId !== null) {
+         throw(new mysqli_sql_exception("Unable to prepare a CohortId "));
+      }
+
+
+      //create a query template for Cohort ID
+      $query      =  "DELETE FROM profileCohortId where CohortId = ?";
+      $statement  =  $mysqli ->prepare($query);
+      if($statement === false) {
+         throw(new mysqli_sql_exception("Unable to prepare statement"));
+      }
+
+     //bind the member variables to place holders in template
+      $wasClean = $statement->bind_param("i", $this->profileCohortId);
+      if($wasClean === false) {
+         throw(new mysqli_sql_exception("Unable to bind parameters"));
+      }
+
+
+      //execute the statement
+      if($statement->execute() === false) {
+         throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+      }
    }
 
-if(gettype(mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
-throw(new mysqli_sql_exception("input is not a mysqli object"));
+
+   /**
+   * update the null Cohort Id with Mysql output
+   * $this->CohortId = $mysqli->insert_id;
+
+   *
+   * @param resource $mysqli pointer to mySQL connection, by reference
+   * @throws mysqli_sql_exception when mySQL related errors occur
+   *
+   **/
+      public function update(&$mysqli) {
+
+      // handle degenerate class
+      if(gettype(mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+         throw(new mysqli_sql_exception("input is not a mysqli object"));
+      }
+
+      //enforce Cohort ID is not null
+      if($this->CohortId !== null) {
+         throw(new mysqli_sql_exception("unable to update cohort information that does not exist"));
 }
 
-//enforce the Profile Cohort ID is null
+      //create a query template for Cohort ID
+      $query      =  "UPDATE profileCohort SET cohortId = ?, profileId = ?, location = ?,role = ? WHERE profileCohortId = ?";
+      $statement  =  $mysqli ->prepare($query);
+         if($statement === false) {
+            throw(new mysqli_sql_exception("Unable to prepare statement"));
+       }
 
-if($this->profileCohortId !== null) {
-   throw(new mysqli_sql_exception("input is not a mysqli object"));
-}
+      //bind the member variables to place holders in template CohortId, ProfileId, location, role
+      $wasClean = $statement->bind_param("i",$this->CohortId, $this->profileId,
+                                          $this->location, $this->role);
+         if($wasClean === false) {
+            throw(new mysqli_sql_exception("Unable to bind parameters"));
 
+   }
 
-//create a query template Profile Cohort ID
-$query      =  "INSERT INTO profileCohortId (XXXXPROFILeCOHORtFIELDsHEREXXX) VALUES?";
-$statement  =  $mysqli ->prepare($query);
-if($statement === false) {
-   throw(new mysqli_sql_exception("Unable to prepare statement"));
-}
-
-//bind the member variables to place holders in template
-$wasClean = $statement->bind_param("ssd", $this->XXXXFIELD1,$this->XXXXFIELD1,etc);
-if($wasClean === false) {
-   throw(new mysqli_sql_exception("Unable to bind parameters"));
-}
-
-//execute the statement
-if($statement->execute() === false) {
-   throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
-}
-
-// update the null Profile Cohort Id with Mysql output
-$this->profileCohortId = $mysqli->insert_id;
-
-
-}
-
-/**
- * deletes CohortId from mySQL
- *
- * @param resource $mysqli pointer to mySQL connection, by reference
- * @throws mysqli_sql_exception when mySQL related errors occur
- *
- **/
-public function insert(&$mysqli) {
-}
-
-if(gettype(mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
-   throw(new mysqli_sql_exception("input is not a mysqli object"));
-}
-
-//enforce Cohort ID is null
-
-if($this->CohortId !== null) {
-   throw(new mysqli_sql_exception("input is not a mysqli object"));
-}
-
-
-//create a query template for Cohort ID
-$query      =  "INSERT INTO CohortId (XXXXPROFILeCOHORtFIELDsHEREXXX) VALUES?";
-$statement  =  $mysqli ->prepare($query);
-if($statement === false) {
-   throw(new mysqli_sql_exception("Unable to prepare statement"));
-}
-
-//bind the member variables to place holders in template
-$wasClean = $statement->bind_param("ssd", $this->XXXXFIELD1,$this->XXXXFIELD1,etc);
-if($wasClean === false) {
-   throw(new mysqli_sql_exception("Unable to bind parameters"));
-
-}
-
-//execute the statement
-if($statement->execute() === false) {
-   throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
-}
+      //execute the statement
+      if($statement->execute() === false) {
+         throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+   }
 
 // update the null Cohort Id with Mysql output
 $this->CohortId = $mysqli->insert_id;
+      }
 
 
 /**
- * deletes CohortId from mySQL
+ * gets the ProfileCohort by name
  *
  * @param resource $mysqli pointer to mySQL connection, by reference
  * @throws mysqli_sql_exception when mySQL related errors occur
- *
  **/
-public function insert(&$mysqli) {
-}
-
-if(gettype(mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
-   throw(new mysqli_sql_exception("input is not a mysqli object"));
-}
-
-//enforce Cohort ID is null
-
-if($this->CohortId !== null) {
-   throw(new mysqli_sql_exception("input is not a mysqli object"));
-}
-
-
-//create a query template for Cohort ID
-$query      =  "INSERT INTO CohortId (XXXXPROFILeCOHORtFIELDsHEREXXX) VALUES?";
-$statement  =  $mysqli ->prepare($query);
-if($statement === false) {
-   throw(new mysqli_sql_exception("Unable to prepare statement"));
-}
-
-//bind the member variables to place holders in template
-$wasClean = $statement->bind_param("ssd", $this->XXXXFIELD1,$this->XXXXFIELD1,etc);
-if($wasClean === false) {
-   throw(new mysqli_sql_exception("Unable to bind parameters"));
-
-}
-
-//execute the statement
-if($statement->execute() === false) {
-   throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
-}
-
-// update the null Cohort Id with Mysql output
-$this->CohortId = $mysqli->insert_id;
-
-
-/**
- * deletes ProfileId from mySQL
- *
- * @param resource $mysqli pointer to mySQL connection, by reference
- * @throws mysqli_sql_exception when mySQL related errors occur
- *
- **/
-public function insert(&$mysqli) {
-}
-
-if(gettype(mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
-   throw(new mysqli_sql_exception("input is not a mysqli object"));
-}
-
-//enforce ProfileID is null
-
-if($this->ProfileId !== null) {
-   throw(new mysqli_sql_exception("input is not a mysqli object"));
-}
-
-
-//create a query template for Profile ID
-$query      =  "INSERT INTO ProfileId (XXXXPROFILeCOHORtFIELDsHEREXXX) VALUES?";
-$statement  =  $mysqli ->prepare($query);
-if($statement === false) {
-   throw(new mysqli_sql_exception("Unable to prepare statement"));
-}
-
-//bind the member variables to place holders in template
-$wasClean = $statement->bind_param("ssd", $this->XXXXFIELD1,$this->XXXXFIELD1,etc);
-if($wasClean === false) {
-   throw(new mysqli_sql_exception("Unable to bind parameters"));
-
-}
-
-//execute the statement
-if($statement->execute() === false) {
-   throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
-}
-
-// update the null Profile Id with Mysql output
-$this->ProfileId = $mysqli->insert_id;
-
-
-/**
- * gets the Product by name
- *
- * @param resource $mysqli pointer to mySQL connection, by reference
- * @param string $productName name to search for
- * @return mixed array of Products found, Product found, or null if not found
- * @throws mysqli_sql_exception when mySQL related errors occur
- **/
-public static function getCohortByName(&$mysqli, $CohortName) {
+   public static function getCohortIdByName(&$mysqli, $CohortId) {
    // handle degenerate cases
    if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
       throw(new mysqli_sql_exception("input is not a mysqli object"));
    }
 
-   // sanitize the description before searching
-   $cohortName = trim($cohortName);
-   $productName = filter_var($productName, FILTER_SANITIZE_STRING);
+      // sanitize the description before searching
+      $cohortId = trim($cohortId);
+      $cohortId = filter_var($cohortId, FILTER_SANITIZE_NUMBER_INT);
+
+   }
+
+      // create query template
+      $query     = "SELECT profileCohortId, cohortId,    profileId, location, role FROM ProfileCohort WHERE cohortId LIKE ?";
+      $statement = $mysqli->prepare($query);
+      if($statement === false) {
+         throw(new mysqli_sql_exception("Unable to prepare statement"));
+   }
+
+      // bind the member variables to the place holders in the template
+
+      $wasClean = $statement->bind_param("iiiss",  $this->productName, $this->description,
+      $this->price,       $this->productId);
+   if($wasClean === false) {
+      throw(new mysqli_sql_exception("Unable to bind parameters"));
+   }
+
+   // execute the statement
+   if($statement->execute() === false) {
+      throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+   }
+}
+
+      /**
+       * gets the Cohort by name
+       *
+       * @param resource $mysqli pointer to mySQL connection, by reference
+       * @param string $productName name to search for
+       * @return mixed array of Products found, Product found, or null if not found
+       * @throws mysqli_sql_exception when mySQL related errors occur
+       **/
+         public static function getCohortByName(&$mysqli, $CohortName){
+          // handle degenerate cases
+         if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+            throw(new mysqli_sql_exception("input is not a mysqli object"));
+         }
+         // sanitize the description before searching
+          $cohortName = trim($cohortName);
+          $cohortName = filter_var($CohortName, FILTER_SANITIZE_STRING);
+
+         // create query template
+         $query     = "SELECT profileCohortId, profileId, location, role FROM profileCohort WHERE cohortId LIKE ?";
+         $statement = $mysqli->prepare($query);
+              if($statement === false) {
+                 throw(new mysqli_sql_exception("Unable to prepare statement"));
+              }
+
+        // bind the cohortId to the place holder in the template
+        $cohortId = "%cohortId%";
+        $wasClean = $statement->bind_param("s", $cohortId);
+        if($wasClean === false) {
+           throw(new mysqli_sql_exception("Unable to bind parameters"));
+        }
+
+        // execute the statement
+        if($statement->execute() === false) {
+           throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+        }
+
+        // get result from the SELECT query *pounds fists*
+        $result = $statement->get_result();
+        if($result === false) {
+           throw(new mysqli_sql_exception("Unable to get result set"));
+        }
+
+        // builds array of fields below
+        $ProfileCohorts = array();
+        while(($row = $result->fetch_assoc()) !== null) {
+           try {
+              $ProfileCohort    = new ProfileCohort($row["profileCohortId"], $row["cohortId"], $row["profileId"], $row["location"],$row ["role"]);
+
+              $profileCohorts[] = $profileCohort;
+           }
+           catch(Exception $exception) {
+              // if the row couldn't be converted, rethrow it
+              throw(new mysqli_sql_exception("Unable to convert row to Profile Cohort", 0, $exception));
+           }
+        }
+        // count the results in the array and return:
+        // 1) null if 0 results
+        // 2) a single object if 1 result
+        // 3) the entire array if > 1 result
+        $numberOfProfileCohorts = count($profileCohorts);
+        if($numberOfProfileCohorts === 0) {
+           return(null);
+        } else if($numberOfProfileCohorts === 1) {
+           return($profileCohorts[0]);
+        } else {
+           return($profileCohorts);
+        }
+    }
+}
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //primary key should allow a null
 //set the value at the end

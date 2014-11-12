@@ -12,7 +12,7 @@
 //**Wrote Cohort class below; primary key is the cohortId;
 class Cohort {
    // CohortID identifies primary key for Cohort
-   private $cohortID;
+   private $cohortId;
 
    // Start date from date string
    private $startDate;
@@ -61,7 +61,7 @@ class Cohort {
  **/
 
    public function getCohortId() {
-      return ($this->cohortID);
+      return ($this->cohortId);
 
 }
 
@@ -71,27 +71,27 @@ class Cohort {
  * @throws UnexpectedValueException if not an integer or null
  * @throws RangeException if Cohort Id isn't a positive
  **/
-   public function setCohortID($newCohortID)
+   public function setCohortID($newCohortId)
    {
       // zeroth, set allow the CohortID to be null if a new object
-      if($newCohortID === null) {
-         $this->cohortID = null;
+      if($newCohortId === null) {
+         $this->cohortId = null;
          return;
       }
 
       //first, filterVar ensures the Cohort Id is an integer
-      if(filter_var($newCohortID, FILTER_VALIDATE_INT) === false) {
-         throw(new UnexpectedValueException("Cohort ID $newCohortID is not numeric"));
+      if(filter_var($newCohortId, FILTER_VALIDATE_INT) === false) {
+         throw(new UnexpectedValueException("Cohort ID $newCohortId is not numeric"));
       }
 
       //second, convert CohortID to an integer and enforce it's positive
-      $newCohortID = intval($newCohortID);
-      if($newCohortID <= 0) {
-         throw(new RangeException("Cohort ID $newCohortID is not positive"));
+      $newCohortId = intval($newCohortId);
+      if($newCohortId <= 0) {
+         throw(new RangeException("Cohort ID $newCohortId is not positive"));
       }
 
       //finally remove CohortID from quarantine and assign it
-      $this->CohortID = $newCohortID;
+      $this->cohortId = $newCohortId;
    }
 
    /**
@@ -121,7 +121,7 @@ class Cohort {
       }
 
       // treat the StartDate as a mySQL date string
-      $newDateCreated = trim($newStartDate);
+      $newStartDate = trim($newStartDate);
       if((preg_match("/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/", $newStartDate, $matches)) !== 1) {
          throw(new RangeException("Your Start Date is not a valid date"));
       }
@@ -135,7 +135,7 @@ class Cohort {
       }
 
       //remove StartDate from quarantine below
-      $this->StartDate = $newStartDate;
+      $this->startDate = $newStartDate;
 
    }
 
@@ -143,30 +143,30 @@ class Cohort {
    * gets the value of EndDate of Cohort
    **/
       public function getEndDate () {
-         return($this->EndDate);
+         return($this->endDate);
 }
 
 /** sets the value of EndDate of Cohort
  *
- * @param mixed $EndDate object or string with date created
+ * @param mixed $newEndDate object or string with date created
  * @throws exception if date is not a valid date
  *
  **/
 public function setEndDate($newEndDate) {
    //zeroth, allow the date to be null if a new object
    if ($newEndDate === null) {
-      $this->EndDate = null;
+      $this->endDate = null;
       return;
    }
 
    // zeroth, allow a DateTime object to be directly assigned
    if(gettype($newEndDate) === "object" && get_class($newEndDate) === "DateTime") {
-      $this->startDate = $newEndDate;
+      $this->endDate = $newEndDate;
       return;
    }
 
    // treat the StartDate as a mySQL date string
-   $newDateCreated = trim($newEndDate);
+   $newEndDate = trim($newEndDate);
    if((preg_match("/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/", $newEndDate, $matches)) !== 1) {
       throw(new RangeException("Your Start Date is not a valid date"));
    }
@@ -180,13 +180,13 @@ public function setEndDate($newEndDate) {
    }
 
    //remove StartDate from quarantine below
-   $this->EndDate = $newEndDate;
+   $this->endDate = $newEndDate;
 
 }
    /**
     * updates this Signup in mySQL
     *
-    * @param resource $mysqli pointer to mySQL connection, by reference
+    * @param $mysqli pointer to mySQL connection, by reference
     * @throws mysqli_sql_exception when mySQL related errors occur
     **/
    public function update(&$mysqli) {
@@ -207,8 +207,8 @@ public function setEndDate($newEndDate) {
          $endDate = $this->endDate->format("Y-d-m H:i:s");
       }
 
-      // create query template -- !!!TO DO Change fields or adapt query!!!!!
-      $query     = "UPDATE cohort SET StartDate = ?, EndDate = ?, WHERE cohort = ?";
+      // create query template
+      $query     = "UPDATE cohort SET startDate = ?, endDate = ?, location = ?, description = ? WHERE cohortId = ?";
       $statement = $mysqli->prepare($query);
 
       if($statement === false) {
@@ -216,8 +216,8 @@ public function setEndDate($newEndDate) {
       }
 
       // bind the member variables to the place holders in the template
-      $wasClean = $statement->bind_param("Place Holders",  $StartDate, $EndDate);
-      if($wasClean === false) {n
+      $wasClean = $statement->bind_param("ssssi",  $this->startDate, $this->endDate, $this->location, $this->description, $this->cohortId);
+      if($wasClean === false) {
          throw(new mysqli_sql_exception("Unable to bind parameters"));
       }
 
@@ -227,84 +227,82 @@ public function setEndDate($newEndDate) {
       }
    }
 
-/**
- * gets the value of Location
- *
- * @return string Location
- **/
-   public function getLocation() {
-      return ($this->Location);
-   }
-
-/**
- * sets the value of Location
- *
- * @return string Location
- **/
-   public function setLocation($newLocation) {
-      // filter the location as a generic string
-      $newLocation = trim($newLocation);
-      $newLocation = filter_var($newLocation, FILTER_SANITIZE_STRING);
-
-      //remove Location from quarantine below
-      $this->Location = $newLocation;
-
-   }
+   /**
+    * gets the value of Location
+    *
+    * @return string Location
+    **/
+      public function getLocation() {
+         return ($this->location);
+      }
 
    /**
-    * gets the value of Description
+    * sets the value of Location
+    *
+    * @return string Location
+    **/
+      public function setLocation($newLocation) {
+         // filter the location as a generic string
+         $newLocation = trim($newLocation);
+         $newLocation = filter_var($newLocation, FILTER_SANITIZE_STRING);
+
+         //remove Location from quarantine below
+         $this->location = $newLocation;
+
+      }
+
+      /**
+       * gets the value of Description
+       *
+       * @return string Description
+       **/
+
+      public function getDescription() {
+         return ($this->description);
+      }
+
+   /**
+    * sets the value of Description
     *
     * @return string Description
     **/
+      public function setDescription($newDescription) {
+         // filter the location as a generic string
+         $newDescription = trim($newDescription);
+         $newDescription = filter_var($newDescription, FILTER_SANITIZE_STRING);
 
-   public function getDescription() {
-      return ($this->description);
-   }
-
-/**
- * sets the value of Description
- *
- * @return string Description
- **/
-   public function setDescription($newDescription) {
-   // filter the location as a generic string
-      $newLocation = trim($newDescription);
-      $newLocation = filter_var($newDescription, FILTER_SANITIZE_STRING);
-
-   //remove Description from quarantine below
-   $this->Description = $newDescription;
-
-
-
+         //remove Description from quarantine below
+         $this->description = $newDescription;
+      }
+   
    /**
-    *Insert Profile Cohort to mySQL
-    *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @param mysqli_sql_exception as mySql related errors occur
-    *
+    * Insert Profile Cohort to mySQL
+    * @param resource $mysqli pointer to mySQL connection by reference
+    * mysqli_sql_exception as mySql related errors occur
     **/
    public function insert(&$mysqli) {
 
 
-      if(gettype(mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+      if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
          throw(new mysqli_sql_exception("input is not a mysqli object"));
       }
 
-      //enforce the Profile Cohort ID is null
+      //enforce the CohortId is null
 
-      if($this->profileCohortId !== null) {
+      if($this->cohortId !== null) {
          throw(new mysqli_sql_exception("input is not a mysqli object"));
       }
 
+      //creates a query template Profile Cohort Id
 
-      //create a query template Profile Cohort ID
-      //To do: Insert Field names for $query
-      $query      =  "INSERT INTO profileCohortId (XXXXPROFILeCOHORtFIELDsHEREXXX) VALUES?";
+      $query      =  "INSERT INTO CohortId (startDate, endDate, location, description) VALUES (?,?,?)";
       $statement  =  $mysqli ->prepare($query);
          if($statement === false) {
             throw(new mysqli_sql_exception("Unable to prepare statement"));
       }
 
-      //bind the member variables to place holders in template
-      $wasClean = $statement->bind_param("ssd", $this->XXXXFIELD1,$this->XXXXFIELD1,etc);
+      //bind the member variables to placeholders in template
+      $wasClean = $statement->bind_param("ssssi", $this->startDate, $this->endDate, $this->location, $this->description, $this->cohortId);
          if($wasClean === false) {
             throw(new mysqli_sql_exception("Unable to bind parameters"));
       }
@@ -315,9 +313,77 @@ public function setEndDate($newEndDate) {
       }
 
    }
+   /**
+    * gets the Cohort by name
+    *
+    * @param resource $mysqli pointer to mySQL connection, by reference
+    * @param string to search for $cohortId
+    * @return mixed array of Cohorts or null if not found
+    * @throws mysqli_sql_exception when mySQL related errors occur
+    **/
+   public static function getCohorIdByNumber(&$mysqli, $cohortId) {
+      // handle degenerate cases
+      if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+         throw(new mysqli_sql_exception("input is not a mysqli object"));
+      }
+
+      // sanitize the description before searching
+      $productName = trim($cohortId);
+      $productName = filter_var($cohortId, FILTER_SANITIZE_NUMBER_INT);
+
+      // create query template
+      $query     = "SELECT cohortId, startDate, endDate, location, description FROM cohort WHERE cohortId LIKE ?";
+      $statement = $mysqli->prepare($query);
+      if($statement === false) {
+         throw(new mysqli_sql_exception("Unable to prepare statement"));
+      }
+
+      // bind the product name to the place holder in the template
+      $cohortId = "%cohortId%";
+      $wasClean = $statement->bind_param("s", $cohortId);
+      if($wasClean === false) {
+         throw(new mysqli_sql_exception("Unable to bind parameters"));
+      }
+
+      // execute the statement
+      if($statement->execute() === false) {
+         throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+      }
+
+      // get result from the SELECT query *pounds fists*
+      $result = $statement->get_result();
+      if($result === false) {
+         throw(new mysqli_sql_exception("Unable to get result set"));
+      }
+
+      // build an array based on fields in Class Cohort
+      $products = array();
+      while(($row = $result->fetch_assoc()) !== null) {
+         try {
+            $cohort    = new Cohort($row["cohortId"], $row["startDate"], $row["endDate"], $row["location"], $row["description"]);
+            $cohort[] = $cohort;
+         }
+         catch(Exception $exception) {
+            // if the row couldn't be converted, rethrow it
+            throw(new mysqli_sql_exception("Unable to convert row to cohort", 0, $exception));
+         }
+      }
+
+      // count the results in the array and return:
+      // 1) null if 0 results
+      // 2) a single object if 1 result
+      // 3) the entire array if > 1 result
+      $numberOfCohorts = count($Cohorts);
+      if($numberOfCohorts === 0) {
+         return(null);
+      } else if($numberOfCohorts === 1) {
+         return($cohorts[0]);
+      } else {
+         return($cohorts);
+      }
+   }
 }
 
 
 
 
-?>
