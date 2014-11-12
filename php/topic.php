@@ -146,6 +146,12 @@ class Topic {
 	 * @throws UnexpectedValueException when a parameter is not a valid date string in Y-m-d H:i:s format
 	 */
 	public function setTopicDate($newTopicDate) {
+		// allow topicDate to be null
+		if($newTopicDate === null) {
+			$this->topicDate = null;
+			return;
+		}
+
 		// Sanitize Date input to Y-m-d H:i:s MySQL standard
 		// this fails for badly formed strings and nulls
 		$newTopicDate = trim($newTopicDate);
