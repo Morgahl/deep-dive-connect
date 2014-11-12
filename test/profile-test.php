@@ -34,10 +34,13 @@ class ProfileTest extends UnitTestCase{
 		$this->mysqli = MysqliConfiguration::getMysqli();
 
 		//create new user object
-		$this->user = new User(null, "jack@chan.com", null, null, null, 1, null);
+		$this->user = new User(null, "jack@chan.com", null, null, null, 1, 1);
 
 		//insert user into MySQL
 		$this->user->insert($this->mysqli);
+
+		//second get userId from user object and assign it to USERID
+		$this->USERID = $this->user->getUserId();
 
 	}
 
@@ -61,8 +64,6 @@ class ProfileTest extends UnitTestCase{
 		//first, verify mySQL connect OK
 		$this->assertNotNull($this->mysqli);
 
-		//second get userId from user object and assign it to USERID
-		$this->USERID = $this->user->__get("userId");
 
 		// third, create a user to post to mySQL
 		$this->profile = new Profile(null, $this->USERID, $this->FNAME, $this->LNAME, $this->MNAME, $this->LOCATION, $this->DESCRIPTION, $this->FILENAME,$this->FILETYPE);
@@ -71,16 +72,16 @@ class ProfileTest extends UnitTestCase{
 		$this->profile->insert($this->mysqli);
 
 		//finally, compare the fields
-		$this->assertNotNull($this->profile->__get("profileId"));
-		$this->assertTrue($this->profile->__get("profileId") > 0);
-		$this->assertIdentical($this->profile->__get("userId"), $this->USERID);
-		$this->assertIdentical($this->profile->__get("firstName"), $this->FNAME);
-		$this->assertIdentical($this->profile->__get("lastName"), $this->LNAME);
-		$this->assertIdentical($this->profile->__get("middleName"), $this->MNAME);
-		$this->assertIdentical($this->profile->__get("location"), $this->LOCATION);
-		$this->assertIdentical($this->profile->__get("description"), $this->DESCRIPTION);
-		$this->assertIdentical($this->profile->__get("profilePicFileName"), $this->FILENAME);
-		$this->assertIdentical($this->profile->__get("profilePicFileType"), $this->FILETYPE);
+		$this->assertNotNull($this->profile->getProfileId());
+		$this->assertTrue($this->profile->getProfileId() > 0);
+		$this->assertIdentical($this->profile->getUserId(), $this->USERID);
+		$this->assertIdentical($this->profile->getFirstName(), $this->FNAME);
+		$this->assertIdentical($this->profile->getLastName(), $this->LNAME);
+		$this->assertIdentical($this->profile->getMiddleName(), $this->MNAME);
+		$this->assertIdentical($this->profile->getLocation(), $this->LOCATION);
+		$this->assertIdentical($this->profile->getDescription(), $this->DESCRIPTION);
+		$this->assertIdentical($this->profile->getProfilePicFileName(), $this->FILENAME);
+		$this->assertIdentical($this->profile->getProfilePicFileType(), $this->FILETYPE);
 
 	}
 
@@ -89,8 +90,6 @@ class ProfileTest extends UnitTestCase{
 		//first, verify mySQL connect OK
 		$this->assertNotNull($this->mysqli);
 
-		//second get userId from user object and assign it to USERID
-		$this->USERID = $this->user->__get("userId");
 
 		// third, create a user to post to mySQL
 		$this->profile = new Profile(null, $this->USERID, $this->FNAME, $this->LNAME, $this->MNAME, $this->LOCATION, $this->DESCRIPTION, $this->FILENAME,$this->FILETYPE);
@@ -118,16 +117,16 @@ class ProfileTest extends UnitTestCase{
 		$this->profile->update($this->mysqli);
 
 		//finally, compare the fields
-		$this->assertNotNull($this->profile->__get("profileId"));
-		$this->assertTrue($this->profile->__get("profileId") > 0);
-		$this->assertIdentical($this->profile->__get("userId"), $this->USERID);
-		$this->assertIdentical($this->profile->__get("firstName"), $this->newFname);
-		$this->assertIdentical($this->profile->__get("lastName"), $this->newLName);
-		$this->assertIdentical($this->profile->__get("middleName"), $this->newMName);
-		$this->assertIdentical($this->profile->__get("location"), $this->newLocation);
-		$this->assertIdentical($this->profile->__get("description"), $this->newDesc);
-		$this->assertIdentical($this->profile->__get("profilePicFileName"), $this->newFileName);
-		$this->assertIdentical($this->profile->__get("profilePicFileType"), $this->newFileType);
+		$this->assertNotNull($this->profile->getProfileId());
+		$this->assertTrue($this->profile->getProfileId() > 0);
+		$this->assertIdentical($this->profile->getUserId(), $this->USERID);
+		$this->assertIdentical($this->profile->getFirstName(), $newFName);
+		$this->assertIdentical($this->profile->getLastName(), $newLName);
+		$this->assertIdentical($this->profile->getMiddleName(), $newMName);
+		$this->assertIdentical($this->profile->getLocation(), $newLocation);
+		$this->assertIdentical($this->profile->getDescription(), $newDesc);
+		$this->assertIdentical($this->profile->getProfilePicFileName(), $newFileName);
+		$this->assertIdentical($this->profile->getProfilePicFileType(), $newFileType);
 
 
 	}

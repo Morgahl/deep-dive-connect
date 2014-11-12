@@ -392,7 +392,7 @@ class Profile
 		$uploadDir = "/uploads";   //TODO: not real directory for uploads
 
 		if((move_uploaded_file($newPicFileName, $uploadDir)) === false) {
-			throw(new UnexpectedValueException("file name $newPicFileName is not a valid upload file"));
+			//throw(new UnexpectedValueException("file name $newPicFileName is not a valid upload file"));
 		}
 
 		//assign value
@@ -430,30 +430,32 @@ class Profile
 		//check file type given by browser and see if it matches
 		//one of the three png, jpg, gif.
 		if($newPicFileType == "png"){
-
-			$imgResourceId = imagecreatefrompng($newPicFileType);
+			/*$imgResourceId = imagecreatefrompng($newPicFileType);
 			if($imgResourceId === false){
 				throw(new UnexpectedValueException("file type $newPicFileType is not png"));
-			}
+			}*/
 		}
 		elseif($newPicFileType == "jpeg"){
-			$imgResourceId = imagecreatefromjpeg($newPicFileType);
+			/*$imgResourceId = imagecreatefromjpeg($newPicFileType);
 			if($imgResourceId === false) {
 				throw(new UnexpectedValueException("file type $newPicFileType is not jpeg"));
-			}
+			}*/
 		}
 		elseif($newPicFileType == "gif"){
-			$imgResourceId = imagecreatefromgif($newPicFileType);
+			/*$imgResourceId = imagecreatefromgif($newPicFileType);
 			if($imgResourceId === false){
 				throw(new UnexpectedValueException("file type $newPicFileType is not gif"));
-			}
+			}*/
 		}
 		else{
 			throw(new UnexpectedValueException("file type $newPicFileType is not supported"));
 		}
 
 		//free any memory associated with image
-		imagedestroy($newPicFileType);
+		//imagedestroy($newPicFileType);
+
+		//Todo:Fix the above once you go over uploads
+		$this->profilePicFileType = $newPicFileType;
 
 	/*TODO profile pic file type
 	in data base store mime type image/*
