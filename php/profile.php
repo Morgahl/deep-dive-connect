@@ -84,13 +84,15 @@ class Profile
 	}
 
 	/**
-	 * magic method __get() gets the values from Profile
-	 * @return mixed int or string
+	 * gets value of $profileId
+	 *
+	 * @return mixed $profileId int or null if new object
 	 */
-	public function __get($name)
+	public function getProfileId()
 	{
-		return ($this->$name);
+		return $this->profileId;
 	}
+
 
 	/**
 	 * sets the value for profileId
@@ -123,6 +125,17 @@ class Profile
 	}
 
 	/**
+	 * get value of $userId
+	 *
+	 * @return int $userId
+	 */
+	public function getUserId()
+	{
+		return $this->userId;
+	}
+
+
+	/**
 	 * sets the value for userId
 	 *
 	 * @param int $newUserId user id
@@ -145,6 +158,18 @@ class Profile
 		// finally after sanitizing data assign it
 		$this->userId = $newUserId;
 	}
+
+	/**
+	 * gets value of $firstName
+	 *
+	 * @return string $firstName
+	 */
+	public function getFirstName()
+	{
+		return $this->firstName;
+	}
+
+
 
 	/**
 	 * sets the value of first name
@@ -173,6 +198,18 @@ class Profile
 	}
 
 	/**
+	 * get value of $lastName
+	 *
+	 * @return string $lastName
+	 */
+	public function getLastName()
+	{
+		return $this->lastName;
+	}
+
+
+
+	/**
 	 * sets the value of last name
 	 *
 	 * @param string $newLastName last name
@@ -197,6 +234,18 @@ class Profile
 		//assign value
 		$this->lastName = $newLastName;
 	}
+
+	/**
+	 * get value of $middleName
+	 *
+	 * @return mixed $middleName string or null if user has no middle name
+	 */
+	public function getMiddleName()
+	{
+		return $this->middleName;
+	}
+
+
 
 	/**
 	 * sets the value of middle name
@@ -229,6 +278,18 @@ class Profile
 	}
 
 	/**
+	 * get value of location
+	 *
+	 * @return mixed $location string or null if no location
+	 */
+	public function getLocation()
+	{
+		return $this->location;
+	}
+
+
+
+	/**
 	 * sets location to Profile
 	 *
 	 * @param string $newLocation location
@@ -257,6 +318,18 @@ class Profile
 		$this->location = $newLocation;
 
 	}
+
+	/**
+	 * get value of description
+	 *
+	 * @return mixed $description string or null if no value
+	 */
+	public function getDescription()
+	{
+		return $this->description;
+	}
+
+
 
 	/**
 	 * sets description for Profile
@@ -289,11 +362,23 @@ class Profile
 	}
 
 	/**
+	 * get value of $profilePicFilename
+	 *
+	 * @return mixed $profilePicFilename string or null if no value
+	 */
+	public function getProfilePicFileName()
+	{
+		return $this->profilePicFileName;
+	}
+
+
+
+	/**
 	 * sets profilePicFileName for Profile
 	 *
-	 * no parameters because username is created from
-	 * other variables in Profile class
-	 *
+	 * @param string $newPicFileName profilePicFileName
+	 * @throws UnexpectedValueException if not valid upload file
+	 * @returns valid upload file
 	 **/
 	public function setProfilePicFileName($newPicFileName)
 	{
@@ -318,6 +403,23 @@ class Profile
 		//move_uploaded_file
 	}
 
+	/**
+	 * get value for $profilePicFileType
+	 *
+	 * @return mixed $profilePicFileType string or null if no value
+	 */
+	public function getProfilePicFileType()
+	{
+		return $this->profilePicFileType;
+	}
+
+
+	/**
+	 * sets profilePicFileType for Profile
+	 *
+	 * @param string $newPicFileType profilePicFileType
+	 * @throws UnexpectedValueException if file type not allowed
+	 **/
 	public function setProfilePicFileType($newPicFileType){
 		//if file type is null let it be null
 		if($newPicFileType === null){
