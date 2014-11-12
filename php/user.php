@@ -68,15 +68,19 @@ class User{
 	}
 
 	/**
-	 * magic method __get() gets the values from User
-	 * @return mixed int or string
+	 * gets value of userId
+	 *
+	 * @return mixed userId int or null if new object
 	 */
-	public function __get($name){
-		return($this->$name);
+	public function getUserId()
+	{
+		return $this->userId;
 	}
 
+
+
 	/**
-	 * sets the value for userId
+	 * sets the value of userId
 	 *
 	 * @param mixed $newUserId user id(or null if new object
 	 * @throws UnexpectedValueException if not an integer or null
@@ -105,6 +109,18 @@ class User{
 	}
 
 	/**
+	 * gets value of $email
+	 *
+	 * @return string $email
+	 */
+	public function getEmail()
+	{
+		return $this->email;
+	}
+
+
+
+	/**
 	 * sets the value of email
 	 *
 	 * @param string $newEmail email
@@ -120,6 +136,18 @@ class User{
 		// now that data has been sanitized assign it
 		$this->email = $newEmail;
 	}
+
+	/**
+	 * gets value of $passwordHash
+	 *
+	 * @return mixed $passwordHash int or null if knew object
+	 */
+	public function getPasswordHash()
+	{
+		return $this->passwordHash;
+	}
+
+
 
 	/**
 	 * sets the value of password
@@ -147,6 +175,18 @@ class User{
 	}
 
 	/**
+	 * gets the value of $salt
+	 *
+	 * @return mixed $salt int or null if knew object
+	 */
+	public function getSalt()
+	{
+		return $this->salt;
+	}
+
+
+
+	/**
 	 * sets value for salt
 	 *
 	 * @param string $newSalt salt (64 hexadecimal bytes)
@@ -171,6 +211,16 @@ class User{
 		$this->salt = $newSalt;
 	}
 
+
+	/**
+	 * gets value of $authkey
+	 *
+	 * @return mixed $authKey int or null if new object
+	 */
+	public function getAuthKey()
+	{
+		return $this->authKey;
+	}
 
 
 	/**
@@ -197,6 +247,16 @@ class User{
 
 		//assign authKey
 		$this->authKey = $newAuthKey;
+	}
+
+	/**
+	 * gets value for $securityId
+	 *
+	 * @return int $securityId
+	 */
+	public function getSecurityId()
+	{
+		return $this->securityId;
 	}
 
 	/**
@@ -227,6 +287,18 @@ class User{
 		//assign securityId
 		$this->securityId = $newSecurityId;
 	}
+
+	/**
+	 * get value for loginSource
+	 *
+	 * @return 	mixed $loginSource int or null if they are not
+	 * 			logging in from an external source
+	 */
+	public function getLoginSourceId()
+	{
+		return $this->loginSourceId;
+	}
+
 
 	/**
 	 * Sets the LoginSource of user
@@ -308,6 +380,8 @@ class User{
 		//update the null userId with what mySQL just gave us
 		$this->userId = $mysqli->insert_id;
 	}
+
+
 
 	/**
 	 * deletes this User from mySQL
