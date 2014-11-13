@@ -69,7 +69,7 @@ Maecenas quis lobortis massa. Suspendisse ultricies aliquet dui, sit amet pharet
 //		$this->loginSources->insert($this->mysqli);
 
 		// create new user
-		$this->users = new User(null, "1@1.com", null, null, null, 1, null);
+		$this->users = new User(null, "1@1.com", null, null, null, 1, 1);
 		$this->users->insert($this->mysqli);
 
 		// create new profile
@@ -101,19 +101,19 @@ Maecenas quis lobortis massa. Suspendisse ultricies aliquet dui, sit amet pharet
 
 	// test topic creation and insertion
 	public function testInsertTopic() {
-		// first confirm that mySQL connection is OK
+		// confirm that mySQL connection is OK
 		$this->assertNotNull($this->mysqli);
 
-		// second, create a topic to post to mySQL
+		// create a topic to post to mySQL
 		$this->topics = new Topic(null, $this->profiles->getProfileId(), null, $this->topicSubject, $this->topicBody);
 
-		// third, insert topic into mySQL
+		// insert topic into mySQL
 		$this->topics->insert($this->mysqli);
 
-		// forth, rebuild class from mySQL data for the object
+		// rebuild class from mySQL data for the object
 		$this->topics = $this->topics->getTopicByTopicId($this->mysqli, $this->topics->getTopicId());
 
-		//finally, compare the fields
+		// compare the fields
 		// topicId
 		$this->assertNotNull($this->topics->getTopicId());
 		$this->assertTrue($this->topics->getTopicId() > 0);
@@ -152,7 +152,7 @@ Maecenas quis lobortis massa. Suspendisse ultricies aliquet dui, sit amet pharet
 		$this->topics->setTopicSubject($newSubject);
 		$this->topics->update($this->mysqli);
 
-		// forth, rebuild class from mySQL data for the object
+		// rebuild class from mySQL data for the object
 		$this->topics = $this->topics->getTopicByTopicId($this->mysqli, $this->topics->getTopicId());
 
 		//compare the fields
@@ -216,19 +216,19 @@ Maecenas quis lobortis massa. Suspendisse ultricies aliquet dui, sit amet pharet
 
 	// test topic creation from DB
 	public function testGetTopicByTopicId() {
-		// first confirm that mySQL connection is OK
+		// confirm that mySQL connection is OK
 		$this->assertNotNull($this->mysqli);
 
-		// second, create a topic to post to mySQL
+		// create a topic to post to mySQL
 		$this->topics = new Topic(null, $this->profiles->getProfileId(), null, $this->topicSubject, $this->topicBody);
 
-		// third, insert topic into mySQL
+		// insert topic into mySQL
 		$this->topics->insert($this->mysqli);
 
-		// forth, unlike insert test we rebuild object into a brand new object
-		$newTopics = $this->topics->getTopicByTopicId($this->mysqli, $this->topics->getTopicId());
+		// unlike insert test we rebuild object into a brand new object
+		$newTopics = Topic::getTopicByTopicId($this->mysqli, $this->topics->getTopicId());
 
-		//finally, compare the fields
+		// compare the fields
 		// topicId
 		$this->assertNotNull($newTopics->getTopicId());
 		$this->assertTrue($newTopics->getTopicId() > 0);
@@ -255,7 +255,7 @@ Maecenas quis lobortis massa. Suspendisse ultricies aliquet dui, sit amet pharet
 		$this->assertNotNull($this->mysqli);
 
 
-		// creat and insert 10 objects via looped instantiation
+		// create and insert 10 objects via looped instantiation
 		for ($i = 0; $i <= $count - 1; $i++){
 			$this->topics = new Topic(null, $this->profiles->getProfileId(), null, "This is subject $i", "This is comment $i");
 			$this->topics->insert($this->mysqli);

@@ -186,7 +186,6 @@ Maecenas malesuada eget lacus quis tempus. Pellentesque tincidunt interdum neque
 
 	// test comment deletion
 	public function testDeleteComment() {
-		// TODO: implement testDeleteComment
 		// confirm that mySQL connection is OK
 		$this->assertNotNull($this->mysqli);
 
@@ -232,7 +231,38 @@ Maecenas malesuada eget lacus quis tempus. Pellentesque tincidunt interdum neque
 
 	// test comment object retrieval from database by commentId
 	public function testGetCommentByCommentId() {
-		// TODO: implement testGetCommentByCommentId
+		// confirm that mySQL connection is OK
+		$this->assertNotNull($this->mysqli);
+
+		// create a comment to post to mySQL
+		$this->comments = new Comment(null, $this->topics->getTopicId(), $this->profiles->getProfileId(), null, $this->commentSubject, $this->commentBody);
+
+		// insert comment into mySQL
+		$this->comments->insert($this->mysqli);
+
+		// rebuild class from mySQL data for the object
+		$newComments = Comment::getCommentByCommentId($this->mysqli, $this->comments->getCommentId());
+
+		// compare the fields
+		// commentId
+		$this->assertNotNull($newComments->getCommentId());
+		$this->assertTrue($newComments->getCommentId() > 0);
+		// topicId
+		$this->assertNotNull($newComments->getTopicId());
+		$this->assertTrue($newComments->gettopicId() > 0);
+		$this->assertIdentical($newComments->getTopicId(),		$this->topics->getTopicId());
+		// profileId
+		$this->assertNotNull($newComments->getProfileId());
+		$this->assertTrue($newComments->getProfileId() > 0);
+		$this->assertIdentical($newComments->getProfileId(),		$this->profiles->getProfileId());
+		// topicDate
+		$this->assertNotNull($newComments->getCommentDate());
+		// topicSubject
+		$this->assertNotNull($newComments->getCommentSubject());
+		$this->assertIdentical($newComments->getCommentSubject(),	$this->commentSubject);
+		// topicBody
+		$this->assertNotNull($newComments->getCommentBody());
+		$this->assertIdentical($newComments->getCommentBody(),		$this->commentBody);
 	}
 
 	// test comment array of objects retrieval from database by topicId
