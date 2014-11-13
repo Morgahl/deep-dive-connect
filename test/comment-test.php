@@ -187,6 +187,47 @@ Maecenas malesuada eget lacus quis tempus. Pellentesque tincidunt interdum neque
 	// test comment deletion
 	public function testDeleteComment() {
 		// TODO: implement testDeleteComment
+		// confirm that mySQL connection is OK
+		$this->assertNotNull($this->mysqli);
+
+		// create a comment to post to mySQL
+		$this->comments = new Comment(null, $this->topics->getTopicId(), $this->profiles->getProfileId(), null, $this->commentSubject, $this->commentBody);
+
+		// insert comment into mySQL
+		$this->comments->insert($this->mysqli);
+
+		// rebuild class from mySQL data for the object
+		$this->comments = $this->comments->getCommentByCommentId($this->mysqli, $this->comments->getCommentId());
+
+		// compare the fields
+		// commentId
+		$this->assertNotNull($this->comments->getCommentId());
+		$this->assertTrue($this->comments->getCommentId() > 0);
+		// topicId
+		$this->assertNotNull($this->comments->getTopicId());
+		$this->assertTrue($this->comments->gettopicId() > 0);
+		$this->assertIdentical($this->comments->getTopicId(),		$this->topics->getTopicId());
+		// profileId
+		$this->assertNotNull($this->comments->getProfileId());
+		$this->assertTrue($this->comments->getProfileId() > 0);
+		$this->assertIdentical($this->comments->getProfileId(),		$this->profiles->getProfileId());
+		// topicDate
+		$this->assertNotNull($this->comments->getCommentDate());
+		// topicSubject
+		$this->assertNotNull($this->comments->getCommentSubject());
+		$this->assertIdentical($this->comments->getCommentSubject(),	$this->commentSubject);
+		// topicBody
+		$this->assertNotNull($this->comments->getCommentBody());
+		$this->assertIdentical($this->comments->getCommentBody(),		$this->commentBody);
+
+		// delete object
+		$this->comments->delete($this->mysqli);
+
+		// get now deleted topic
+		$this->comments = $this->comments->getCommentbyCommentId($this->mysqli, $this->comments->getCommentId());
+
+		// assert null
+		$this->assertNull($this->comments);
 	}
 
 	// test comment object retrieval from database by commentId
