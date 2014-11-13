@@ -600,7 +600,7 @@ class Comment {
 		$query = "SELECT commentId, topicId, profileId, commentDate, commentSubject, commentBody
 					FROM comment
 					WHERE topicId = ?
-					ORDER BY commentDate
+					ORDER BY commentId
 					LIMIT ?
 					OFFSET ?";
 
@@ -630,8 +630,7 @@ class Comment {
 			throw(new mysqli_sql_exception("Unable to get result set"));
 		}
 
-		// get results
-		$results = $statement->get_result();
+		 // process results
 		if($results->num_rows > 0) {
 			// retrieve results in bulk into an array
 			$results = $results->fetch_all(MYSQL_ASSOC);
@@ -718,7 +717,7 @@ class Comment {
 		$query = "SELECT commentId, topicId, profileId, commentDate, commentSubject, commentBody
 					FROM comment
 					WHERE profileId = ?
-					ORDER BY commentDate
+					ORDER BY commentId
 					LIMIT ?
 					OFFSET ?";
 
@@ -742,13 +741,7 @@ class Comment {
 			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 		}
 
-		// get result from the SELECT
-		$results = $statement->get_result();
-		if($results === false) {
-			throw(new mysqli_sql_exception("Unable to get result set"));
-		}
-
-		// get results
+		// process results
 		$results = $statement->get_result();
 		if($results->num_rows > 0) {
 			// retrieve results in bulk into an array

@@ -42,6 +42,7 @@ class CommentTest extends UnitTestCase
 	private $comments				= null;
 
 	// "globals" used for testing
+	private $count					= 10;
 	private $commentSubject 	= "Nunc ac augue a nisl ultricies finibus vel vitae nulla. Etiam accumsan sem blandit ultricies posuere. Nam hendrerit risus vitae dolor porta rutrum congue ac dolor. Cras nisi orci, eleifend et aliquam eu, accumsan sed metus. Cras sed tortor purus cras amet.";
 	private $commentBody			= "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus leo enim, pulvinar quis nulla id, commodo commodo mi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed sed risus fermentum, maximus sem consectetur, elementum erat. Maecenas porta nisl nec rhoncus viverra. Maecenas pellentesque ante enim, a hendrerit arcu fringilla ut. Integer sed erat vitae lorem commodo rutrum placerat tincidunt diam. Nullam convallis elementum odio, sit amet fermentum sem. Ut eget ultrices libero, eu pellentesque nunc.
 
@@ -267,11 +268,177 @@ Maecenas malesuada eget lacus quis tempus. Pellentesque tincidunt interdum neque
 
 	// test comment array of objects retrieval from database by topicId
 	public function testGetCommentsByTopicId() {
-		// TODO: implement testGetCommentsByTopicId
+		// count of comments
+		$count = $this->count;
+		$limit = $count/2;
+
+		// test mySQL object
+		$this->assertNotNull($this->mysqli);
+
+		// create and insert 10 objects via looped instantiation
+		for ($i = 0; $i < $count; $i++){
+			$this->comments = new Comment(null, $this->topics->getTopicId(), $this->profiles->getProfileId(), null, "This is subject $i", "This is body $i");
+			$this->comments->insert($this->mysqli);
+		}
+
+		// looped retrieval and testing of Comment retrieval
+		for ($i = 0; $i < ($count / $limit); $i++){
+			// retrieve new array of objects via getRecentTopics()
+			// we retrieve to test pagination
+			$newComments = Comment::getCommentsByTopicId($this->mysqli, $this->topics->getTopicId(), $limit, $i + 1);
+
+			// loop counter
+			$loopCount = 0;
+
+			// loop thorugh test of array of retrieved comments
+			foreach ($newComments as $t => $prop){
+				$current = $loopCount + ($i * $limit);
+				// commentId
+				$this->assertNotNull($newComments[$t]->getCommentId());
+				$this->assertTrue($newComments[$t]->getCommentId() > 0);
+				// topicId
+				$this->assertNotNull($newComments[$t]->getTopicId());
+				$this->assertTrue($newComments[$t]->getTopicId() > 0);
+				$this->assertIdentical($newComments[$t]->getTopicId(),		$this->topics->getTopicId());
+				// profileId
+				$this->assertNotNull($newComments[$t]->getProfileId());
+				$this->assertTrue($newComments[$t]->getProfileId() > 0);
+				$this->assertIdentical($newComments[$t]->getProfileId(),		$this->profiles->getProfileId());
+				// commentDate
+				$this->assertNotNull($newComments[$t]->getCommentDate());
+				// commentSubject
+				$this->assertNotNull($newComments[$t]->getCommentSubject());
+				$this->assertIdentical($newComments[$t]->getCommentSubject(),	"This is subject $current");
+				// commentBody
+				$this->assertNotNull($newComments[$t]->getCommentBody());
+				$this->assertIdentical($newComments[$t]->getCommentBody(),		"This is body $current");
+				$loopCount++;
+			}
+		}
+
+		// one last assertion that no further records have been entered
+		$newComments = Comment::getCommentsByTopicId($this->mysqli, $this->topics->getTopicId(), $limit, 3);
+
+		// assert 1 remaining record or null in the case of an even count
+		if($newComments !== null) {
+			// commentId
+			$this->assertNotNull($newComments->getCommentId());
+			$this->assertTrue($newComments->getCommentId() > 0);
+			// topicId
+			$this->assertNotNull($newComments->getTopicId());
+			$this->assertTrue($newComments->getTopicId() > 0);
+			$this->assertIdentical($newComments->getTopicId(),		$this->topics->getTopicId());
+			// profileId
+			$this->assertNotNull($newComments->getProfileId());
+			$this->assertTrue($newComments->getProfileId() > 0);
+			$this->assertIdentical($newComments->getProfileId(),		$this->profiles->getProfileId());
+			// commentDate
+			$this->assertNotNull($newComments->getCommentDate());
+			// commentSubject
+			$this->assertNotNull($newComments->getCommentSubject());
+			$this->assertIdentical($newComments->getCommentSubject(),	"This is subject " . $count - 1);
+			// commentBody
+			$this->assertNotNull($newComments->getCommentBody());
+			$this->assertIdentical($newComments->getCommentBody(),		"This is body " . $count - 1);
+		} else {
+			$this->assertNull($newComments);
+		}
+
+		// delete comment records from database
+		$newComments = Comment::getCommentsByTopicId($this->mysqli, $this->topics->getTopicId(), $count, 1);
+		foreach($newComments as $i => $prop) {
+			$newComments[$i]->delete($this->mysqli);
+		}
+
+		// manual trash collection :D
+		$newComments = null;
 	}
 
 	// test comment array of objects retrieval from database by profileId
 	public function testGetCommentsByProfileId() {
-		// TODO: implement testGetCommentsByProfileId
+		// count of comments
+		$count = $this->count;
+		$limit = $count/2;
+
+		// test mySQL object
+		$this->assertNotNull($this->mysqli);
+
+		// create and insert 10 objects via looped instantiation
+		for ($i = 0; $i < $count; $i++){
+			$this->comments = new Comment(null, $this->topics->getTopicId(), $this->profiles->getProfileId(), null, "This is subject $i", "This is body $i");
+			$this->comments->insert($this->mysqli);
+		}
+
+		// looped retrieval and testing of Comment retrieval
+		for ($i = 0; $i < ($count / $limit); $i++){
+			// retrieve new array of objects via getRecentTopics()
+			// we retrieve to test pagination
+			$newComments = Comment::getCommentsByProfileId($this->mysqli, $this->profiles->getProfileId(), $limit, $i + 1);
+
+			// loop counter
+			$loopCount = 0;
+
+			// loop thorugh test of array of retrieved comments
+			foreach ($newComments as $t => $prop){
+				$current = $loopCount + ($i * $limit);
+				// commentId
+				$this->assertNotNull($newComments[$t]->getCommentId());
+				$this->assertTrue($newComments[$t]->getCommentId() > 0);
+				// topicId
+				$this->assertNotNull($newComments[$t]->getTopicId());
+				$this->assertTrue($newComments[$t]->getTopicId() > 0);
+				$this->assertIdentical($newComments[$t]->getTopicId(),		$this->topics->getTopicId());
+				// profileId
+				$this->assertNotNull($newComments[$t]->getProfileId());
+				$this->assertTrue($newComments[$t]->getProfileId() > 0);
+				$this->assertIdentical($newComments[$t]->getProfileId(),		$this->profiles->getProfileId());
+				// commentDate
+				$this->assertNotNull($newComments[$t]->getCommentDate());
+				// commentSubject
+				$this->assertNotNull($newComments[$t]->getCommentSubject());
+				$this->assertIdentical($newComments[$t]->getCommentSubject(),	"This is subject $current");
+				// commentBody
+				$this->assertNotNull($newComments[$t]->getCommentBody());
+				$this->assertIdentical($newComments[$t]->getCommentBody(),		"This is body $current");
+				$loopCount++;
+			}
+		}
+
+		// one last assertion that no further records have been entered
+		$newComments = Comment::getCommentsByProfileId($this->mysqli, $this->profiles->getProfileId(), $limit, 3);
+
+		// assert 1 remaining record or null in the case of an even count
+		if($newComments !== null) {
+			// commentId
+			$this->assertNotNull($newComments->getCommentId());
+			$this->assertTrue($newComments->getCommentId() > 0);
+			// topicId
+			$this->assertNotNull($newComments->getTopicId());
+			$this->assertTrue($newComments->getTopicId() > 0);
+			$this->assertIdentical($newComments->getTopicId(),		$this->topics->getTopicId());
+			// profileId
+			$this->assertNotNull($newComments->getProfileId());
+			$this->assertTrue($newComments->getProfileId() > 0);
+			$this->assertIdentical($newComments->getProfileId(),		$this->profiles->getProfileId());
+			// commentDate
+			$this->assertNotNull($newComments->getCommentDate());
+			// commentSubject
+			$this->assertNotNull($newComments->getCommentSubject());
+			$this->assertIdentical($newComments->getCommentSubject(),	"This is subject " . $count - 1);
+			// commentBody
+			$this->assertNotNull($newComments->getCommentBody());
+			$this->assertIdentical($newComments->getCommentBody(),		"This is body " . $count - 1);
+		} else {
+			$this->assertNull($newComments);
+		}
+
+		// delete comment records from database
+		$newComments = Comment::getCommentsByProfileId($this->mysqli, $this->profiles->getProfileId(), $count, 1);
+		foreach($newComments as $i => $prop) {
+			$newComments[$i]->delete($this->mysqli);
+		}
+
+		// manual trash collection :D
+		$newComments = null;
 	}
 }
