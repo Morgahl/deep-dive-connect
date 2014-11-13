@@ -104,19 +104,19 @@ Maecenas malesuada eget lacus quis tempus. Pellentesque tincidunt interdum neque
 
 	// test comment creation and insertion
 	public function testInsertComment() {
-		// first confirm that mySQL connection is OK
+		// confirm that mySQL connection is OK
 		$this->assertNotNull($this->mysqli);
 
-		// second, create a comment to post to mySQL
+		// create a comment to post to mySQL
 		$this->comments = new Comment(null, $this->topics->getTopicId(), $this->profiles->getProfileId(), null, $this->commentSubject, $this->commentBody);
 
-		// third, insert comment into mySQL
+		// insert comment into mySQL
 		$this->comments->insert($this->mysqli);
 
-		// forth, rebuild class from mySQL data for the object
+		// rebuild class from mySQL data for the object
 		$this->comments = $this->comments->getCommentByCommentId($this->mysqli, $this->comments->getCommentId());
 
-		//finally, compare the fields
+		// compare the fields
 		// commentId
 		$this->assertNotNull($this->comments->getCommentId());
 		$this->assertTrue($this->comments->getCommentId() > 0);
@@ -140,7 +140,48 @@ Maecenas malesuada eget lacus quis tempus. Pellentesque tincidunt interdum neque
 
 	// test comment update
 	public function testUpdateComment() {
-		// TODO: implement testUpdateComment
+		// new subject
+		$newSubject = "This is an updated subject";
+
+		// confirm that mySQL connection is OK
+		$this->assertNotNull($this->mysqli);
+
+		// create a comment to post to mySQL
+		$this->comments = new Comment(null, $this->topics->getTopicId(), $this->profiles->getProfileId(), null, $this->commentSubject, $this->commentBody);
+
+		// insert comment into mySQL
+		$this->comments->insert($this->mysqli);
+
+		// rebuild class from mySQL data for the object
+		$this->comments = $this->comments->getCommentByCommentId($this->mysqli, $this->comments->getCommentId());
+
+		// change a value then push update
+		$this->comments->setCommentSubject($newSubject);
+		$this->comments->update($this->mysqli);
+
+		// rebuild class from mySQL data for the object
+		$this->comments = $this->comments->getCommentByCommentId($this->mysqli, $this->comments->getCommentId());
+
+		// compare the fields
+		// commentId
+		$this->assertNotNull($this->comments->getCommentId());
+		$this->assertTrue($this->comments->getCommentId() > 0);
+		// topicId
+		$this->assertNotNull($this->comments->getTopicId());
+		$this->assertTrue($this->comments->gettopicId() > 0);
+		$this->assertIdentical($this->comments->getTopicId(),		$this->topics->getTopicId());
+		// profileId
+		$this->assertNotNull($this->comments->getProfileId());
+		$this->assertTrue($this->comments->getProfileId() > 0);
+		$this->assertIdentical($this->comments->getProfileId(),		$this->profiles->getProfileId());
+		// topicDate
+		$this->assertNotNull($this->comments->getCommentDate());
+		// topicSubject
+		$this->assertNotNull($this->comments->getCommentSubject());
+		$this->assertIdentical($this->comments->getCommentSubject(),	$newSubject);
+		// topicBody
+		$this->assertNotNull($this->comments->getCommentBody());
+		$this->assertIdentical($this->comments->getCommentBody(),		$this->commentBody);
 	}
 
 	// test comment deletion

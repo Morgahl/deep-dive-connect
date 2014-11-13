@@ -405,7 +405,7 @@ class Comment {
 		}
 
 		// bind the variables to the place holders in the template
-		$wasClean = $statement->bind_param("iiss", $this->topicId, $this->profileId, $this->commentSubject, $this->commentBody);
+		$wasClean = $statement->bind_param("iissi", $this->topicId, $this->profileId, $this->commentSubject, $this->commentBody, $this->commentId);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
