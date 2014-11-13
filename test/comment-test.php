@@ -270,7 +270,7 @@ Maecenas malesuada eget lacus quis tempus. Pellentesque tincidunt interdum neque
 	public function testGetCommentsByTopicId() {
 		// count of comments
 		$count = $this->count;
-		$limit = $count/2;
+		$limit = floor($count/2);
 
 		// test mySQL object
 		$this->assertNotNull($this->mysqli);
@@ -282,7 +282,7 @@ Maecenas malesuada eget lacus quis tempus. Pellentesque tincidunt interdum neque
 		}
 
 		// looped retrieval and testing of Comment retrieval
-		for ($i = 0; $i < ($count / $limit); $i++){
+		for ($i = 0; $i < 2; $i++){
 			// retrieve new array of objects via getRecentTopics()
 			// we retrieve to test pagination
 			$newComments = Comment::getCommentsByTopicId($this->mysqli, $this->topics->getTopicId(), $limit, $i + 1);
@@ -321,25 +321,26 @@ Maecenas malesuada eget lacus quis tempus. Pellentesque tincidunt interdum neque
 
 		// assert 1 remaining record or null in the case of an even count
 		if($newComments !== null) {
+			$test = $count - 1;
 			// commentId
-			$this->assertNotNull($newComments->getCommentId());
-			$this->assertTrue($newComments->getCommentId() > 0);
+			$this->assertNotNull($newComments[0]->getCommentId());
+			$this->assertTrue($newComments[0]->getCommentId() > 0);
 			// topicId
-			$this->assertNotNull($newComments->getTopicId());
-			$this->assertTrue($newComments->getTopicId() > 0);
-			$this->assertIdentical($newComments->getTopicId(),		$this->topics->getTopicId());
+			$this->assertNotNull($newComments[0]->getTopicId());
+			$this->assertTrue($newComments[0]->getTopicId() > 0);
+			$this->assertIdentical($newComments[0]->getTopicId(),		$this->topics->getTopicId());
 			// profileId
-			$this->assertNotNull($newComments->getProfileId());
-			$this->assertTrue($newComments->getProfileId() > 0);
-			$this->assertIdentical($newComments->getProfileId(),		$this->profiles->getProfileId());
+			$this->assertNotNull($newComments[0]->getProfileId());
+			$this->assertTrue($newComments[0]->getProfileId() > 0);
+			$this->assertIdentical($newComments[0]->getProfileId(),		$this->profiles->getProfileId());
 			// commentDate
-			$this->assertNotNull($newComments->getCommentDate());
+			$this->assertNotNull($newComments[0]->getCommentDate());
 			// commentSubject
-			$this->assertNotNull($newComments->getCommentSubject());
-			$this->assertIdentical($newComments->getCommentSubject(),	"This is subject " . $count - 1);
+			$this->assertNotNull($newComments[0]->getCommentSubject());
+			$this->assertIdentical($newComments[0]->getCommentSubject(),	"This is subject $test");
 			// commentBody
-			$this->assertNotNull($newComments->getCommentBody());
-			$this->assertIdentical($newComments->getCommentBody(),		"This is body " . $count - 1);
+			$this->assertNotNull($newComments[0]->getCommentBody());
+			$this->assertIdentical($newComments[0]->getCommentBody(),		"This is body $test");
 		} else {
 			$this->assertNull($newComments);
 		}
@@ -358,7 +359,7 @@ Maecenas malesuada eget lacus quis tempus. Pellentesque tincidunt interdum neque
 	public function testGetCommentsByProfileId() {
 		// count of comments
 		$count = $this->count;
-		$limit = $count/2;
+		$limit = floor($count/2);
 
 		// test mySQL object
 		$this->assertNotNull($this->mysqli);
@@ -370,7 +371,7 @@ Maecenas malesuada eget lacus quis tempus. Pellentesque tincidunt interdum neque
 		}
 
 		// looped retrieval and testing of Comment retrieval
-		for ($i = 0; $i < ($count / $limit); $i++){
+		for ($i = 0; $i < 2; $i++){
 			// retrieve new array of objects via getRecentTopics()
 			// we retrieve to test pagination
 			$newComments = Comment::getCommentsByProfileId($this->mysqli, $this->profiles->getProfileId(), $limit, $i + 1);
@@ -409,25 +410,26 @@ Maecenas malesuada eget lacus quis tempus. Pellentesque tincidunt interdum neque
 
 		// assert 1 remaining record or null in the case of an even count
 		if($newComments !== null) {
+			$test = $count - 1;
 			// commentId
-			$this->assertNotNull($newComments->getCommentId());
-			$this->assertTrue($newComments->getCommentId() > 0);
+			$this->assertNotNull($newComments[0]->getCommentId());
+			$this->assertTrue($newComments[0]->getCommentId() > 0);
 			// topicId
-			$this->assertNotNull($newComments->getTopicId());
-			$this->assertTrue($newComments->getTopicId() > 0);
-			$this->assertIdentical($newComments->getTopicId(),		$this->topics->getTopicId());
+			$this->assertNotNull($newComments[0]->getTopicId());
+			$this->assertTrue($newComments[0]->getTopicId() > 0);
+			$this->assertIdentical($newComments[0]->getTopicId(),		$this->topics->getTopicId());
 			// profileId
-			$this->assertNotNull($newComments->getProfileId());
-			$this->assertTrue($newComments->getProfileId() > 0);
-			$this->assertIdentical($newComments->getProfileId(),		$this->profiles->getProfileId());
+			$this->assertNotNull($newComments[0]->getProfileId());
+			$this->assertTrue($newComments[0]->getProfileId() > 0);
+			$this->assertIdentical($newComments[0]->getProfileId(),		$this->profiles->getProfileId());
 			// commentDate
-			$this->assertNotNull($newComments->getCommentDate());
+			$this->assertNotNull($newComments[0]->getCommentDate());
 			// commentSubject
-			$this->assertNotNull($newComments->getCommentSubject());
-			$this->assertIdentical($newComments->getCommentSubject(),	"This is subject " . $count - 1);
+			$this->assertNotNull($newComments[0]->getCommentSubject());
+			$this->assertIdentical($newComments[0]->getCommentSubject(),	"This is subject $test");
 			// commentBody
-			$this->assertNotNull($newComments->getCommentBody());
-			$this->assertIdentical($newComments->getCommentBody(),		"This is body " . $count - 1);
+			$this->assertNotNull($newComments[0]->getCommentBody());
+			$this->assertIdentical($newComments[0]->getCommentBody(),		"This is body $test");
 		} else {
 			$this->assertNull($newComments);
 		}
