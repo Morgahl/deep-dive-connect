@@ -216,7 +216,7 @@ class Cohort {
       }
 
       // bind the member variables to the place holders in the template
-      $wasClean = $statement->bind_param("ssssi",  $this->startDate, $this->endDate, $this->location, $this->description, $this->cohortId);
+      $wasClean = $statement->bind_param("ssssi", $startDate, $endDate, $this->location, $this->description, $this->cohortId);
       if($wasClean === false) {
          throw(new mysqli_sql_exception("Unable to bind parameters"));
       }
@@ -292,16 +292,16 @@ class Cohort {
             throw(new mysqli_sql_exception("input is not a mysqli object"));
          }
 
-         //creates a query template Profile Cohort Id
+         //creates a query template Profile Cohort
 
-         $query      =  "INSERT INTO CohortId (startDate, endDate, location, description) VALUES (?,?,?,?  )";
+         $query      =  "INSERT INTO cohort(startDate, endDate, location, description) VALUES (?,?,?,?)";
          $statement  =  $mysqli ->prepare($query);
             if($statement === false) {
                throw(new mysqli_sql_exception("Unable to prepare statement"));
          }
 
          //bind the member variables to placeholders in template
-         $wasClean = $statement->bind_param("ssssi", $this->startDate, $this->endDate, $this->location, $this->description, $this->cohortId);
+         $wasClean = $statement->bind_param("ssss", $this->startDate, $this->endDate, $this->location, $this->description);
             if($wasClean === false) {
                throw(new mysqli_sql_exception("Unable to bind parameters"));
          }
@@ -311,9 +311,48 @@ class Cohort {
                throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
          }
 
+         // update the null userId with what mySQL just gave us
+         $this->cohortId = $mysqli->insert_id;
       }
 
    /**
+    * deletes cohort from mySQL
+    *
+    * @param resource $mysqli pointer to mySQL connection, by reference
+    * @throws mysqli_sql_exception when mySQL related errors occur
+    **/
+   public function delete(&$mysqli) {
+      // handle degenerate cases
+      if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+         throw(new mysqli_sql_exception("input is not a mysqli object"));
+      }
+
+      // enforce the cohortId is not null (i.e., don't delete a cohort that hasn't been inserted)
+      if($this->cohortId === null) {
+         throw(new mysqli_sql_exception("Unable to delete a user that does not exist"));
+      }
+
+      // create query template
+      $query     = "DELETE FROM cohort WHERE cohortId = ?";
+      $statement = $mysqli->prepare($query);
+      if($statement === false) {
+         throw(new mysqli_sql_exception("Unable to prepare statement"));
+      }
+
+      // bind the member variables to the place holder in the template
+      $wasClean = $statement->bind_param("i", $this->cohortId);
+      if($wasClean === false) {
+         throw(new mysqli_sql_exception("Unable to bind parameters"));
+      }
+
+      // execute the statement
+      if($statement->execute() === false) {
+         throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+      }
+   }
+
+
+      /**
     * Selects attendees by CohortId
     *
     * @param resource $mysqli pointer to mySQL connection, by reference

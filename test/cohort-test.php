@@ -29,8 +29,8 @@ class cohortTest extends UnitTestCase {
 
          // a few "global" variables for creating test data
          private $COHORTID       = null;
-         private $STARTDATE      = "2014-30-09 16:16:16";
-         private $ENDDATE        = "2014-30-11 16:16:16";
+         private $STARTDATE      = "2014-09-30 16:16:16";
+         private $ENDDATE        = "2014-11-30 16:16:16";
          private $LOCATION       = "Albuquerque";
          private $DESCRIPTION    = "I am a Deep Dive Alum";
 
@@ -78,6 +78,13 @@ class cohortTest extends UnitTestCase {
       $this->assertIdentical($this->cohort->getLocation(),                $this->LOCATION);
       $this->assertIdentical($this->cohort->getDescription(),     $this->DESCRIPTION);
    }
+
+
+
+
+
+
+
 
    /*
    // test updating a User in mySQL
