@@ -160,7 +160,7 @@ class ProfileTest extends UnitTestCase{
 		// first, verify mySQL connected OK
 		$this->assertNotNull($this->mysqli);
 
-		// second, create a user to post to mySQL
+		// second, create a profile to post to mySQL
 		$this->profile = new Profile(null, $this->USERID, $this->FNAME, $this->LNAME, $this->MNAME, $this->LOCATION, $this->DESCRIPTION, $this->FILENAME,$this->FILETYPE);
 
 		// third, insert the profile to mySQL
@@ -173,6 +173,35 @@ class ProfileTest extends UnitTestCase{
 		$this->assertNotNull($staticProfile->getProfileId());
 		$this->assertTrue($staticProfile->getProfileId() > 0);
 		$this->assertIdentical($staticProfile->getProfileId(), $this->profile->getProfileId());
+		$this->assertIdentical($staticProfile->getUserId(), $this->USERID);
+		$this->assertIdentical($staticProfile->getFirstName(), $this->FNAME);
+		$this->assertIdentical($staticProfile->getLastName(), $this->LNAME);
+		$this->assertIdentical($staticProfile->getMiddleName(), $this->MNAME);
+		$this->assertIdentical($staticProfile->getLocation(), $this->LOCATION);
+		$this->assertIdentical($staticProfile->getDescription(), $this->DESCRIPTION);
+		$this->assertIdentical($staticProfile->getProfilePicFileName(), $this->FILENAME);
+		$this->assertIdentical($staticProfile->getProfilePicFileType(), $this-> FILETYPE);
+
+	}
+
+	// test get profile by profileId
+	public function testGetProfileByProfileId(){
+		// first, verify mySQL connected OK
+		$this->assertNotNull($this->mysqli);
+
+		// second, create a profile to post to mySQL
+		$this->profile = new Profile(null, $this->USERID, $this->FNAME, $this->LNAME, $this->MNAME, $this->LOCATION, $this->DESCRIPTION, $this->FILENAME,$this->FILETYPE);
+
+		// third, insert the profile into mySQL
+		$this->profile->insert($this->mysqli);
+
+		//fourth, get the profile using the static method
+		$staticProfile = Profile::getProfileByProfileId($this->mysqli, $this->profile->getProfileId());
+
+		// finally, compare the fields
+		$this->assertNotNull($staticProfile->getProfileId());
+		$this->assertTrue($staticProfile->getProfileId() > 0);
+		$this->assertIdentical($staticProfile->getProfileId, $this->profile->getProfileId());
 		$this->assertIdentical($staticProfile->getUserId(), $this->USERID);
 		$this->assertIdentical($staticProfile->getFirstName(), $this->FNAME);
 		$this->assertIdentical($staticProfile->getLastName(), $this->LNAME);
