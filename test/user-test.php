@@ -152,15 +152,41 @@ class UserTest extends UnitTestCase {
 		$staticUser = User::getUserByEmail($this->mysqli, $this->EMAIL);
 
 		// finally, compare the fields
+$this->assertNotNull($staticUser->getUserId());
+$this->assertTrue($staticUser->getUserId() > 0);
+$this->assertIdentical($staticUser->getUserId(),              $this->user->getUserId());
+$this->assertIdentical($staticUser->getEmail(),  $this->EMAIL);
+$this->assertIdentical($staticUser->getPasswordHash(), 	$this->HASH);
+$this->assertIdentical($staticUser->getSalt(), 				$this->SALT);
+$this->assertIdentical($staticUser->getAuthKey(),			$this->AUTHKEY);
+$this->assertIdentical($staticUser->getSecurityId(), 		$this->SECURITYID);
+$this->assertIdentical($staticUser->getLoginSourceId(),	$this->LOGINSOURCEID);
+}
+
+	// test get user by userId
+	public function testGetUserByUserId(){
+		// first, verify mySQL connected OK
+		$this->assertNotNull($this->mysqli);
+
+		// second, create a user to post to mySQL
+		$this->user = new User(null, $this->EMAIL, $this->HASH, $this->SALT, $this->AUTHKEY, $this->SECURITYID, $this->LOGINSOURCEID);
+
+		// third, insert the user to mySQL
+		$this->user->insert($this->mysqli);
+
+		// fourth, get the user using the static method
+		$staticUser = User::getUserByUserId($this->mysqli, $this->user->getUserId());
+
+		// finally, compare the fields
 		$this->assertNotNull($staticUser->getUserId());
 		$this->assertTrue($staticUser->getUserId() > 0);
 		$this->assertIdentical($staticUser->getUserId(),              $this->user->getUserId());
-		$this->assertIdentical($this->user->getEmail(),  $this->EMAIL);
-		$this->assertIdentical($this->user->getPasswordHash(), 	$this->HASH);
-		$this->assertIdentical($this->user->getSalt(), 				$this->SALT);
-		$this->assertIdentical($this->user->getAuthKey(),			$this->AUTHKEY);
-		$this->assertIdentical($this->user->getSecurityId(), 		$this->SECURITYID);
-		$this->assertIdentical($this->user->getLoginSourceId(),	$this->LOGINSOURCEID);
+		$this->assertIdentical($staticUser->getEmail(),  $this->EMAIL);
+		$this->assertIdentical($staticUser->getPasswordHash(), 	$this->HASH);
+		$this->assertIdentical($staticUser->getSalt(), 				$this->SALT);
+		$this->assertIdentical($staticUser->getAuthKey(),			$this->AUTHKEY);
+		$this->assertIdentical($staticUser->getSecurityId(), 		$this->SECURITYID);
+		$this->assertIdentical($staticUser->getLoginSourceId(),	$this->LOGINSOURCEID);
 	}
 }
 ?>
