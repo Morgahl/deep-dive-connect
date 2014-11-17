@@ -16,8 +16,8 @@ require_once("/usr/lib/php5/simpletest/autorun.php");
 // then require the class under scrutiny
 require_once("../php/securityClass.php");
 
-// the SecurityClassTest is a container for all our tests
-class SecurityClassTest extends UnitTestCaseTest
+// the securityClassTest is a container for all our tests
+class securityClassTest extends unitTestCaseTest
 {
 	// variable to hold the mySQL connection
 	private $mysqli = null;
@@ -77,14 +77,14 @@ class SecurityClassTest extends UnitTestCaseTest
 		$this->assertNotNull($this->security->getIsDefault());
 		$this->assertIdentical($this->security->getIsDefault(), $this->ISDEFAULT);
 		// canEditOther
-		$this->assertNotNull($this->security->getcanEditOther());
-		$this->assertIdentical($this->security->getcanEditOther(), $this->CANEDITOTHER);
+		$this->assertNotNull($this->security->getCanEditOther());
+		$this->assertIdentical($this->security->getCanEditOther(), $this->CANEDITOTHER);
 		// canPromote
 		$this->assertNotNull($this->security->getCanPromote());
 		$this->assertIdentical($this->security->getCanPromote(), $this->CANPROMOTE);
 		// siteAdmin
-		$this->assertNotNull($this->security->getSecurityId());
-		$this->assertIdentical($this->security->getSecurityId(), $this->SITEADMIN);
+		$this->assertNotNull($this->security->getSiteAdmin());
+		$this->assertIdentical($this->security->getSiteAdmin(), $this->SITEADMIN);
 	}
 }
 
