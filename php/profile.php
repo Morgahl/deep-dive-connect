@@ -635,7 +635,7 @@ class Profile
 		// 2) if there's no result, we can just return null
 		$row = $result->fetch_assoc(); // fetch_assoc() returns a row as an associative array
 		// convert the associative array to a Profile
-		if(row !== null) {
+		if($row !== null) {
 			try {
 				$profile = new Profile($row["profileId"], $row["userId"], $row["firstName"], $row["lastName"], $row["middleName"], $row["location"], $row["description"], $row["profilePicFileName"], $row["profilePicFileType"]);
 			} catch(Exception $exception) {
