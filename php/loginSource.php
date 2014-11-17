@@ -1,9 +1,11 @@
 <?php
 
-// Author Joseph Bottone
-// http://josephmichaelbottone.com
-// bottone.joseph@gmail.com
-// http://thundermedia.com
+/**
+ * Author Joseph Bottone
+ * http://josephmichaelbottone.com
+ * bottone.joseph@gmail.
+ * thundermedia.com
+ **/
 
 class LoginSource
 {
