@@ -25,17 +25,17 @@ class SecurityClass
 	private $siteAdmin;
 
 	// here is the constructor
-	public function __construct($newSecurityId, $newDescription, $newIsDefault, $newCreateTopic, $newCanEditOther, $newCanPromote,
-										 $newSiteAdmin)
+	public function __construct($securityId, $description, $isDefault, $createTopic, $canEditOther, $canPromote,
+										 $siteAdmin)
 	{
 		try {
-			$this->setsecurityId($newSecurityId);
-			$this->setdescription($newDescription);
-			$this->setIsDefault($newIsDefault);
-			$this->setcreateTopic($newCreateTopic);
-			$this->setcanEditOther($newCanEditOther);
-			$this->setcanPromote($newCanPromote);
-			$this->setsiteAdmin($newSiteAdmin);
+			$this->setSecurityId($securityId);
+			$this->setDescription($description);
+			$this->setIsDefault($isDefault);
+			$this->setCreateTopic($createTopic);
+			$this->setCanEditOther($canEditOther);
+			$this->setCanPromote($canPromote);
+			$this->setSiteAdmin($siteAdmin);
 		} catch(UnexpectedValueException $unexpectedValue) {
 			// rethrow to the seller
 			throw(new UnexpectedValueException("Unable to construct securityId, 0, $unexpectedValue"));
@@ -51,15 +51,15 @@ class SecurityClass
 		return ($this->securityId);
 	}
 
-	public function setSecurityId($newSecurityId)
+	public function setSecurityId($securityId)
 	{
 		//  ensure the securityId is an integer
-		if(filter_var($newSecurityId, FILTER_SANITIZE_STRING) === false) {
-			throw(new UnexpectedValueException("securityId $newSecurityId is not valid"));
+		if(filter_var($securityId, FILTER_SANITIZE_INT) === false) {
+			throw(new UnexpectedValueException("securityId $securityId is not valid"));
 		}
 
 		// finally, take the securityId out of quarantine and assign it
-		$this->securityId = $newSecurityId;
+		$this->securityId = $securityId;
 	}
 
 
@@ -72,118 +72,118 @@ class SecurityClass
 		return ($this->description);
 	}
 
-	public function setDescription($newDescription)
+	public function setDescription($description)
 	{
 		// description should never be null
-		if($newDescription === null) {
+		if($description === Null) {
 			throw(new UnexpectedValueException("Topic Body must not be null"));
 		}
 // sanitize string
-		$newDescription = trim($newDescription);
-		if(($newDescription = filter_var($newDescription, FILTER_SANITIZE_STRING)) === false) {
+		$description = trim($description);
+		if(($description = filter_var($description, FILTER_SANITIZE_STRING)) === false) {
 			throw(new UnexpectedValueException("Not a valid string"));
 		}
 
 		// enforce 256 character limit to ensure no truncation of data when inserting to database
-		if(strlen($newDescription) > 256) {
+		if(strlen($description) > 256) {
 			throw(new RangeException("Description must be 256 characters or less in length"));
 		}
 	// take description out of quarantine and assign it
-		$this->description = $newDescription;
+		$this->description = $description;
 
 	}
 
 
-	public function getisDefault()
+	public function getIsDefault()
 	{
 		return ($this->isDefault);
 	}
 
-	public function setIsDefault($newIsDefault)
+	public function setIsDefault($isDefault)
 	{
 		// allow the isDefault to be null if a new object
 
-		if($newIsDefault === null) {
+		if($isDefault === null) {
 			$this->isDefault = null;
 			return;
 		}
 
 		//  ensure the isDefault is an integer
 
-		if(filter_var($newIsDefault, FILTER_VALIDATE_INT) === false) {
-			throw(new UnexpectedValueException("description $newIsDefault is not numeric"));
+		if(filter_var($isDefault, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("description $isDefault is not numeric"));
 		}
 
-		$newIsDefault = intval($newIsDefault);
-		if($newIsDefault <= 0) {
-			throw(new RangeException("isDefault $newIsDefault is not positive"));
+		$isDefault = intval($isDefault);
+		if($isDefault <= 0) {
+			throw(new RangeException("isDefault $isDefault is not positive"));
 		}
 
 	// take isDefault out of quarantine and assign it
-		$this->isDefault = $newIsDefault;
+		$this->isDefault = $isDefault;
 
 	}
 
 
-	public function getcreateTopic()
+	public function getCreateTopic()
 	{
-		return ($this->CreateTopic);
+		return ($this->createTopic);
 	}
 
-	public function setCreateTopic($newCreateTopic)
+	public function setCreateTopic($createTopic)
 	{
 		// allow the createTopic to be null if a new object
 
-		if($newCreateTopic === null) {
-			$this->CreateTopic = null;
+		if($createTopic === null) {
+			$this->createTopic = null;
 			return;
 		}
 
 		//  ensure the createTopic is an integer
 
-		if(filter_var($newCreateTopic, FILTER_VALIDATE_INT) === false) {
-			throw(new UnexpectedValueException("description $newCreateTopic is not numeric"));
+		if(filter_var($createTopic, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("description $createTopic is not numeric"));
 		}
 
-		$newCreateTopic = intval($newCreateTopic);
-		if($newCreateTopic <= 0) {
-			throw(new RangeException("createTopic $newCreateTopic is not positive"));
+		$createTopic = intval($createTopic);
+		if($createTopic <= 0) {
+			throw(new RangeException("createTopic $createTopic is not positive"));
 		}
 
 		// take createTopic out of quarantine and assign it
-		$this->createTopict = $newCreateTopic;
+		$this->createTopic = $createTopic;
 	}
 
 
 
 
-	public function getcanEditOther()
+	public function getCanEditOther()
 	{
 		return ($this->canEditOther);
 	}
 
-	public function setCanEditOther($newCanEditOther)
+	public function setCanEditOther($canEditOther)
 	{
 		// allow the canEditOther to be null if a new object
 
-		if($newCanEditOther === null) {
+		if($canEditOther === null) {
 			$this->canEditOther = null;
 			return;
 		}
 
 		//  ensure the canEditOther is an integer
 
-		if(filter_var($newCanEditOther, FILTER_VALIDATE_INT) === false) {
-			throw(new UnexpectedValueException("description $newCanEditOther is not numeric"));
+		if(filter_var($canEditOther, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("description $canEditOther is not numeric"));
 		}
 
-		$newCanEditOther = intval($newCanEditOther);
-		if($newCanEditOther <= 0) {
-			throw(new RangeException("canEditOther $newCanEditOther is not positive"));
+		$canEditOther = intval($canEditOther);
+		if($canEditOther <= 0) {
+			throw(new RangeException("canEditOther $canEditOther is not positive"));
 		}
 
 	// take canEditOther out of quarantine and assign it
-		$this->canEditOther = $newCanEditOther;
+		$this->canEditOther = $canEditOther;
 
 	}
 
@@ -194,62 +194,62 @@ class SecurityClass
 
 	public function getCanPromote()
 	{
-		return ($this->canCanPromote);
+		return ($this->canPromote);
 	}
 
-	public function setCanPromote($newCanPromote)
+	public function setCanPromote($canPromote)
 	{
 		// allow the canPromote to be null if a new object
 
-		if($newCanPromote === null) {
-			$this->CanPromote = null;
+		if($canPromote === null) {
+			$this->canPromote = null;
 			return;
 		}
 
 		//  ensure the canPromote is an integer
 
-		if(filter_var($newCanPromote, FILTER_VALIDATE_INT) === false) {
-			throw(new UnexpectedValueException("description $newCanPromote is not numeric"));
+		if(filter_var($canPromote, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("description $canPromote is not numeric"));
 		}
 
-		$newCanPromote = intval($newCanPromote);
-		if($newCanPromote <= 0) {
-			throw(new RangeException("CanPromote $newCanPromote is not positive"));
+		$canPromote = intval($canPromote);
+		if($canPromote <= 0) {
+			throw(new RangeException("canPromote $canPromote is not positive"));
 		}
 
 		// take canPromote out of quarantine and assign it
-		$this->canCanPromote = $newCanPromote;
+		$this->canPromote = $canPromote;
 
 	}
 
 
 	public function getSiteAdmin()
 	{
-		return ($this->canSiteAdmin);
+		return ($this->siteAdmin);
 	}
 
-	public function setSiteAdmin($newSiteAdmin)
+	public function setSiteAdmin($siteAdmin)
 	{
-		// allow the SiteAdmin to be null if a new object
+		// allow the siteAdmin to be null if a new object
 
-		if($newSiteAdmin === null) {
-			$this->canSiteAdmin = null;
+		if($siteAdmin === null) {
+			$this->siteAdmin = null;
 			return;
 		}
 
 		//  ensure the siteAdmin is an integer
 
-		if(filter_var($newSiteAdmin, FILTER_VALIDATE_INT) === false) {
-			throw(new UnexpectedValueException("description $newSiteAdmin is not numeric"));
+		if(filter_var($siteAdmin, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("description $siteAdmin is not numeric"));
 		}
 
-		$newSiteAdmin = intval($newSiteAdmin);
-		if($newSiteAdmin <= 0) {
-			throw(new RangeException("siteAdmin $newSiteAdmin is not positive"));
+		$siteAdmin = intval($siteAdmin);
+		if($siteAdmin <= 0) {
+			throw(new RangeException("siteAdmin $siteAdmin is not positive"));
 		}
 
 		// take siteAdmin out of quarantine and assign it
-		$this->canSiteAdmin = $newSiteAdmin;
+		$this->siteAdmin = $siteAdmin;
 
 	}
 
@@ -277,7 +277,7 @@ class SecurityClass
 		}
 
 		// just bind the member variables to the place holders in the template
-		$wasClean = $statement->bind_param("ssss", $this->description, $this->isDefault, $this->createTopic, $this->canEditOther, $this->canPromote, $this->siteAdmin);
+		$wasClean = $statement->bind_param("siiiii", $this->description, $this->isDefault, $this->createTopic, $this->canEditOther, $this->canPromote, $this->siteAdmin);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
@@ -288,7 +288,7 @@ class SecurityClass
 		}
 
 		// update the null securityId with what mySQL just gave us
-		$this->authorId = $mysqli->insert_id;
+		$this->securityId = $mysqli->insert_id;
 	}
 
 // deletes this author from mySQL
@@ -304,7 +304,7 @@ class SecurityClass
 		}
 
 		// create query template
-		$query     = "DELETE FROM author WHERE securityId = ?";
+		$query     = "DELETE FROM security WHERE securityId = ?";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
@@ -321,7 +321,7 @@ class SecurityClass
 			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 		}
 	}
-// updates this SecurityClass in mySQL
+// updates this securityClass in mySQL
 
 	public function update(&$mysqli) {
 		// handle degenerate cases
@@ -329,21 +329,21 @@ class SecurityClass
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
 		}
 
-		// enforce the SecurityId is not null (i.e., don't update a author that hasn't been inserted)
+		// enforce the securityId is not null (i.e., don't update a author that hasn't been inserted)
 		if($this->securityId === null) {
 			throw(new mysqli_sql_exception("Unable to update a author that does not exist"));
 		}
 
 		// create query template
-		$query     = "UPDATE SecurityClass SET department = ? WHERE securityId = ?";
+		$query     = "UPDATE security SET description = ?, isDefault = ?, createTopic = ?, canEditOther = ?, canPromote = ?, siteAdmin = ? WHERE securityId = ?";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
 
 		// bind the member variables to the place holders in the template
-		$wasClean = $statement->bind_param("ssssi", $this->siteAdmin, $this->canPromote, $this->canEditOther,
-			$this->createTopic, $this->isDefault, $this->description, $this->securityId);
+		$wasClean = $statement->bind_param("siiiiii", $this->description, $this->isDefault, $this->createTopic,
+			$this->canEditOther, $this->canPromote, $this->siteAdmin, $this->securityId);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
