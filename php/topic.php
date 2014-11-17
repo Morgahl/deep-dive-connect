@@ -177,13 +177,19 @@ class Topic {
 	/**
 	 * Sets the value of topicDate from a valid date string in Y-m-d H:i:s format
 	 *
-	 * @param $newTopicDate STRING Y-m-d H:i:s format
+	 * @param $newTopicDate OBJECT or STRING Y-m-d H:i:s format
 	 * @throws UnexpectedValueException when a parameter is not a valid date string in Y-m-d H:i:s format
 	 */
 	public function setTopicDate($newTopicDate) {
 		// allow topicDate to be null
 		if($newTopicDate === null) {
 			$this->topicDate = null;
+			return;
+		}
+
+		// allow passed date to be in datetime format
+		if(gettype($newTopicDate) !== "object" || get_class($newTopicDate) !== "DateTime") {
+			$this->topicDate = $newTopicDate;
 			return;
 		}
 
