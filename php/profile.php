@@ -457,12 +457,12 @@ class Profile
 		//Todo:Fix the above once you go over uploads
 		$this->profilePicFileType = $newPicFileType;
 
-	/*TODO profile pic file type
-	in data base store mime type image/*
-	take type from browser
-	after taking that on faith; we through our faith away
-	imgcreatefromfoo
-	imgdestroy*/
+		//	TODO profile pic file type
+		//	in data base store mime type image/*
+		//	take type from browser
+		//	after taking that on faith; we through our faith away
+		//	imgcreatefromfoo
+		//	imgdestroy*/
 
 	}
 
@@ -578,6 +578,33 @@ class Profile
 			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 		}
 
+	}
+
+	/**
+	 * gets the profile by userId
+	 *
+	 * @param resource $mysqli pointer to mySQL connection, by reference
+	 * @param string $userId userId to search for
+	 * @return mixed User found or null if not found
+	 * @throws mysqli_sql_exception when mySQL related errors occur
+	 */
+	public static function getProfileByUserId(&$mysqli, $userId){
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
+
+		// sanitize userId before searching
+		// first, make sure user id is an integer
+		if(filter_var($userId, FILTER_VALIDATE_INT) == false) {
+			throw(new UnexpectedValueException("user id $userId is not numeric"));
+		}
+
+		//second, enforce that user id is an integer and positive
+		$userId = intval($userId);
+		if($userId <= 0) {
+			throw(new RangeException("user id $userId is not positive"));
+		}
 	}
 
 }
