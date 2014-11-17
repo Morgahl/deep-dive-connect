@@ -585,7 +585,7 @@ class Profile
 	 *
 	 * @param resource $mysqli pointer to mySQL connection, by reference
 	 * @param string $userId userId to search for
-	 * @return mixed User found or null if not found
+	 * @return mixed Profile found or null if not found
 	 * @throws mysqli_sql_exception when mySQL related errors occur
 	 */
 	public static function getProfileByUserId(&$mysqli, $userId){
@@ -651,6 +651,14 @@ class Profile
 		}
 	}
 
+	/**
+	 * gets the profile by profileId
+	 *
+	 * @param resource $mysqli pointer to mySQL connection, by reference
+	 * @param string $profileId userId to search for
+	 * @return mixed Profile found or null if not found
+	 * @throws mysqli_sql_exception when mySQL related errors occur
+	 */
 	public static function getProfileByProfileId(&$mysqli, $profileId){
 		// handle degenerate cases
 		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
