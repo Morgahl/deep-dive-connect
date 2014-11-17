@@ -538,7 +538,8 @@ class User{
 			}
 			// if we got here, the User is good - return it
 			return($user);
-		} else {
+		}
+		else {
 			// 404 User not found - return null instead
 			return(null);
 		}
