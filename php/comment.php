@@ -82,7 +82,7 @@ class Comment {
 	/**
 	 * Returns commentId (or null if new object)
 	 *
-	 * @return INT or NULL if new object; commentId primary key
+	 * @return INT or NULL if new object; commentId primary key of Comment
 	 */
 	public function getCommentId() {
 		return $this->commentId;
@@ -91,7 +91,7 @@ class Comment {
 	/**
 	 * Returns topicId
 	 *
-	 * @return INT topicID foreign key
+	 * @return INT topicID foreign key of Comment
 	 */
 	public function getTopicId() {
 		return $this->topicId;
@@ -100,7 +100,7 @@ class Comment {
 	/**
 	 * Returns profileId
 	 *
-	 * @return INT profileId foreign key
+	 * @return INT profileId foreign key of Comment
 	 */
 	public function getProfileId() {
 		return $this->profileId;
@@ -109,7 +109,7 @@ class Comment {
 	/**
 	 * Returns commentDate
 	 *
-	 * @return DATETIME date and time of comment
+	 * @return DATETIME date and time of Comment
 	 */
 	public function getCommentDate() {
 		return $this->commentDate;
@@ -118,7 +118,7 @@ class Comment {
 	/**
 	 * Returns commentSubject
 	 *
-	 * @return STRING subject of comment
+	 * @return STRING subject of Comment
 	 */
 	public function getCommentSubject() {
 		return $this->commentSubject;
@@ -127,7 +127,7 @@ class Comment {
 	/**
 	 * Returns commentBody
 	 *
-	 * @return STRING body of comment
+	 * @return STRING body of Comment
 	 */
 	public function getCommentBody() {
 		return $this->commentBody;
