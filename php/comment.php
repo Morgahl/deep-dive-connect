@@ -80,9 +80,9 @@ class Comment {
 	}
 
 	/**
-	 * Returns commentId
+	 * Returns commentId (or null if new object)
 	 *
-	 * @return INT or NULL if new object
+	 * @return INT or NULL if new object; commentId primary key
 	 */
 	public function getCommentId() {
 		return $this->commentId;
@@ -91,7 +91,7 @@ class Comment {
 	/**
 	 * Returns topicId
 	 *
-	 * @return INT
+	 * @return INT topicID foreign key
 	 */
 	public function getTopicId() {
 		return $this->topicId;
@@ -100,7 +100,7 @@ class Comment {
 	/**
 	 * Returns profileId
 	 *
-	 * @return INT
+	 * @return INT profileId foreign key
 	 */
 	public function getProfileId() {
 		return $this->profileId;
@@ -109,7 +109,7 @@ class Comment {
 	/**
 	 * Returns commentDate
 	 *
-	 * @return DATETIME
+	 * @return DATETIME date and time of comment
 	 */
 	public function getCommentDate() {
 		return $this->commentDate;
@@ -118,7 +118,7 @@ class Comment {
 	/**
 	 * Returns commentSubject
 	 *
-	 * @return STRING
+	 * @return STRING subject of comment
 	 */
 	public function getCommentSubject() {
 		return $this->commentSubject;
@@ -127,7 +127,7 @@ class Comment {
 	/**
 	 * Returns commentBody
 	 *
-	 * @return STRING
+	 * @return STRING body of comment
 	 */
 	public function getCommentBody() {
 		return $this->commentBody;
@@ -230,6 +230,9 @@ class Comment {
 			$this->commentDate = null;
 			return;
 		}
+
+		// allow passed date to be in datetime format
+		//TODO: add in code to ensure object is DateTime
 
 		// Sanitize Date input to Y-m-d H:i:s MySQL standard
 		// this fails for badly formed strings and nulls
