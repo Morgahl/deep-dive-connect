@@ -221,7 +221,7 @@ class Comment {
 	/**
 	 * Sets the value of commentDate from a valid date string in Y-m-d H:i:s format
 	 *
-	 * @param $newCommentDate STRING Y-m-d H:i:s format
+	 * @param $newCommentDate OBJECT or STRING Y-m-d H:i:s format
 	 * @throws UnexpectedValueException when a parameter is not a valid date string in Y-m-d H:i:s format
 	 */
 	public function setCommentDate($newCommentDate) {
@@ -232,7 +232,10 @@ class Comment {
 		}
 
 		// allow passed date to be in datetime format
-		//TODO: add in code to ensure object is DateTime
+		if(gettype($newCommentDate) !== "object" || get_class($newCommentDate) !== "DateTime") {
+			$this->commentDate = $newCommentDate;
+			return;
+		}
 
 		// Sanitize Date input to Y-m-d H:i:s MySQL standard
 		// this fails for badly formed strings and nulls
