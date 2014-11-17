@@ -149,7 +149,9 @@ class ProfileTest extends UnitTestCase{
 		$this->profile->delete($this->mysqli);
 		$this->profile = null;
 
-		//TODO: make getProfileByUserId
+		//finally, try to get the Profile and assert we didn't get a thing
+		$hopefulProfile = Profile::getProfileByUserId($this->mysqli, $this->USERID);
+		$this->assertNull($hopefulProfile);
 
 	}
 }
