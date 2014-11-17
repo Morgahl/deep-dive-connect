@@ -201,7 +201,7 @@ class ProfileTest extends UnitTestCase{
 		// finally, compare the fields
 		$this->assertNotNull($staticProfile->getProfileId());
 		$this->assertTrue($staticProfile->getProfileId() > 0);
-		$this->assertIdentical($staticProfile->getProfileId, $this->profile->getProfileId());
+		$this->assertIdentical($staticProfile->getProfileId(), $this->profile->getProfileId());
 		$this->assertIdentical($staticProfile->getUserId(), $this->USERID);
 		$this->assertIdentical($staticProfile->getFirstName(), $this->FNAME);
 		$this->assertIdentical($staticProfile->getLastName(), $this->LNAME);
@@ -215,41 +215,3 @@ class ProfileTest extends UnitTestCase{
 
 }
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
