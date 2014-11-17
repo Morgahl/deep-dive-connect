@@ -650,6 +650,69 @@ class Profile
 			return (null);
 		}
 	}
+
+	public static function getProfileByProfileId(&$mysqli, $profileId){
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
+
+		// sanitize profileId before searching
+		// first, make sure profile id is an integer
+		if(filter_var($profileId, FILTER_VALIDATE_INT) == false) {
+			throw(new UnexpectedValueException("user id $profileId is not numeric"));
+		}
+
+		//second, enforce that user id is an integer and positive
+		$profileId = intval($profileId);
+		if($profileId <= 0) {
+			throw(new RangeException("user id $profileId is not positive"));
+		}
+
+		//create query template
+		$query = "SELECT profileId, userId, firstName, lastName, middleName, location, description, profilePicFileName, profilePicFileType FROM profile WHERE profileId = ?";
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// bind the profileId to the place holder int the template
+		$wasClean = $statement->bind_param("i", $profileId);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
+		// get result from the SELECT query *pounds fists*
+		$result = $statement->get_result();
+		if($result === false) {
+			throw(new mysqli_sql_exception("Unable to get result set"));
+		}
+
+		// since this is a unique field, this will only return 0 or 1 results. So...
+		// 1) if there's a result, we can make it into a Profile object normally
+		// 2) if there's no result, we can just return null
+		$row = $result->fetch_assoc(); // fetch_assoc() returns a row as an associative array
+		// convert the associative array to a Profile
+		if($row !== null) {
+			try {
+				$profile = new Profile($row["profileId"], $row["userId"], $row["firstName"], $row["lastName"], $row["middleName"], $row["location"], $row["description"], $row["profilePicFileName"], $row["profilePicFileType"]);
+			} catch(Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new mysqli_sql_exception("Unable to convert row to Profile", 0, $exception));
+			}
+			//if we got here the Profile is good - return it
+			return ($profile);
+		}
+		else {
+			//404 Profile not found - return null instead
+			return (null);
+		}
+	}
 }
 
 
