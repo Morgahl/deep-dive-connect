@@ -7,6 +7,9 @@
  */
 require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 
+
+//Init secured mySQLi object
 $mysqli = MysqliConfiguration::getMysqli();
 
+// confirm mysqli object was created
 var_dump($mysqli);
