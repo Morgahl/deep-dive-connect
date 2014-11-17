@@ -721,6 +721,128 @@ class Profile
 			return (null);
 		}
 	}
+
+	/**
+	 * gets the profile by first and last name
+	 *
+	 * @param resource $mysqli pointer to mySQL connection, by reference
+	 * @param string $firstName first name to search for
+	 * @param string $lastName last name to search for
+	 * @return mixed User found or null if not found
+	 * @throws mysqli_sql_exception when mySQL related errors occur
+	 **/
+	public static function getProfileByFirstAndOrLastName(&$mysqli, $firstName, $lastName)
+	{
+
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
+
+		//sanitize first name if not null
+		if($firstName !== null){
+			// take out the white space
+			$firstName = trim($firstName);
+
+			// ensure that input is a string
+			if(filter_var(firstName, FILTER_SANITIZE_STRING) === false) {
+				throw(new UnexpectedValueException("First name $firstName is not string"));
+			}
+
+			// make sure length is not greater than 64
+			if(strlen($firstName) > 64) {
+				throw(new RangeException("First name $firstName exceeds 64 character limit"));
+			}
+
+		}
+
+		//sanitize last name if not null
+		if($lastName !== null){
+			// take out the white space
+			$lastName = trim($lastName);
+
+			// ensure that input is a string
+			if(filter_var(lastName, FILTER_SANITIZE_STRING) === false) {
+				throw(new UnexpectedValueException("First name $lastName is not string"));
+			}
+
+			// make sure length is not greater than 64
+			if(strlen($lastName) > 64) {
+				throw(new RangeException("First name $lastName exceeds 64 character limit"));
+			}
+		}
+
+		// prepare query for firstName and lastName equal to Not Null
+		if($firstName !== null && $lastName !== null){
+			//create query template
+			$query = "SELECT profileId, userId, firstName, lastName, middleName, location, description, profilePicFileName, profilePicFileType FROM profile WHERE firstName = ? AND lastName = ?";
+			$statement = $mysqli->prepare($query);
+			if($statement === false) {
+				throw(new mysqli_sql_exception("Unable to prepare statement"));
+			}
+
+			//bind the $firstName and $lastName to the place holder in the template
+			$wasClean = $statement->bind_param("ss", $firstName, $lastName);
+			if($wasClean === false) {
+				throw(new mysqli_sql_exception("Unable to bind parameters"));
+			}
+		}
+		// prepare query for firstName Not Null and lastName null
+		elseif($firstName !== null && $lastName === null){
+			//create query template
+			$query = "SELECT profileId, userId, firstName, lastName, middleName, location, description, profilePicFileName, profilePicFileType FROM profile WHERE firstName = ?";
+			$statement = $mysqli->prepare($query);
+			if($statement === false) {
+				throw(new mysqli_sql_exception("Unable to prepare statement"));
+			}
+
+			//bind the $firstName to the place holder in the template
+			$wasClean = $statement->bind_param("s", $firstName);
+			if($wasClean === false) {
+				throw(new mysqli_sql_exception("Unable to bind parameters"));
+			}
+		}
+		//prepare query for lastName not null and firstName null
+		elseif($lastName !== null && $firstName === null){
+			//create query template
+			$query = "SELECT profileId, userId, firstName, lastName, middleName, location, description, profilePicFileName, profilePicFileType FROM profile WHERE lastName = ?";
+			$statement = $mysqli->prepare($query);
+			if($statement === false) {
+				throw(new mysqli_sql_exception("Unable to prepare statement"));
+			}
+
+			//bind the $firstName and $lastName to the place holder in the template
+			$wasClean = $statement->bind_param("s", $lastName);
+			if($wasClean === false) {
+				throw(new mysqli_sql_exception("Unable to bind parameters"));
+			}
+		}
+
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
+		// get results
+		$results = $statement->get_result();
+		if($results->num_rows > 0) {
+			// retrieve results in bulk into an array
+			$results = $results->fetch_all(MYSQL_ASSOC);
+			if($results === false) {
+				throw(new mysqli_sql_exception("Unable to process result set"));
+			}
+
+			// step through results array and convert to Topic objects
+			foreach ($results as $index => $row) {
+				$results[$index] = new Profile($row["profileId"], $row["userId"], $row["firstName"], $row["lastName"], $row["middleName"], $row["location"], $row["description"], $row["profilePicFileName"], $row["profilePicFileType"]);
+			}
+
+			// return resulting array of Topic objects
+			return($results);
+		} else {
+			return(null);
+		}
+	}
 }
 
 

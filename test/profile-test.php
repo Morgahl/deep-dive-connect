@@ -212,6 +212,7 @@ class ProfileTest extends UnitTestCase{
 		$this->assertIdentical($staticProfile->getProfilePicFileType(), $this-> FILETYPE);
 
 	}
+
 }
 ?>
 
