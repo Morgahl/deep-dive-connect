@@ -73,9 +73,9 @@ class Topic {
 	}
 
 	/**
-	 * Returns topicId
+	 * Returns topicId (or null if new object)
 	 *
-	 * @return INT or NULL if new object
+	 * @return INT or NULL if new object; topicId primary key of Topic
 	 */
 	public function getTopicId() {
 		return $this->topicId;
@@ -84,7 +84,7 @@ class Topic {
 	/**
 	 * Returns profileId
 	 *
-	 * @return INT
+	 * @return INT profileId foreign key of Topic
 	 */
 	public function getProfileId() {
 		return $this->profileId;
@@ -93,28 +93,28 @@ class Topic {
 	/**
 	 * Returns topicDate
 	 *
-	 * @return DATETIME
+	 * @return DATETIME date and time of Topic
 	 */
 	public function getTopicDate() {
 		return $this->topicDate;
 	}
 
 	/**
-	 * Returns topicBody
-	 *
-	 * @return STRING
-	 */
-	public function getTopicBody() {
-		return $this->topicBody;
-	}
-
-	/**
 	 * Returns topicSubject
 	 *
-	 * @return STRING
+	 * @return STRING subject of Topic
 	 */
 	public function getTopicSubject() {
 		return $this->topicSubject;
+	}
+
+	/**
+	 * Returns topicBody
+	 *
+	 * @return STRING body of Topic
+	 */
+	public function getTopicBody() {
+		return $this->topicBody;
 	}
 
 	/**
