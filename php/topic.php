@@ -359,9 +359,6 @@ class Topic {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
 
-		// prep date for mySQL entry
-		$topicDate = $this->topicDate->format("Y-m-d H:i:s");
-
 		// bind the variables to the place holders in the template
 		$wasClean = $statement->bind_param("issi", $this->profileId, $this->topicSubject, $this->topicBody, $this->topicId);
 		if($wasClean === false) {
