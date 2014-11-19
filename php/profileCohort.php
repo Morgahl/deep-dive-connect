@@ -1,15 +1,14 @@
 <?php
+
 /**
  * This a container for profileCohort class
  *
  * This class will identify elements of profileCohort class to link to Deep Dive Coders Alumni Site
- * Created by Gerardo Medrano, adapted from template by Dylan McDonald
+ * @author G Medrano, adapted from template by Dylan McDonald
  *
  * Date: 11/9/2014
  * Time: 4:12 PM
  **/
-
-
 
 class profileCohort {
    //profileCohortID is the private key
@@ -34,8 +33,7 @@ class profileCohort {
     * @throws UnexpectedValueException when a parameter is wrong type
     * @throws RangeException when a parameter is invalid
     */
-   public function __construct($newProfileCohortId, $newProfileId, $newCohortId, $newRole)
-   {
+   public function __construct($newProfileCohortId, $newProfileId, $newCohortId, $newRole) {
       try {
          $this->setProfileCohortId($newProfileCohortId);
          $this->setProfileId($newProfileId);
@@ -112,8 +110,7 @@ class profileCohort {
       return ($this->cohortId);
    }
    //set CohortId
-   public function setCohortId($newCohortId)
-   {
+   public function setCohortId($newCohortId) {
       if($newCohortId === null) {
          $this->cohortId = null;
          return;
@@ -133,11 +130,10 @@ class profileCohort {
 
 
    //Get and Set for role
-   public function getRole(){
+   public function getRole() {
       return ($this->role);
    }
-   public function setRole($newRole)
-   {
+   public function setRole($newRole) {
       $newRole = trim($newRole);
       // filter the role as a generic string
       $newRole = filter_var($newRole, FILTER_SANITIZE_STRING);
@@ -152,8 +148,7 @@ class profileCohort {
     * @param mysqli_sql_exception-mySql related errors occur
     *
     **/
-   public function insert(&$mysqli)
-   {
+   public function insert(&$mysqli) {
 
       if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
          throw(new mysqli_sql_exception("input is not a mysqli object"));
@@ -201,14 +196,14 @@ class profileCohort {
          throw(new mysqli_sql_exception("input is not a mysqli object"));
       }
 
-      //enforce Cohort ID is null
-      if($this->cohortId !== null) {
-         throw(new mysqli_sql_exception("Unable to prepare a cohortId "));
+      //enforce profileCohort Id is null
+      if($this->profileCohortId === null) {
+         throw(new mysqli_sql_exception("Unable to prepare a cohortId"));
       }
 
 
       //create a query template for Cohort ID
-      $query      =  "DELETE FROM profileCohortId where CohortId = ?";
+      $query      =  "DELETE FROM profileCohort where profileCohortId = ?";
       $statement  =  $mysqli ->prepare($query);
       if($statement === false) {
          throw(new mysqli_sql_exception("Unable to prepare statement"));
@@ -227,8 +222,6 @@ class profileCohort {
       }
    }
 
-
-
    /**
    * updates nulls with Mysql output
    *
@@ -244,20 +237,20 @@ class profileCohort {
          }
 
       //enforce Cohort ID is not null
-         if($this->cohortId !== null) {
+         if($this->cohortId === null) {
             throw(new mysqli_sql_exception("unable to update cohort information that does not exist"));
          }
 
       //create a query template for cohortId
-      $query      =  "UPDATE profileCohort SET cohortId = ?, profileId = ?,role = ? WHERE profileCohortId = ?";
+      $query      =  "UPDATE profileCohort SET profileId = ?, cohortId = ?,role = ? WHERE profileCohortId = ?";
       $statement  =  $mysqli ->prepare($query);
          if($statement === false) {
             throw(new mysqli_sql_exception("Unable to prepare statement"));
          }
 
       //bind the member variables to place holders in template profileCohortId, profileId, cohortId, role
-      $wasClean = $statement->bind_param("i",$this->profileCohortId, $this->cohortId,
-                                             $this->profileId, $this->role);
+      $wasClean = $statement->bind_param("iisi",$this->profileId, $this->cohortId,
+                                                $this->role, $this->profileCohortId);
          if($wasClean === false) {
             throw(new mysqli_sql_exception("Unable to bind parameters"));
 
@@ -268,17 +261,15 @@ class profileCohort {
          throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
          }
 
-      // update the null Cohort Id with Mysql output
-      $this->cohortId = $mysqli->insert_id;
 }
-
 
    /**
     * gets List of Cohort by ProfileId
+    *
     * @param resource $mysqli pointer to mySQL connection, by reference
     * @return null
     * @throws mysqli_sql_exception when mySQL related errors occur
-    * array of objects
+    *
     **/
    public static function getCohortByProfileId(&$mysqli, $profileId) {
       // handle degenerate cases
@@ -331,10 +322,11 @@ class profileCohort {
 
       /**
        * gets List of Cohort Attendees by cohortId
+       *
        * @param resource $mysqli pointer to mySQL connection, by reference
        * @return null
        * @throws mysqli_sql_exception when mySQL related errors occur
-       * array of objects
+       *
        **/
          public static function getAttendeesByCohort(&$mysqli, $cohortId) {
             // handle degenerate cases
@@ -385,10 +377,9 @@ class profileCohort {
          }
    }
 
-
          /**
           * gets List of Cohort Attendees by role
-          * @param
+          *
           * @param resource $mysqli pointer to mySQL connection, by reference
           * @return null
           * @throws mysqli_sql_exception when mySQL related errors occur
