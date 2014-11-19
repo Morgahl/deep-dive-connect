@@ -201,119 +201,50 @@ class cohortTest extends UnitTestCase
       $this->assertIdentical($staticCohort[0]->getDescription(), $this->DESCRIPTION);
       $this->assertIdentical($staticCohort[0]->getLocation(), $this->LOCATION);
 
-      //manual trash collection
-      $staticCohort = null;
-
-
-   }
-}
-
-
-      /**
-       * Test to Get all cohorts below
-       * SELECT*
-       * FROM cohort
-       * ORDER by startDate DESC
-       * LIMIT?
-       * OFFSET?
-       *
-       **/
-      /**public function testGetAllCohorts()
-
-
-
-
-
-
-   //Other tests commented out -- use for later?
-/**test grabbing Start Date from mySQL
-   public function testGetCohortByStartDate()
-   {
-      //first, verify mySQL connected OK
-      $this->assertNotNull($this->mysqli);
-
-      //second, create a cohort to post to mySQL
-      $this->cohort = new Cohort(null, $this->STARTDATE, $this->ENDDATE, $this->LOCATION, $this->DESCRIPTION);
-
-      //third, insert the cohort to mySQL
-      $this->cohort->insert($this->mysqli);
-
-      //converting date time object
-
-
-      //fourth, get the cohort using the static method
-      $staticCohort = Cohort::getCohortByStartDate($this->mysqli, $this->cohort->getStartDate());
-
-      //convert date time objects prior to assertion, converts dates to strings
-
-      if($this->STARTDATE === null) {
-         $startDate = null;
-      } else {
-         $startDate = DateTime::createFromFormat("Y-m-d H:i:s", $this->STARTDATE);
-      }
-
-      if($this->ENDDATE === null) {
-         $endDate = null;
-      } else {
-         $endDate = DateTime::createFromFormat("Y-m-d H:i:s", $this->ENDDATE);
-      }
-
-
-      //finally, compare the fields
-      $this->assertNotNull($staticCohort[0]->getCohortId());
-      $this->assertTrue($staticCohort[0]->getCohortId() > 0);
-      $this->assertIdentical($staticCohort[0]->getStartDate(), $startDate);
-      $this->assertIdentical($staticCohort[0]->getEndDate(), $endDate);
-      $this->assertIdentical($staticCohort[0]->getDescription(), $this->DESCRIPTION);
-      $this->assertIdentical($staticCohort[0]->getLocation(), $this->LOCATION);
-
-      //manual trash collection
-      $staticCohort = null;
-
    }
 
-      }
 
-      /**test grabbing cohort by location from mySQL
-      public function testGetCohortByLocation()
+
+      //test grabbing Start Date from mySQL
+      public function testGetCohortByStartDate()
       {
-      //first, verify mySQL connected OK
-      $this->assertNotNull($this->mysqli);
+         //first, verify mySQL connected OK
+         $this->assertNotNull($this->mysqli);
 
-      //second, create a cohort to post to mySQL
-      $this->cohort = new Cohort(null, $this->STARTDATE, $this->ENDDATE, $this->LOCATION, $this->DESCRIPTION);
+         //second, create a cohort to post to mySQL
+         $this->cohort = new Cohort(null, $this->STARTDATE, $this->ENDDATE, $this->LOCATION, $this->DESCRIPTION);
 
-      //third, insert the cohort to mySQL
-      $this->cohort->insert($this->mysqli);
+         //third, insert the cohort to mySQL
+         $this->cohort->insert($this->mysqli);
 
-      //fourth, get the cohort using the static method
-      $staticCohort = Cohort::getCohortByLocation($this->mysqli, $this->LOCATION);
+         //fourth, get the cohort using the static method
+         $staticCohort = Cohort::getStartDate($this->mysqli, $this->cohort->getStartDate());
 
-      //convert date time objects prior to assertion, converts dates to strings
+         //fifth, convert date time objects, start date and end date, prior to assertion, converts dates to strings
+         if($this->STARTDATE === null) {
+            $startDate = null;
+         } else {
+            $startDate = DateTime::createFromFormat("Y-m-d H:i:s", $this->STARTDATE);
+         }
 
-      if($this->STARTDATE === null) {
-      $startDate = null;
-      } else {
-      $startDate = DateTime::createFromFormat("Y-m-d H:i:s", $this->STARTDATE);
-      }
+         if($this->ENDDATE === null) {
+            $endDate = null;
+         } else {
+            $endDate = DateTime::createFromFormat("Y-m-d H:i:s", $this->ENDDATE);
+         }
 
-      if($this->ENDDATE === null) {
-      $endDate = null;
-      } else {
-      $endDate = DateTime::createFromFormat("Y-m-d H:i:s", $this->ENDDATE);
-      }
+         //finally, compare the fields
+         var_dump($staticCohort);
+         $this->assertNotNull($staticCohort->getCohortId());
+         $this->assertTrue($staticCohort->getCohortId() > 0);
+         $this->assertIdentical($staticCohort->getStartDate(), $startDate);
+         $this->assertIdentical($staticCohort->getEndDate(), $endDate);
+         $this->assertIdentical($staticCohort->getDescription(), $this->DESCRIPTION);
+         $this->assertIdentical($staticCohort->getLocation(), $this->LOCATION);
 
-      //finally, compare the fields
-      $this->assertNotNull($staticCohort[0]->getCohortId());
-      $this->assertTrue($staticCohort[0]->getCohortId() > 0);
-      $this->assertIdentical($staticCohort[0]->getStartDate(), $startDate);
-      $this->assertIdentical($staticCohort[0]->getEndDate(), $endDate);
-      $this->assertIdentical($staticCohort[0]->getDescription(), $this->DESCRIPTION);
-      $this->assertIdentical($staticCohort[0]->getLocation(), $this->LOCATION);
 
-      //manual trash collection
-      $staticCohort = null;
-       **/
+         }
+   }
 
 ?>
 
