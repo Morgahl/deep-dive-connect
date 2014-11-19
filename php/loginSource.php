@@ -19,8 +19,8 @@ class LoginSource
 	public function __construct($loginSourceId, $sourceName)
 	{
 		try {
-			$this->setsecurityId($loginSourceId);
-			$this->setdescription($sourceName);
+			$this->setSecurityId($loginSourceId);
+			$this->setDescription($sourceName);
 		} catch(UnexpectedValueException $unexpectedValue) {
 			// rethrow to the seller
 			throw(new UnexpectedValueException("Unable to construct securityId, 0, $unexpectedValue"));
@@ -36,43 +36,43 @@ class LoginSource
 		return ($this->loginSourceId);
 	}
 
-	public function loginSourceId($newLoginSourceId)
+	public function loginSourceId($loginSourceId)
 	{
 		//  ensure the loginSourceId is an integer
-		if(filter_var($newLoginSourceId, FILTER_SANITIZE_STRING) === false) {
-			throw(new UnexpectedValueException("loginSourceId $newLoginSourceId is not valid"));
+		if(filter_var($loginSourceId, FILTER_SANITIZE_STRING) === false) {
+			throw(new UnexpectedValueException("loginSourceId $loginSourceId is not valid"));
 		}
 
 		// finally, take the loginSourceId out of quarantine and assign it
-		$this->loginSourceId = $newLoginSourceId;
+		$this->loginSourceId = $loginSourceId;
 	}
 
 
-	public function getsourceName()
+	public function getSourceName()
 	{
 		return ($this->sourceName);
 	}
 
-	public function setSourceName($newSourceName)
+	public function setSourceName($sourceName)
 	{
 		// allow the sourceName to be null if a new object
 
-		if($newSourceName === null) {
+		if($sourceName === null) {
 			$this->sourceName = null;
 			return;
 		}
 
 		//  ensure the sourceName is an integer
-		if(filter_var($newSourceName, FILTER_VALIDATE_INT) === false) {
-			throw(new UnexpectedValueException("sourceName $newSourceName is not numeric"));
+		if(filter_var($sourceName, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("sourceName $sourceName is not numeric"));
 		}
 
-		$newSourceName = intval($newSourceName);
-		if($newSourceName <= 0) {
-			throw(new RangeException("sourceName $newSourceName is not positive"));
+		$sourceName = intval($sourceName);
+		if($sourceName <= 0) {
+			throw(new RangeException("sourceName $sourceName is not positive"));
 		}
 
-		$this->sourceName = $newSourceName;
+		$this->sourceName = $sourceName;
 
 	}
 
@@ -97,7 +97,7 @@ class LoginSource
 		}
 
 		// just bind the member variables to the place holders in the template
-		$wasClean = $statement->bind_param("ssss", $this->loginSourceId, $this->sourceName);
+		$wasClean = $statement->bind_param("is", $this->loginSourceId, $this->sourceName);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
@@ -120,11 +120,11 @@ class LoginSource
 
 		// enforce the loginSourceId is not null
 		if($this->loginSourceId === null) {
-			throw(new mysqli_sql_exception("Unable to delete a author that does not exist"));
+			throw(new mysqli_sql_exception("Unable to delete a sourceId that does not exist"));
 		}
 
 		// create query template
-		$query     = "DELETE FROM author WHERE loginSourceId = ?";
+		$query     = "DELETE FROM loginSource WHERE loginSourceId = ?";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
@@ -149,20 +149,20 @@ class LoginSource
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
 		}
 
-		// enforce the loginSourceId is not null (i.e., don't update a author that hasn't been inserted)
-		if($this->securityId === null) {
-			throw(new mysqli_sql_exception("Unable to update a author that does not exist"));
+		// enforce the loginSourceId is not null (i.e., don't update a loginSource that hasn't been inserted)
+		if($this->loginSourceId === null) {
+			throw(new mysqli_sql_exception("Unable to update a loginSourceId that does not exist"));
 		}
 
 		// create query template
-		$query     = "UPDATE loginSource SET department = ? WHERE loginSourceId = ?";
+		$query     = "UPDATE loginSource SET sourceName = ? WHERE loginSourceId = ?";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
 
 		// bind the member variables to the place holders in the template
-		$wasClean = $statement->bind_param("ssssi", $this->loginSourceId, $this->sourceName);
+		$wasClean = $statement->bind_param("is", $this->loginSourceId, $this->sourceName);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}

@@ -17,7 +17,7 @@ require_once("/usr/lib/php5/simpletest/autorun.php");
 require_once("../php/securityClass.php");
 
 // the securityClassTest is a container for all our tests
-class securityClassTest extends unitTestCaseTest
+class SecurityClassTest extends UnitTestCase
 {
 	// variable to hold the mySQL connection
 	private $mysqli = null;
@@ -26,7 +26,7 @@ class securityClassTest extends unitTestCaseTest
 
 	// a few "global" variables for creating test data
 
-	private $DESCRIPTION = "ChedGeek5";
+	private $DESCRIPTION = "Bada Bing!";
 	private $ISDEFAULT = 0;
 	private $CREATETOPIC = 1;
 	private $CANEDITOTHER = 1;
@@ -54,16 +54,16 @@ class securityClassTest extends unitTestCaseTest
 
 	}
 
-	// test creating a new User and inserting it to mySQL
-	public function testInsertNewUser()
+	// test creating a new Security Class and inserting it to mySQL
+	public function testInsertSecurityClass()
 	{
 		// first, verify mySQL connected OK
 		$this->assertNotNull($this->mysqli);
 
-		// second, create a user to post to mySQL
+		// second, create a Security Class to post to mySQL
 		$this->security = new SecurityClass(null, $this->DESCRIPTION, $this->ISDEFAULT, $this->CREATETOPIC, $this->CANEDITOTHER, $this->CANPROMOTE, $this->SITEADMIN);
 
-		// third, insert the user to mySQL
+		// third, insert the Security Class to mySQL
 		$this->security->insert($this->mysqli);
 
 		// finally, compare the fields
@@ -86,5 +86,113 @@ class securityClassTest extends unitTestCaseTest
 		$this->assertNotNull($this->security->getSiteAdmin());
 		$this->assertIdentical($this->security->getSiteAdmin(), $this->SITEADMIN);
 	}
+
+
+
+
+// test updating a variable in Security Class
+	public function testUpdateSecurityClass()
+	{
+		// first, verify mySQL connected OK
+		$this->assertNotNull($this->mysqli);
+
+		// second, create a Security Class to post to mySQL
+		$this->security = new SecurityClass(null, $this->DESCRIPTION, $this->ISDEFAULT, $this->CREATETOPIC, $this->CANEDITOTHER, $this->CANPROMOTE, $this->SITEADMIN);
+
+		// third, insert the Security Class to mySQL
+		$this->security->insert($this->mysqli);
+
+		// fourth, update the Security Class and post the changes to mySQL
+		$description = "some random asdfasdf text";
+		$this->security->setDescription($description);
+		$this->security->update($this->mysqli);
+
+
+		// finally, compare the fields
+		$this->assertNotNull($this->security->getSecurityId());
+		$this->assertTrue($this->security->getSecurityId() > 0);
+		// description
+		$this->assertNotNull($this->security->getDescription());
+		$this->assertIdentical($this->security->getDescription(), $description);
+		// isDefault
+		$this->assertNotNull($this->security->getIsDefault());
+		$this->assertIdentical($this->security->getIsDefault(), $this->ISDEFAULT);
+		// canEditOther
+		$this->assertNotNull($this->security->getCanEditOther());
+		$this->assertIdentical($this->security->getCanEditOther(), $this->CANEDITOTHER);
+		// canPromote
+		$this->assertNotNull($this->security->getCanPromote());
+		$this->assertIdentical($this->security->getCanPromote(), $this->CANPROMOTE);
+		// siteAdmin
+		$this->assertNotNull($this->security->getSiteAdmin());
+		$this->assertIdentical($this->security->getSiteAdmin(), $this->SITEADMIN);
+	}
+
+
+
+
+	// test deleting a variable in Security Class
+	public function deleteFromSecurityId()
+	{
+		// first, verify mySQL connected OK
+		$this->assertNotNull($this->mysqli);
+
+		// second, create a Security Class to post to mySQL
+		$this->security = new SecurityClass(null, $this->DESCRIPTION, $this->ISDEFAULT, $this->CREATETOPIC, $this->CANEDITOTHER, $this->CANPROMOTE, $this->SITEADMIN);
+
+		// third, insert the Security Class to mySQL
+		$this->security->insert($this->mysqli);
+
+		// fourth, verify the securityId was inserted
+		$this->assertNotNull($this->security->getSecurityId());
+		$this->assertTrue($this->security->getSecurityId() > 0);
+
+		// fifth, delete the class
+		$this->security->delete($this->mysqli);
+		$this->security = null;
+
+		// finally, try to get the SecurityClass and say we didn't get it
+		$hopefulSecurityClass = securityClass::getSecurityClassBySecurityId($this->mysqli, $this->security->getSecurityId);
+		$this->assertNull($hopefulSecurityClass);
+
+	}
+
+	// test grabbing the Security Class from mySQL
+	public function testGetSecurityClass()
+	{
+		// first, verify mySQL connected OK
+		$this->assertNotNull($this->mysqli);
+
+		// second, create a Security Class to post to mySQL
+		$this->security = new SecurityClass(null, $this->DESCRIPTION, $this->ISDEFAULT, $this->CREATETOPIC, $this->CANEDITOTHER, $this->CANPROMOTE, $this->SITEADMIN);
+
+		// third, insert the Security Class to mySQL
+		$this->security->insert($this->mysqli);
+
+		// fourth, get the class by the static method
+		$staticUser = SecurityClass::getSecurityClassBySecurityId($this->mysqli, $this->security->getSecurityId());
+
+		// compare the fields
+
+		$this->assertNotNull($this->security->getSecurityId());
+		$this->assertTrue($this->security->getSecurityId() > 0);
+		// description
+		$this->assertNotNull($this->security->getDescription());
+		$this->assertIdentical($this->security->getDescription(), $this->DESCRIPTION);
+		// isDefault
+		$this->assertNotNull($this->security->getIsDefault());
+		$this->assertIdentical($this->security->getIsDefault(), $this->ISDEFAULT);
+		// canEditOther
+		$this->assertNotNull($this->security->getCanEditOther());
+		$this->assertIdentical($this->security->getCanEditOther(), $this->CANEDITOTHER);
+		// canPromote
+		$this->assertNotNull($this->security->getCanPromote());
+		$this->assertIdentical($this->security->getCanPromote(), $this->CANPROMOTE);
+		// siteAdmin
+		$this->assertNotNull($this->security->getSiteAdmin());
+		$this->assertIdentical($this->security->getSiteAdmin(), $this->SITEADMIN);
+	}
+
+
 }
 

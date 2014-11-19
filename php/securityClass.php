@@ -53,18 +53,24 @@ class SecurityClass
 
 	public function setSecurityId($securityId)
 	{
+		if($securityId === null) {
+			$this->securityId = null;
+			return;
+		}
+
 		//  ensure the securityId is an integer
-		if(filter_var($securityId, FILTER_SANITIZE_INT) === false) {
+		if(filter_var($securityId, FILTER_VALIDATE_INT) === false) {
 			throw(new UnexpectedValueException("securityId $securityId is not valid"));
+		}
+
+		$securityId = intval($securityId);
+		if($securityId <= 0) {
+			throw(new RangeException("securityId $securityId is not positive"));
 		}
 
 		// finally, take the securityId out of quarantine and assign it
 		$this->securityId = $securityId;
 	}
-
-
-
-
 
 
 	public function getDescription()
@@ -75,7 +81,7 @@ class SecurityClass
 	public function setDescription($description)
 	{
 		// description should never be null
-		if($description === Null) {
+		if($description === null) {
 			throw(new UnexpectedValueException("Topic Body must not be null"));
 		}
 // sanitize string
@@ -88,7 +94,7 @@ class SecurityClass
 		if(strlen($description) > 256) {
 			throw(new RangeException("Description must be 256 characters or less in length"));
 		}
-	// take description out of quarantine and assign it
+		// take description out of quarantine and assign it
 		$this->description = $description;
 
 	}
@@ -115,11 +121,11 @@ class SecurityClass
 		}
 
 		$isDefault = intval($isDefault);
-		if($isDefault <= 0) {
-			throw(new RangeException("isDefault $isDefault is not positive"));
+		if($isDefault < 0 || $isDefault > 1) {
+			throw(new RangeException("isDefault $isDefault is not a 1 or 0"));
 		}
 
-	// take isDefault out of quarantine and assign it
+		// take isDefault out of quarantine and assign it
 		$this->isDefault = $isDefault;
 
 	}
@@ -155,12 +161,11 @@ class SecurityClass
 	}
 
 
-
-
 	public function getCanEditOther()
 	{
 		return ($this->canEditOther);
 	}
+
 
 	public function setCanEditOther($canEditOther)
 	{
@@ -182,14 +187,10 @@ class SecurityClass
 			throw(new RangeException("canEditOther $canEditOther is not positive"));
 		}
 
-	// take canEditOther out of quarantine and assign it
+		// take canEditOther out of quarantine and assign it
 		$this->canEditOther = $canEditOther;
 
 	}
-
-
-
-
 
 
 	public function getCanPromote()
@@ -254,12 +255,8 @@ class SecurityClass
 	}
 
 
-
-
-
-
-
-	public function insert(&$mysqli) {
+	public function insert(&$mysqli)
+	{
 		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
 		}
@@ -270,10 +267,11 @@ class SecurityClass
 		}
 
 		// creates a query template
-		$query     = "INSERT INTO SecurityClass(description, isDefault, createTopic, canEditOther, canPromote, siteAdmin) VALUES(?, ?, ?, ?, ?, ?)";
+		$query = "INSERT INTO security(description, isDefault, createTopic, canEditOther, canPromote, siteAdmin) VALUES(?, ?, ?, ?, ?, ?)";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
+
 		}
 
 		// just bind the member variables to the place holders in the template
@@ -286,13 +284,13 @@ class SecurityClass
 		if($statement->execute() === false) {
 			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 		}
-
 		// update the null securityId with what mySQL just gave us
 		$this->securityId = $mysqli->insert_id;
 	}
 
-// deletes this author from mySQL
-	public function delete(&$mysqli) {
+	// deletes this author from mySQL
+	public function delete(&$mysqli)
+	{
 		// handle degenerate cases
 		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
@@ -300,11 +298,11 @@ class SecurityClass
 
 		// enforce the securityId is not null
 		if($this->securityId === null) {
-			throw(new mysqli_sql_exception("Unable to delete a author that does not exist"));
+			throw(new mysqli_sql_exception("Unable to delete a securityId that does not exist"));
 		}
 
 		// create query template
-		$query     = "DELETE FROM security WHERE securityId = ?";
+		$query = "DELETE FROM security WHERE securityId = ?";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
@@ -321,9 +319,11 @@ class SecurityClass
 			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 		}
 	}
+
 // updates this securityClass in mySQL
 
-	public function update(&$mysqli) {
+	public function update(&$mysqli)
+	{
 		// handle degenerate cases
 		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
@@ -335,7 +335,7 @@ class SecurityClass
 		}
 
 		// create query template
-		$query     = "UPDATE security SET description = ?, isDefault = ?, createTopic = ?, canEditOther = ?, canPromote = ?, siteAdmin = ? WHERE securityId = ?";
+		$query = "UPDATE security SET description = ?, isDefault = ?, createTopic = ?, canEditOther = ?, canPromote = ?, siteAdmin = ? WHERE securityId = ?";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
@@ -351,6 +351,67 @@ class SecurityClass
 		// execute the statement
 		if($statement->execute() === false) {
 			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+
+		}
+	}
+	public
+	static function getSecurityClassBySecurityId(&$mysqli, $securityId)
+	{
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
+
+		// sanitize the description before searching
+		if ($securityId = filter_var($securityId, FILTER_VALIDATE_INT)=== false) {
+			throw(new Exception("$securityId is not a number"));
+		}
+
+
+
+		// create query template
+		$query = "SELECT securityId, description, isDefault, createTopic, canEditOther, canPromote, siteAdmin FROM security WHERE securityId = ?";
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// bind the description to the place holder in the template
+		$wasClean = $statement->bind_param("i", $securityId);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
+		// get result from the SELECT query
+		$result = $statement->get_result();
+		if($result === false) {
+			throw(new mysqli_sql_exception("Unable to get result set"));
+		}
+
+		// since this is a unique field, this will only return 0 or 1 results. So...
+		// 1) if there's a result, we can make it into a the SecurityClass
+		// 2) if there's no result, we can just return null
+		$row = $result->fetch_assoc(); // fetch_assoc() returns a row as an associative array
+
+		// convert the associative array to SecurityClass
+		if($row !== null) {
+			try {
+				$securityObject = new SecurityClass($row["securityId"], $row["description"], $row["isDefault"], $row["createTopic"], $row["canEditOther"], $row["canPromote"], $row["siteAdmin"]);
+			} catch(Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new mysqli_sql_exception("Unable to convert row to User", 0, $exception));
+			}
+
+			// if we got here, the SecurityClass is good - return it
+			return ($securityObject);
+		} else {
+			// 404 User not found - return null instead
+			return (null);
 		}
 	}
 
