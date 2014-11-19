@@ -19,14 +19,14 @@ class LoginSource
 	public function __construct($loginSourceId, $sourceName)
 	{
 		try {
-			$this->setSecurityId($loginSourceId);
-			$this->setDescription($sourceName);
+			$this->setLoginSourceId($loginSourceId);
+			$this->setSourceName($sourceName);
 		} catch(UnexpectedValueException $unexpectedValue) {
 			// rethrow to the seller
-			throw(new UnexpectedValueException("Unable to construct securityId, 0, $unexpectedValue"));
+			throw(new UnexpectedValueException("Unable to construct loginSourceId, 0, $unexpectedValue"));
 		} catch(RangeException $range) {
 			// rethrow to the caller
-			throw(new RangeException("Unable to construct securityId", 0, $range));
+			throw(new RangeException("Unable to construct loginSourceId", 0, $range));
 		}
 	}
 
@@ -36,11 +36,20 @@ class LoginSource
 		return ($this->loginSourceId);
 	}
 
-	public function loginSourceId($loginSourceId)
+	public function setLoginSourceId($loginSourceId)
 	{
+		if($loginSourceId === null) {
+			$this->loginSourceId = null;
+			return;
+		}
 		//  ensure the loginSourceId is an integer
-		if(filter_var($loginSourceId, FILTER_SANITIZE_STRING) === false) {
+		if(filter_var($loginSourceId, FILTER_VALIDATE_INT) === false) {
 			throw(new UnexpectedValueException("loginSourceId $loginSourceId is not valid"));
+		}
+
+		$loginSourceId = intval($loginSourceId);
+		if($loginSourceId <= 0) {
+			throw(new RangeException("loginSourceId $loginSourceId is not positive"));
 		}
 
 		// finally, take the loginSourceId out of quarantine and assign it
@@ -55,23 +64,22 @@ class LoginSource
 
 	public function setSourceName($sourceName)
 	{
-		// allow the sourceName to be null if a new object
-
+		// sourceName should never be null
 		if($sourceName === null) {
-			$this->sourceName = null;
-			return;
+			throw(new UnexpectedValueException("sourceName must not be null"));
 		}
 
-		//  ensure the sourceName is an integer
-		if(filter_var($sourceName, FILTER_VALIDATE_INT) === false) {
-			throw(new UnexpectedValueException("sourceName $sourceName is not numeric"));
+		// sanitize string
+		$sourceName = trim($sourceName);
+		if(($sourceName = filter_var($sourceName, FILTER_SANITIZE_STRING)) === false) {
+			throw(new UnexpectedValueException("Not a valid string"));
 		}
 
-		$sourceName = intval($sourceName);
-		if($sourceName <= 0) {
-			throw(new RangeException("sourceName $sourceName is not positive"));
+		// enforce 256 character limit to ensure no truncation of data when inserting to database
+		if(strlen($sourceName) > 256) {
+			throw(new RangeException("sourceName must be 256 characters or less in length"));
 		}
-
+		// take sourceName out of quarantine and assign it
 		$this->sourceName = $sourceName;
 
 	}
@@ -79,7 +87,8 @@ class LoginSource
 
 
 
-	public function insert(&$mysqli) {
+	public function insert(&$mysqli)
+	{
 		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
 		}
@@ -90,7 +99,7 @@ class LoginSource
 		}
 
 		// creates a query template
-		$query     = "INSERT INTO LoginSource(loginSourceId, sourceName) VALUES(?, ?)";
+		$query = "INSERT INTO loginSource(loginSourceId, sourceName) VALUES(?, ?)";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
@@ -112,6 +121,7 @@ class LoginSource
 	}
 
 // deletes this LoginSource from mySQL
+
 	public function delete(&$mysqli) {
 		// handle degenerate cases
 		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
@@ -174,6 +184,66 @@ class LoginSource
 	}
 
 
+	public
+	static function getLoginSourceByLoginSourceId(&$mysqli, $loginSourceId)
+	{
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
+
+		// sanitize the loginSourceId before searching
+		if ($loginSourceId = filter_var($loginSourceId, FILTER_VALIDATE_INT)=== false) {
+			throw(new Exception("$loginSourceId is not a number"));
+		}
+
+
+
+		// create query template
+		$query = "SELECT loginSourceId, sourceName FROM loginSource WHERE loginSourceId = ?";
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// bind the it to the place holder in the template
+		$wasClean = $statement->bind_param("i", $loginSourceId);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Not able to execute the mySQL statement"));
+		}
+
+		// get result from the SELECT query
+		$result = $statement->get_result();
+		if($result === false) {
+			throw(new mysqli_sql_exception("Unable to get result set"));
+		}
+
+		// since this is a unique field, this will only return 0 or 1 results. So...
+		// 1) if there's a result, we can make it into a the loginSource
+		// 2) if there's no result, we can just return null
+		$row = $result->fetch_assoc(); // fetch_assoc() returns a row as an associative array
+
+		// convert the associative array to loginSource
+		if($row !== null) {
+			try {
+				$loginSourceObject = new loginSource($row["loginSourceId"], $row["sourceName"]);
+			} catch(Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new mysqli_sql_exception("Unable to convert row to User", 0, $exception));
+			}
+
+			// if we got here, the loginSource is good - return it
+			return ($loginSourceObject);
+		} else {
+			// 404 User not found - return the null instead
+			return (null);
+		}
+	}
 }
 
 ?>

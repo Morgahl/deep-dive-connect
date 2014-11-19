@@ -284,11 +284,12 @@ class SecurityClass
 		if($statement->execute() === false) {
 			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 		}
+
 		// update the null securityId with what mySQL just gave us
 		$this->securityId = $mysqli->insert_id;
 	}
 
-	// deletes this author from mySQL
+	// deletes this SecurityClass from mySQL
 	public function delete(&$mysqli)
 	{
 		// handle degenerate cases
@@ -331,7 +332,7 @@ class SecurityClass
 
 		// enforce the securityId is not null (i.e., don't update a author that hasn't been inserted)
 		if($this->securityId === null) {
-			throw(new mysqli_sql_exception("Unable to update a author that does not exist"));
+			throw(new mysqli_sql_exception("Unable to update a securityId that does not exist"));
 		}
 
 		// create query template
@@ -362,7 +363,7 @@ class SecurityClass
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
 		}
 
-		// sanitize the description before searching
+		// sanitize the securityId before searching
 		if ($securityId = filter_var($securityId, FILTER_VALIDATE_INT)=== false) {
 			throw(new Exception("$securityId is not a number"));
 		}
@@ -414,8 +415,6 @@ class SecurityClass
 			return (null);
 		}
 	}
-
-
 }
 
 ?>
