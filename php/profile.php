@@ -745,7 +745,7 @@ class Profile
 			$firstName = trim($firstName);
 
 			// ensure that input is a string
-			if(filter_var(firstName, FILTER_SANITIZE_STRING) === false) {
+			if(filter_var($firstName, FILTER_SANITIZE_STRING) === false) {
 				throw(new UnexpectedValueException("First name $firstName is not string"));
 			}
 
@@ -762,7 +762,7 @@ class Profile
 			$lastName = trim($lastName);
 
 			// ensure that input is a string
-			if(filter_var(lastName, FILTER_SANITIZE_STRING) === false) {
+			if(filter_var($lastName, FILTER_SANITIZE_STRING) === false) {
 				throw(new UnexpectedValueException("First name $lastName is not string"));
 			}
 
@@ -839,7 +839,8 @@ class Profile
 
 			// return resulting array of Topic objects
 			return($results);
-		} else {
+		}
+		else {
 			return(null);
 		}
 	}
