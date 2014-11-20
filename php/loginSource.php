@@ -4,7 +4,7 @@
  * Author Joseph Bottone
  * http://josephmichaelbottone.com
  * bottone.joseph@gmail.
- * thundermedia.com
+ * http://thundermedia.com
  **/
 
 class LoginSource
@@ -17,7 +17,6 @@ class LoginSource
 	 * @var names the sourceName
 	 */
 	private $sourceName;
-
 
 	/**
 	 * here is the constructor

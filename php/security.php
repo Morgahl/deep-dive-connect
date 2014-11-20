@@ -4,7 +4,7 @@
  * Author Joseph Bottone
  * http://josephmichaelbottone.com
  * bottone.joseph@gmail.
- * thundermedia.com
+ * http://thundermedia.com
  **/
 
 class Security
@@ -67,7 +67,6 @@ class Security
 			throw(new RangeException("Unable to construct securityId", 0, $range));
 		}
 	}
-
 	/**
 	 * gets value of securityId
 	 *
