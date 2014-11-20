@@ -20,8 +20,7 @@ require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 
 //the cohortTest below will be a container for all our tests
 //TODO: Enter correct "global" variables-Start and end dates with correct formats
-class cohortTest extends UnitTestCase
-{
+class cohortTest extends UnitTestCase {
    // variable to hold the mySQL connection
    private $mysqli = null;
 
@@ -35,8 +34,7 @@ class cohortTest extends UnitTestCase
    private $DESCRIPTION = "I am a Deep Dive Alum";
 
    // setUp() is a method that is run before each test
-   public function setUp()
-   {
+   public function setUp() {
 
       // connect to mySQLi
 
@@ -49,8 +47,7 @@ class cohortTest extends UnitTestCase
 
    // tearDown() is a method that is run after each test
    // here, we use it to delete the test record and disconnect from mySQL
-   public function tearDown()
-   {
+   public function tearDown() {
       // delete the cohort if we can
       if($this->cohort !== null) {
          $this->cohort->delete($this->mysqli);
@@ -62,8 +59,7 @@ class cohortTest extends UnitTestCase
 
 
    // test creating a new Cohort and inserting it to mySQL
-   public function testInsertNewCohort()
-   {
+   public function testInsertNewCohort() {
 
       // first, verify mySQL connected OK
       $this->assertNotNull($this->mysqli);
@@ -98,8 +94,7 @@ class cohortTest extends UnitTestCase
    }
 
    //test updating Cohort in mySQL
-   public function testUpdateCohort()
-   {
+   public function testUpdateCohort() {
       // first, verify mySQL connected OK
       $this->assertNotNull($this->mysqli);
 
@@ -140,9 +135,8 @@ class cohortTest extends UnitTestCase
    }
 
    //test deleting a cohort
-   public function testDeleteCohort()
-   {
-      //first, verify mySQL connected OK
+   public function testDeleteCohort() {
+      //first, verify mySQL, connected OK
       $this->assertNotNull($this->mysqli);
 
       //second, create a cohort to post to mySQL
@@ -165,8 +159,7 @@ class cohortTest extends UnitTestCase
 
 
    //test grabbing cohortId from mySQL
-   public function testGetCohortByCohortId()
-   {
+   public function testGetCohortByCohortId() {
       //first, verify mySQL connected OK
       $this->assertNotNull($this->mysqli);
 
@@ -203,11 +196,8 @@ class cohortTest extends UnitTestCase
 
    }
 
-
-
       //test grabbing Start Date from mySQL
-      public function testGetCohortByStartDate()
-      {
+      public function testGetCohortStartDate() {
          //first, verify mySQL connected OK
          $this->assertNotNull($this->mysqli);
 
@@ -218,7 +208,7 @@ class cohortTest extends UnitTestCase
          $this->cohort->insert($this->mysqli);
 
          //fourth, get the cohort using the static method
-         $staticCohort = Cohort::getStartDate($this->mysqli, $this->cohort->getStartDate());
+         $staticCohort = Cohort::getCohortStartDate($this->mysqli, $this->STARTDATE);
 
          //fifth, convert date time objects, start date and end date, prior to assertion, converts dates to strings
          if($this->STARTDATE === null) {
@@ -234,13 +224,12 @@ class cohortTest extends UnitTestCase
          }
 
          //finally, compare the fields
-         var_dump($staticCohort);
-         $this->assertNotNull($staticCohort->getCohortId());
-         $this->assertTrue($staticCohort->getCohortId() > 0);
-         $this->assertIdentical($staticCohort->getStartDate(), $startDate);
-         $this->assertIdentical($staticCohort->getEndDate(), $endDate);
-         $this->assertIdentical($staticCohort->getDescription(), $this->DESCRIPTION);
-         $this->assertIdentical($staticCohort->getLocation(), $this->LOCATION);
+         $this->assertNotNull($staticCohort[0]->getCohortId());
+         $this->assertTrue($staticCohort[0]->getCohortId() > 0);
+         $this->assertIdentical($staticCohort[0]->getStartDate(), $startDate);
+         $this->assertIdentical($staticCohort[0]->getEndDate(), $endDate);
+         $this->assertIdentical($staticCohort[0]->getDescription(), $this->DESCRIPTION);
+         $this->assertIdentical($staticCohort[0]->getLocation(), $this->LOCATION);
 
 
          }

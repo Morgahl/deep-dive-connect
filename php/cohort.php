@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This is a container for class Cohort
  *
@@ -37,8 +38,7 @@ class Cohort
     * @throws UnexpectedValueException when a parameter is wrong type
     * @throws RangeException when a parameter is invalid
     **/
-   public function __construct($newCohortID, $newStartDate, $newEndDate, $newLocation, $newDescription)
-   {
+   public function __construct($newCohortID, $newStartDate, $newEndDate, $newLocation, $newDescription) {
       try {
          $this->setCohortID($newCohortID);
          $this->setStartDate($newStartDate);
@@ -61,20 +61,17 @@ class Cohort
     * @return mixed Cohort Id (or null if new object)
     **/
 
-   public function getCohortId()
-   {
+   public function getCohortId() {
       return ($this->cohortId);
-
    }
 
    /** sets the value of Cohort Id
     *
-    * @param mixed $newCohortId (or null if new object)
+    * @param mixed $CohortId (or null if new object)
     * @throws UnexpectedValueException if not an integer or null
     * @throws RangeException if Cohort Id isn't a positive
     **/
-   public function setCohortID($newCohortId)
-   {
+   public function setCohortID($newCohortId) {
       // zeroth, set allow the CohortID to be null if a new object
       if($newCohortId === null) {
          $this->cohortId = null;
@@ -99,8 +96,7 @@ class Cohort
    /**
     * gets the value of startDate of Cohort
     **/
-   public function getStartDate()
-   {
+   public function getStartDate() {
       return ($this->startDate);
    }
 
@@ -110,8 +106,7 @@ class Cohort
     * @throws exception if date is not a valid date
     *
     **/
-   public function setStartDate($newStartDate)
-   {
+   public function setStartDate($newStartDate) {
       //zeroth, allow the date to be null if a new object
       if($newStartDate === null) {
          $this->startDate = null;
@@ -148,10 +143,9 @@ class Cohort
     * gets the value of EndDate of Cohort
     **/
 
-   public function getEndDate()
-   {
+   public function getEndDate() {
       return ($this->endDate);
-   }
+    }
 
    /** sets the value of EndDate of Cohort
     *
@@ -159,8 +153,7 @@ class Cohort
     * @throws exception if date is not a valid date
     *
     **/
-   public function setEndDate($newEndDate)
-   {
+   public function setEndDate($newEndDate) {
       //zeroth, allow the date to be null if a new object
       if($newEndDate === null) {
          $this->endDate = null;
@@ -201,14 +194,13 @@ class Cohort
     * @param $mysqli pointer to mySQL connection, by reference
     * @throws mysqli_sql_exception when mySQL related errors occur
     **/
-   public function update(&$mysqli)
-   {
+   public function update(&$mysqli) {
       // handle degenerate cases
       if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
          throw(new mysqli_sql_exception("input is not a mysqli object"));
       }
 
-      // convert dates to strings
+      // convert start and end dates to strings
       if($this->startDate === null) {
          $startDate = null;
       } else {
@@ -246,8 +238,7 @@ class Cohort
     *
     * @return string Location
     **/
-   public function getLocation()
-   {
+   public function getLocation() {
       return ($this->location);
    }
 
@@ -256,8 +247,7 @@ class Cohort
     *
     * @return string Location
     **/
-   public function setLocation($newLocation)
-   {
+   public function setLocation($newLocation) {
       // filter the location as a generic string
       $newLocation = trim($newLocation);
       $newLocation = filter_var($newLocation, FILTER_SANITIZE_STRING);
@@ -273,8 +263,7 @@ class Cohort
     * @return string Description
     **/
 
-   public function getDescription()
-   {
+   public function getDescription() {
       return ($this->description);
    }
 
@@ -283,8 +272,7 @@ class Cohort
     *
     * @return string Description
     **/
-   public function setDescription($newDescription)
-   {
+   public function setDescription($newDescription) {
       // filter the location as a generic string
       $newDescription = trim($newDescription);
       $newDescription = filter_var($newDescription, FILTER_SANITIZE_STRING);
@@ -298,9 +286,7 @@ class Cohort
     * @param resource $mysqli pointer to mySQL connection by reference
     *                         mysqli_sql_exception as mySql related errors occur
     **/
-   public function insert(&$mysqli)
-   {
-
+   public function insert(&$mysqli) {
 
       if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
          throw(new mysqli_sql_exception("input is not a mysqli object"));
@@ -355,8 +341,7 @@ class Cohort
     * @param resource $mysqli pointer to mySQL connection, by reference
     * @throws mysqli_sql_exception when mySQL related errors occur
     **/
-   public function delete(&$mysqli)
-   {
+   public function delete(&$mysqli) {
       // handle degenerate cases
       if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
          throw(new mysqli_sql_exception("input is not a mysqli object"));
@@ -394,8 +379,7 @@ class Cohort
     * @throws mysqli_sql_exception when mySQL related errors occur
     *
     **/
-   public static function getCohortByCohortId(&$mysqli, $cohortId)
-   {
+   public static function getCohortByCohortId(&$mysqli, $cohortId) {
       // handle degenerate cases
       if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
          throw(new mysqli_sql_exception("input is not a mysqli object"));
@@ -440,9 +424,74 @@ class Cohort
 
          // return resulting array of Cohort objects
          return ($results);
+         } else {
+         return (null);
+      }
+   }
+
+   /**
+    * Selects Cohort by StartDate
+    *
+    * @param resource $mysqli pointer to mySQL connection, by reference
+    * @return null
+    * @throws mysqli_sql_exception when mySQL related errors occur
+    *
+    **/
+   public static function getCohortStartDate(&$mysqli, $startDate) {
+      // handle degenerate cases
+      if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+         throw(new mysqli_sql_exception("input is not a mysqli object"));
+      }
+
+      //converts date time object to string, sanitizes
+      if(gettype($startDate) === "object" && get_class($startDate) === "DateTime") {
+         $startDate = format("Y-m-d H:i:s");
+      } elseif($startDate !== null) {
+         $startDate = trim($startDate);
+         $startDate = filter_var($startDate, FILTER_SANITIZE_STRING);
+      } else {
+
+      }
+
+      // create query template for role
+      $query = "SELECT cohortId, startDate, endDate, location, description FROM cohort WHERE startDate = ?";
+      $statement = $mysqli->prepare($query);
+      if($statement === false) {
+         throw(new mysqli_sql_exception("Unable to prepare statement"));
+      }
+
+      // bind the member variables to the place holders in the template
+      $wasClean = $statement->bind_param("s", $startDate);
+      if($wasClean === false) {
+         throw(new mysqli_sql_exception("Unable to bind parameters"));
+      }
+
+      // execute the statement
+      if($statement->execute() === false) {
+         throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+      }
+
+      // get results
+      $results = $statement->get_result();
+      if($results->num_rows > 0) {
+
+         // retrieve results in bulk into an array
+         $results = $results->fetch_all(MYSQL_ASSOC);
+         if($results === false) {
+            throw(new mysqli_sql_exception("Unable to process result set"));
+         }
+
+         // step through results array and convert to Cohort objects
+         foreach($results as $index => $row) {
+            $results[$index] = new Cohort($row["cohortId"], $row["startDate"], $row["endDate"], $row["location"], $row["description"]);
+         }
+
+         // return resulting array of Cohort objects
+         return ($results);
       } else {
          return (null);
       }
+
    }
 }
 
