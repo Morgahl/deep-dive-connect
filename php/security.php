@@ -7,7 +7,7 @@
  * thundermedia.com
  **/
 
-class SecurityClass
+class Security
 {
 	// assigns the primary key
 	private $securityId;
@@ -289,7 +289,7 @@ class SecurityClass
 		$this->securityId = $mysqli->insert_id;
 	}
 
-	// deletes this SecurityClass from mySQL
+	// deletes this Security from mySQL
 	public function delete(&$mysqli)
 	{
 		// handle degenerate cases
@@ -356,7 +356,7 @@ class SecurityClass
 		}
 	}
 	public
-	static function getSecurityClassBySecurityId(&$mysqli, $securityId)
+	static function getSecurityBySecurityId(&$mysqli, $securityId)
 	{
 		// handle degenerate cases
 		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
@@ -395,20 +395,20 @@ class SecurityClass
 		}
 
 		// since this is a unique field, this will only return 0 or 1 results. So...
-		// 1) if there's a result, we can make it into a the SecurityClass
+		// 1) if there's a result, we can make it into a the Security
 		// 2) if there's no result, we can just return null
 		$row = $result->fetch_assoc(); // fetch_assoc() returns a row as an associative array
 
-		// convert the associative array to SecurityClass
+		// convert the associative array to Security
 		if($row !== null) {
 			try {
-				$securityObject = new SecurityClass($row["securityId"], $row["description"], $row["isDefault"], $row["createTopic"], $row["canEditOther"], $row["canPromote"], $row["siteAdmin"]);
+				$securityObject = new Security($row["securityId"], $row["description"], $row["isDefault"], $row["createTopic"], $row["canEditOther"], $row["canPromote"], $row["siteAdmin"]);
 			} catch(Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new mysqli_sql_exception("Unable to convert row to User", 0, $exception));
 			}
 
-			// if we got here, the SecurityClass is good - return it
+			// if we got here, the Security is good - return it
 			return ($securityObject);
 		} else {
 			// 404 User not found - return null instead

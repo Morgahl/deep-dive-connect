@@ -16,7 +16,7 @@ require_once("../php/topic.php");
 require_once("../php/user.php");
 require_once("../php/profile.php");
 // TODO: bring these back in
-//require_once("../php/securityClass.php");
+//require_once("../php/security.php");
 //require_once("../php/loginSource.php");
 
 // require mysqli connection object
@@ -61,7 +61,7 @@ Maecenas quis lobortis massa. Suspendisse ultricies aliquet dui, sit amet pharet
 
 		// TODO: set this to use securityClass and loginSourceID from above objects
 //		//create new securityClass
-//		$this->securityClasses = new SecurityClass(null, "Uber Newb",0,0,0,0,0);
+//		$this->securityClasses = new Security(null, "Uber Newb",0,0,0,0,0);
 //		$this->securityClasses->insert($this->profiles);
 //
 //		// create new loginSource

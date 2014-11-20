@@ -5,7 +5,7 @@
  * http://josephmichaelbottone.com
  * bottone.joseph@gmail.
  * thundermedia.com
- * Unit test for SecurityClass
+ * Unit test for Security
  **/
 
 // require mysqli connection object
@@ -14,7 +14,7 @@ require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 require_once("/usr/lib/php5/simpletest/autorun.php");
 
 // then require the class under scrutiny
-require_once("../php/securityClass.php");
+require_once("../php/security.php");
 
 // the securityClassTest is a container for all our tests
 class SecurityClassTest extends UnitTestCase
@@ -61,7 +61,7 @@ class SecurityClassTest extends UnitTestCase
 		$this->assertNotNull($this->mysqli);
 
 		// second, create a Security Class to post to mySQL
-		$this->security = new SecurityClass(null, $this->DESCRIPTION, $this->ISDEFAULT, $this->CREATETOPIC, $this->CANEDITOTHER, $this->CANPROMOTE, $this->SITEADMIN);
+		$this->security = new Security(null, $this->DESCRIPTION, $this->ISDEFAULT, $this->CREATETOPIC, $this->CANEDITOTHER, $this->CANPROMOTE, $this->SITEADMIN);
 
 		// third, insert the Security Class to mySQL
 		$this->security->insert($this->mysqli);
@@ -97,7 +97,7 @@ class SecurityClassTest extends UnitTestCase
 		$this->assertNotNull($this->mysqli);
 
 		// second, create a Security Class to post to mySQL
-		$this->security = new SecurityClass(null, $this->DESCRIPTION, $this->ISDEFAULT, $this->CREATETOPIC, $this->CANEDITOTHER, $this->CANPROMOTE, $this->SITEADMIN);
+		$this->security = new Security(null, $this->DESCRIPTION, $this->ISDEFAULT, $this->CREATETOPIC, $this->CANEDITOTHER, $this->CANPROMOTE, $this->SITEADMIN);
 
 		// third, insert the Security Class to mySQL
 		$this->security->insert($this->mysqli);
@@ -138,7 +138,7 @@ class SecurityClassTest extends UnitTestCase
 		$this->assertNotNull($this->mysqli);
 
 		// second, create a Security Class to post to mySQL
-		$this->security = new SecurityClass(null, $this->DESCRIPTION, $this->ISDEFAULT, $this->CREATETOPIC, $this->CANEDITOTHER, $this->CANPROMOTE, $this->SITEADMIN);
+		$this->security = new Security(null, $this->DESCRIPTION, $this->ISDEFAULT, $this->CREATETOPIC, $this->CANEDITOTHER, $this->CANPROMOTE, $this->SITEADMIN);
 
 		// third, insert the Security Class to mySQL
 		$this->security->insert($this->mysqli);
@@ -151,8 +151,8 @@ class SecurityClassTest extends UnitTestCase
 		$this->security->delete($this->mysqli);
 		$this->security = null;
 
-		// finally, try to get the SecurityClass and say we didn't get it
-		$hopefulSecurityClass = securityClass::getSecurityClassBySecurityId($this->mysqli, $this->security->getSecurityId);
+		// finally, try to get the Security and say we didn't get it
+		$hopefulSecurityClass = Security::getSecurityBySecurityId($this->mysqli, $this->security->getSecurityId);
 		$this->assertNull($hopefulSecurityClass);
 
 	}
@@ -164,13 +164,13 @@ class SecurityClassTest extends UnitTestCase
 		$this->assertNotNull($this->mysqli);
 
 		// second, create a Security Class to post to mySQL
-		$this->security = new SecurityClass(null, $this->DESCRIPTION, $this->ISDEFAULT, $this->CREATETOPIC, $this->CANEDITOTHER, $this->CANPROMOTE, $this->SITEADMIN);
+		$this->security = new Security(null, $this->DESCRIPTION, $this->ISDEFAULT, $this->CREATETOPIC, $this->CANEDITOTHER, $this->CANPROMOTE, $this->SITEADMIN);
 
 		// third, insert the Security Class to mySQL
 		$this->security->insert($this->mysqli);
 
 		// fourth, get the class by the static method
-		$staticUser = SecurityClass::getSecurityClassBySecurityId($this->mysqli, $this->security->getSecurityId());
+		$staticUser = Security::getSecurityBySecurityId($this->mysqli, $this->security->getSecurityId());
 
 		// compare the fields
 

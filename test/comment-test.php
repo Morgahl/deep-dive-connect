@@ -14,7 +14,7 @@ require_once("../php/comment.php");
 
 // require classes that table needs FK data from
 // TODO: bring these back in
-//require_once("../php/securityClass.php");
+//require_once("../php/security.php");
 //require_once("../php/loginSource.php");
 require_once("../php/user.php");
 require_once("../php/profile.php");
@@ -57,7 +57,7 @@ Maecenas malesuada eget lacus quis tempus. Pellentesque tincidunt interdum neque
 
 		// TODO: set this to use securityClass and loginSourceID from above objects
 //		//create new securityClass
-//		$this->securityClasses = new SecurityClass(null, "Uber Newb",0,0,0,0,0);
+//		$this->securityClasses = new Security(null, "Uber Newb",0,0,0,0,0);
 //		$this->securityClasses->insert($this->profiles);
 //
 //		// create new loginSource
