@@ -9,13 +9,21 @@
 
 class LoginSource
 {
-	// assigns the primary key
+	/**
+	 * @var // assigns the primary key
+	 */
 	private $loginSourceId;
-	// names the sourceName
+	/**
+	 * @var names the sourceName
+	 */
 	private $sourceName;
 
 
-	// here is the constructor
+	/**
+	 * here is the constructor
+	 * @param $loginSourceId
+	 * @param $sourceName
+	 */
 	public function __construct($loginSourceId, $sourceName)
 	{
 		try {
@@ -30,11 +38,19 @@ class LoginSource
 		}
 	}
 
-	// gets the value of the loginSourceId
+	/**
+	 * gets the value of the loginSourceId
+	 * @return mixed
+	 */
 	public function getLoginSourceId()
 	{
 		return ($this->loginSourceId);
 	}
+
+	/**
+	 * sets the value of loginSource
+	 * @param $loginSourceId
+	 */
 
 	public function setLoginSourceId($loginSourceId)
 	{
@@ -56,11 +72,20 @@ class LoginSource
 		$this->loginSourceId = $loginSourceId;
 	}
 
+	/**
+	 * gets the value of sourceName
+	 * @return names
+	 */
 
 	public function getSourceName()
 	{
 		return ($this->sourceName);
 	}
+
+	/**
+	 * sets the value of sourceName
+	 * @param $sourceName
+	 */
 
 	public function setSourceName($sourceName)
 	{
@@ -84,8 +109,10 @@ class LoginSource
 
 	}
 
-
-
+	/**
+	 * inserts the function in mysqli
+	 * @param $mysqli
+	 */
 
 	public function insert(&$mysqli)
 	{
@@ -120,7 +147,10 @@ class LoginSource
 		$this->loginSourceId = $mysqli->insert_id;
 	}
 
-// deletes this LoginSource from mySQL
+	/**
+	 * deletes this LoginSource from mySQL
+	 * @param $mysqli
+	 */
 
 	public function delete(&$mysqli) {
 		// handle degenerate cases
@@ -151,7 +181,11 @@ class LoginSource
 			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 		}
 	}
-// updates this LoginSource in mySQL
+
+	/**
+	 * updates this LoginSource in mySQL
+	 * @param $mysqli
+	 */
 
 	public function update(&$mysqli) {
 		// handle degenerate cases
@@ -183,9 +217,15 @@ class LoginSource
 		}
 	}
 
+	/**
+	 * gets the loginSource information by loginSourceId
+	 * @param $mysqli
+	 * @param $loginSourceId
+	 * @return LoginSource|null
+	 * @throws Exception
+	 */
 
-	public
-	static function getLoginSourceByLoginSourceId(&$mysqli, $loginSourceId)
+	public static function getLoginSourceByLoginSourceId(&$mysqli, $loginSourceId)
 	{
 		// handle degenerate cases
 		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
