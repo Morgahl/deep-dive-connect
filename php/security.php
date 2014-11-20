@@ -26,27 +26,27 @@ class Security
 	 */
 	private $createTopic;
 	/**
-	 * VAR this is createTopic
+	 * VAR this is canEditOther
 	 */
 	private $canEditOther;
 	/**
-	 * VAR this is canEditOther
+	 * VAR this is canPromote
 	 */
 	private $canPromote;
 	/**
-	 * VAR this is canPromote
+	 * VAR this is siteAdmin
 	 */
 	private $siteAdmin;
 	/**
 	 * Constructor of User
 	 *
 	 *
-	 * @param int $securityId
-	 * @param string $description
-	 * @param string $isDefault
-	 * @param string $canEditOther
-	 * @param string $canPromote
-	 * @param int $siteAdmin
+	 * @param int $securityId this INT is the primary key
+	 * @param string $description VAR this is the decription
+	 * @param string $isDefault VAR this is isDefault
+	 * @param string $canEditOther VAR this is canEditOther
+	 * @param string $canPromote VAR this is canPromote
+	 * @param int $siteAdmin VAR this is siteAdmin
 	 */
 	public function __construct($securityId, $description, $isDefault, $createTopic, $canEditOther, $canPromote,
 										 $siteAdmin)
@@ -67,8 +67,10 @@ class Security
 			throw(new RangeException("Unable to construct securityId", 0, $range));
 		}
 	}
+
 	/**
 	 * gets value of securityId
+	 * @return mixed primary key securityId
 	 *
 	 */
 	public function getSecurityId()
@@ -78,6 +80,7 @@ class Security
 
 	/**
 	 * sets the value of securityId
+	 * @param $securityId makes sure the securityId is an integer
 	 *
 	 */
 
@@ -101,9 +104,10 @@ class Security
 		// finally, take the securityId out of quarantine and assign it
 		$this->securityId = $securityId;
 	}
+
 	/**
 	 * gets value of $description
-	 *
+	 * @return mixed
 	 */
 
 	public function getDescription()
@@ -113,7 +117,7 @@ class Security
 
 	/**
 	 * sets the value of description
-	 *
+	 * @param $description the description should not be null
 	 */
 
 	public function setDescription($description)
@@ -136,10 +140,12 @@ class Security
 		$this->description = $description;
 
 	}
+
 	/**
 	 * gets the value of isDefault
-	 *
+	 * @return mixed returns the value of isDefault
 	 */
+
 	public function getIsDefault()
 	{
 		return ($this->isDefault);
@@ -147,7 +153,7 @@ class Security
 
 	/**
 	 * sets the value of isDefault
-	 *
+	 * @param $isDefault allows the value to be null
 	 */
 
 	public function setIsDefault($isDefault)
@@ -177,7 +183,7 @@ class Security
 
 	/**
 	 * gets the value of createTopic
-	 *
+	 * @return mixed the value of createTopic
 	 */
 
 	public function getCreateTopic()
@@ -187,7 +193,7 @@ class Security
 
 	/**
 	 * sets the value of CreateTopic
-	 *
+	 * @param $createTopic allows to be null
 	 */
 
 	public function setCreateTopic($createTopic)
@@ -215,8 +221,8 @@ class Security
 	}
 
 	/**
-	 * gets the value of canEditOthe
-	 *
+	 * gets the value of canEditOther
+	 * @return mixed returns the value of canEditOther
 	 */
 
 	public function getCanEditOther()
@@ -226,7 +232,7 @@ class Security
 
 	/**
 	 * sets the value of canEditOther
-	 *
+	 * @param $canEditOther if a new object allows to be null
 	 */
 
 	public function setCanEditOther($canEditOther)
@@ -256,7 +262,7 @@ class Security
 
 	/**
 	 * gets the value of canPromote
-	 *
+	 * @return mixed returns the value of canPromote
 	 */
 
 	public function getCanPromote()
@@ -266,7 +272,7 @@ class Security
 
 	/**
 	 * sets the value of canPromote
-	 *
+	 * @param $canPromote allows to be null if new object
 	 */
 
 	public function setCanPromote($canPromote)
@@ -296,7 +302,7 @@ class Security
 
 	/**
 	 * gets the value of siteAdmin
-	 *
+	 * @return mixed value of siteAdmin
 	 */
 
 	public function getSiteAdmin()
@@ -306,7 +312,7 @@ class Security
 
 	/**
 	 * sets the value of siteAdmin
-	 *
+	 * @param $siteAdmin assigns the value
 	 */
 
 	public function setSiteAdmin($siteAdmin)
@@ -336,7 +342,7 @@ class Security
 
 	/**
 	 * insert this User to mySQL
-	 *
+	 * @param $mysqli inserts the object into the database loginSource
 	 */
 
 	public function insert(&$mysqli)
@@ -372,10 +378,12 @@ class Security
 		// update the null securityId with what mySQL just gave us
 		$this->securityId = $mysqli->insert_id;
 	}
+
 	/**
 	 * deletes this from mySQL
-	 *.
+	 * @param $mysqli deletes the object from the database loginSource
 	 */
+
 	public function delete(&$mysqli)
 	{
 		// handle degenerate cases
@@ -406,9 +414,11 @@ class Security
 			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 		}
 	}
+
 	/**
-	updates this securityClass in mySQL
-	**/
+	 * updates this securityClass in mySQL
+	 * @param $mysqli updates the securityClass into the database
+	 */
 
 	public function update(&$mysqli)
 	{
@@ -445,10 +455,10 @@ class Security
 
 	/**
 	 * gets the security information by securityId
-	 * @param $mysqli
-	 * @param $securityId
-	 * @return null|Security
-	 * @throws Exception
+	 * @param $mysqli handles degenerate cases
+	 * @param $securityId sanatizes the securityId
+	 * @return null|Security returns the function if null
+	 * @throws Exception throws it out if does not pass
 	 */
 
 	public static function getSecurityBySecurityId(&$mysqli, $securityId)

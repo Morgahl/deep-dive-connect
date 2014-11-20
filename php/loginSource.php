@@ -20,8 +20,8 @@ class LoginSource
 
 	/**
 	 * here is the constructor
-	 * @param $loginSourceId
-	 * @param $sourceName
+	 * @param $loginSourceId is the primary key
+	 * @param $sourceName is a VAR function
 	 */
 	public function __construct($loginSourceId, $sourceName)
 	{
@@ -39,7 +39,7 @@ class LoginSource
 
 	/**
 	 * gets the value of the loginSourceId
-	 * @return mixed
+	 * @return mixed value of the loginSourceId
 	 */
 	public function getLoginSourceId()
 	{
@@ -73,7 +73,7 @@ class LoginSource
 
 	/**
 	 * gets the value of sourceName
-	 * @return names
+	 * @return names of method sourceName
 	 */
 
 	public function getSourceName()
@@ -83,7 +83,7 @@ class LoginSource
 
 	/**
 	 * sets the value of sourceName
-	 * @param $sourceName
+	 * @param $sourceName sets the sourceName
 	 */
 
 	public function setSourceName($sourceName)
@@ -110,7 +110,7 @@ class LoginSource
 
 	/**
 	 * inserts the function in mysqli
-	 * @param $mysqli
+	 * @param $mysqli inserts the sourceName
 	 */
 
 	public function insert(&$mysqli)
@@ -148,7 +148,7 @@ class LoginSource
 
 	/**
 	 * deletes this LoginSource from mySQL
-	 * @param $mysqli
+	 * @param deletes the loginSource from sourceId
 	 */
 
 	public function delete(&$mysqli) {
@@ -183,7 +183,7 @@ class LoginSource
 
 	/**
 	 * updates this LoginSource in mySQL
-	 * @param $mysqli
+	 * @param $mysqli takes loginSourceId and updates it in the database
 	 */
 
 	public function update(&$mysqli) {
@@ -218,10 +218,10 @@ class LoginSource
 
 	/**
 	 * gets the loginSource information by loginSourceId
-	 * @param $mysqli
-	 * @param $loginSourceId
-	 * @return LoginSource|null
-	 * @throws Exception
+	 * @param $mysqli the database is called loginSource
+	 * @param $loginSourceId loginSourceId must be a numeric
+	 * @return LoginSource|null if the user is not found
+	 * @throws Exception if it did not pass the throw
 	 */
 
 	public static function getLoginSourceByLoginSourceId(&$mysqli, $loginSourceId)
