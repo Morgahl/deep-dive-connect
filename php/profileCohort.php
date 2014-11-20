@@ -160,7 +160,7 @@ class profileCohort {
       }
 
       //create a query template - into ProfileCohort
-      $query = "INSERT INTO profileCohort(profileCohortId,cohortId, profileId, role) VALUES(?,?,?,?)";
+      $query = "INSERT INTO profileCohort(profileCohortId, profileId, cohortId, role) VALUES(?,?,?,?)";
       $statement = $mysqli->prepare($query);
       if($statement === false) {
          throw(new mysqli_sql_exception("Unable to prepare statement"));
@@ -174,7 +174,9 @@ class profileCohort {
 
       //execute the statement
       if($statement->execute() === false) {
-         var_dump($statement);
+			var_dump($this);
+         var_dump($statement->error);
+			var_dump($mysqli->error);
          throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
       }
 
