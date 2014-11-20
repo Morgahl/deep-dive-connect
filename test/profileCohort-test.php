@@ -1,6 +1,7 @@
 <?php
 
-/*** Unit Test for ProfileCohort Class Capstone project
+/**
+ * Unit Test for ProfileCohort Class Capstone project
  *
  * Created by Gerardo Medrano adapted from Steven Chavez, Marc Hayes,
  *  et al.

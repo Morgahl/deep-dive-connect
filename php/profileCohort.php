@@ -8,7 +8,7 @@
  *
  * Date: 11/9/2014
  * Time: 4:12 PM
- **/
+ */
 
 class profileCohort {
    //profileCohortID is the private key
@@ -24,12 +24,13 @@ class profileCohort {
    private $role;
 
    /**
-    * constructor for ProfileCohort below
+    * constructor for ProfileCohort
     *
-      @param string $newProfileCohortId Profile Cohort Id integer/number
+    * @param string $newProfileCohortId Profile Cohort Id integer/number (or null if new object)
     * @param string $newCohortId Cohort Id integer/number
     * @param string $newProfileId Profile Id integer/number
     * @param string $newRole indicates current job role or status of alum
+    *
     * @throws UnexpectedValueException when a parameter is wrong type
     * @throws RangeException when a parameter is invalid
     */
@@ -49,15 +50,19 @@ class profileCohort {
          throw(new RangeException("Unable to construct Profile Cohort", 0, $range));
       }
    }
+   /**
+    * gets the value of ProfileCohort Id
+    * @return mixed ProfileCohortId
+    */
 
-   //gets value of ProfileCohortId
-   //returns mixed ProfileCohortId
    public function getProfileCohortId() {
       return ($this->profileCohortId);
    }
-   //set ProfileCohortId
    /**
+    * sets the value of ProfileCohortId
     * @param $newProfileCohortId
+    * @throws UnexpectedValueException when a parameter is wrong type
+    * @throws RangeException when a parameter is invalid
     */
    public function setProfileCohortId($newProfileCohortId) {
       if($newProfileCohortId === null) {
@@ -76,40 +81,52 @@ class profileCohort {
       //take the Profile Cohort Id out of quarantine
       $this->profileCohortId = $newProfileCohortId;
    }
+   /**
+    * gets the value of ProfileId
+    * @param  mixed $newProfileId (or null if new object)
+    * @throws UnexpectedValueException if not an integer or null
+    * @throws RangeException if user Id isn't positive
 
-
-   //gets value of ProfileId
-   //returns mixed ProfileId
+    */
    public function getProfileId() {
       return ($this->profileId);
    }
-   //**set the value of ProfileId**/
+   //**zeroth set allow the ProfileId to be null if a new object
    public function setProfileId($newProfileId) {
       if($newProfileId === null) {
          $this->profileId = null;
          return;
       }
 
-      //filter_var for ProfileId
+      //next, create filter_var or sanitize for ProfileId
       if(filter_var($newProfileId, FILTER_VALIDATE_INT) === false) {
          throw(new UnexpectedValueException("Profile Id $newProfileId is not numeric"));
       }
 
-      //convert the ProfileCohortId to an integer and enforce it is positive
+      //third, convert the ProfileCohortId to an integer and enforce it is positive
       $newProfileId = intval($newProfileId);
       if($newProfileId <= 0) {
          throw(new RangeException("Profile Id $newProfileId is not positive"));
       }
 
-      //take the Profile Cohort Id out of quarantine
+      //lastly, take the Profile Cohort Id out of quarantine and assign it
       $this->profileId = $newProfileId;
    }
 
-   //gets value of CohortId
+   /**
+    * gets the value of CohortId
+    * @return string value of CohortId
+    */
    public function getCohortId() {
       return ($this->cohortId);
    }
-   //set CohortId
+
+   /**
+    * sets the value of CohortId
+    *
+    * @param string value of CohortId
+    * throws UnexpectedValueException if input is not numeric
+    */
    public function setCohortId($newCohortId) {
       if($newCohortId === null) {
          $this->cohortId = null;
@@ -128,17 +145,25 @@ class profileCohort {
          $this->cohortId = $newCohortId;
    }
 
-
-   //Get and Set for role
+   /**
+    * gets the value of Role
+    * @return string value of Role
+    */
    public function getRole() {
       return ($this->role);
    }
+
+   /**
+    * sets the value of Role
+    * @return string value of Role
+    */
    public function setRole($newRole) {
       $newRole = trim($newRole);
-      // filter the role as a generic string
+
+      // sanitizes the role as a generic string
       $newRole = filter_var($newRole, FILTER_SANITIZE_STRING);
 
-      // then just take the role out of quarantine
+      // takes role out of quarantine
 
       $this->role = $newRole;
    }
@@ -146,8 +171,7 @@ class profileCohort {
    /**
     * Insert profileCohort to mySQL
     * @param mysqli_sql_exception-mySql related errors occur
-    *
-    **/
+    */
    public function insert(&$mysqli) {
 
       if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
@@ -189,8 +213,7 @@ class profileCohort {
     *
     * @param resource $mysqli pointer to mySQL connection, by reference
     * @throws mysqli_sql_exception when mySQL related errors occur
-    *
-    **/
+    */
 
    public function delete(&$mysqli) {
       //handle degenerate cases
@@ -225,12 +248,11 @@ class profileCohort {
    }
 
    /**
-   * updates nulls with Mysql output
+   * updates this Profile in Mysql
    *
    * @param resource $mysqli pointer to mySQL connection, by reference
    * @throws mysqli_sql_exception when mySQL related errors occur
-   *
-   **/
+   */
       public function update(&$mysqli) {
 
          // handle degenerate class
@@ -266,13 +288,12 @@ class profileCohort {
 }
 
    /**
-    * gets List of Cohort by ProfileId
+    * gets List of Cohorts by ProfileId
     *
     * @param resource $mysqli pointer to mySQL connection, by reference
-    * @return null
+    * @return array of profileCohort objects
     * @throws mysqli_sql_exception when mySQL related errors occur
-    *
-    **/
+    */
    public static function getCohortByProfileId(&$mysqli, $profileId) {
       // handle degenerate cases
       if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
@@ -322,18 +343,17 @@ class profileCohort {
       }
    }
 
-      /**
-       * gets List of Cohort Attendees by cohortId
-       *
-       * @param resource $mysqli pointer to mySQL connection, by reference
-       * @return null
-       * @throws mysqli_sql_exception when mySQL related errors occur
-       *
-       **/
-         public static function getAttendeesByCohort(&$mysqli, $cohortId) {
-            // handle degenerate cases
-            if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
-               throw(new mysqli_sql_exception("input is not a mysqli object"));
+    /**
+     * gets List of Cohort Attendees by cohortId
+     *
+     * @param resource $mysqli pointer to mySQL connection, by reference
+     * @return array of profileCohort objects
+     * @throws mysqli_sql_exception when mySQL related errors occurs
+     */
+      public static function getAttendeesByCohort(&$mysqli, $cohortId) {
+         // handle degenerate cases
+         if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+            throw(new mysqli_sql_exception("input is not a mysqli object"));
          }
 
          // sanitize the description before searching
@@ -361,80 +381,80 @@ class profileCohort {
          // get results
          $results = $statement->get_result();
          if($results->num_rows > 0) {
-            // retrieve results in bulk into an array
-            $results = $results->fetch_all(MYSQL_ASSOC);
-            if($results === false) {
-               throw(new mysqli_sql_exception("Unable to process result set"));
+
+         // retrieve results in bulk into an array
+         $results = $results->fetch_all(MYSQL_ASSOC);
+         if($results === false) {
+            throw(new mysqli_sql_exception("Unable to process result set"));
          }
 
-            // step through results array and convert to ProfileCohort objects
+         // step through results array and convert to ProfileCohort objects
             foreach ($results as $index => $row) {
                $results[$index] = new ProfileCohort($row["profileCohortId"], $row["profileId"], $row["cohortId"], $row["role"]);
          }
 
-            // return resulting array of ProfileCohort objects
+         // return resulting array of ProfileCohort objects
             return($results);
          } else {
             return(null);
          }
    }
 
-         /**
-          * gets List of Cohort Attendees by role
-          *
-          * @param resource $mysqli pointer to mySQL connection, by reference
-          * @return null
-          * @throws mysqli_sql_exception when mySQL related errors occur
-          *
-          **/
-         public static function getAttendeesByRole(&$mysqli, $role) {
-            // handle degenerate cases
-            if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+      /**
+       * gets List of Cohort Attendees by role
+       *
+       * @param resource $mysqli pointer to mySQL connection, by reference
+       * @return array of ProfileCohort objects
+       * @throws mysqli_sql_exception when mySQL related errors occur
+       **/
+      public static function getAttendeesByRole(&$mysqli, $role) {
+        // handle degenerate cases
+        if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
                throw(new mysqli_sql_exception("input is not a mysqli object"));
+        }
+
+        // sanitize the role before searching
+        $role = trim($role);
+        $role = filter_var($role, FILTER_SANITIZE_STRING);
+
+        // create query template for role
+        $query     =   "SELECT profileCohortId, profileId, cohortId, role FROM profileCohort WHERE role = ?";
+        $statement =   $mysqli->prepare($query);
+        if($statement === false) {
+           throw(new mysqli_sql_exception("Unable to prepare statement"));
+        }
+
+         // bind the member variables to the place holders in the template
+         $wasClean = $statement->bind_param("s", $role);
+         if($wasClean === false) {
+            throw(new mysqli_sql_exception("Unable to bind parameters"));
             }
 
-            // sanitize the role before searching
-            $role = trim($role);
-            $role = filter_var($role, FILTER_SANITIZE_STRING);
-
-            // create query template for role
-            $query     =   "SELECT profileCohortId, profileId, cohortId, role FROM profileCohort WHERE role = ?";
-            $statement =   $mysqli->prepare($query);
-            if($statement === false) {
-               throw(new mysqli_sql_exception("Unable to prepare statement"));
+         // execute the statement
+         if($statement->execute() === false) {
+            throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
             }
 
-            // bind the member variables to the place holders in the template
-            $wasClean = $statement->bind_param("s", $role);
-            if($wasClean === false) {
-               throw(new mysqli_sql_exception("Unable to bind parameters"));
-            }
+         // get results
+         $results = $statement->get_result();
+         if($results->num_rows > 0) {
 
-            // execute the statement
-            if($statement->execute() === false) {
-               throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
-            }
+         // retrieve results in bulk into an array
+         $results = $results->fetch_all(MYSQL_ASSOC);
+         if($results === false) {
+            throw(new mysqli_sql_exception("Unable to process result set"));
+         }
 
-            // get results
-            $results = $statement->get_result();
-            if($results->num_rows > 0) {
+         // step through results array and convert to ProfileCohort objects
+         foreach ($results as $index => $row) {
+         $results[$index] = new ProfileCohort($row["profileCohortId"], $row["profileId"], $row["cohortId"], $row["role"]);
+         }
 
-               // retrieve results in bulk into an array
-               $results = $results->fetch_all(MYSQL_ASSOC);
-               if($results === false) {
-                  throw(new mysqli_sql_exception("Unable to process result set"));
-               }
-
-               // step through results array and convert to ProfileCohort objects
-               foreach ($results as $index => $row) {
-                  $results[$index] = new ProfileCohort($row["profileCohortId"], $row["profileId"], $row["cohortId"], $row["role"]);
-               }
-
-               // return resulting array of ProfileCohort objects
-               return($results);
-            } else {
-               return(null);
-            }
+         // return resulting array of ProfileCohort objects
+         return($results);
+         } else {
+            return(null);
+         }
 
       }
 }
