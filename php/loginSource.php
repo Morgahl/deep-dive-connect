@@ -22,9 +22,9 @@ class LoginSource
 	/**
 	 * Constructor for loginSource
 	 * @param $loginSourceId INT loginSourceId (or null if new object)
-	 * @param $sourceName VAR topicId (sourcename of creator)
+	 * @param $sourceName VAR (sourcename of creator)
 	 * @throws UnexpectedValueException when a parameter is of the wrong type
-	 * @throes RangeException when a parameter is invalid
+	 * @throws RangeException when a parameter is invalid
 	 */
 	public function __construct($loginSourceId, $sourceName)
 	{
@@ -53,7 +53,7 @@ class LoginSource
 	 * sets the value of loginSource
 	 * @param $loginSourceId loginSourceId (or null if new object)
 	 * @throws UnexpectedValueException when a parameter is of the wrong type
-	 * @throes RangeException when a parameter is invalid
+	 * @throws RangeException when a parameter is invalid
 	 */
 
 	public function setLoginSourceId($loginSourceId)
@@ -91,7 +91,7 @@ class LoginSource
 	 * @param $sourceName sets the sourceName
 	 * @throws UnexpectedValueException when a parameter is of the wrong type
 	 * @throws UnexpectedValueException when a parameter is of the wrong type
-	 * @throes RangeException when a parameter is invalid
+	 * @throws RangeException when a parameter is invalid
 	 */
 
 	public function setSourceName($sourceName)

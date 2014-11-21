@@ -14,7 +14,7 @@ class Security
 	 */
 	private $securityId;
 	/**
-	 * VAR this is the decription
+	 * VAR this is the description
 	 */
 	private $description;
 	/**
@@ -40,13 +40,14 @@ class Security
 
 	/**
 	 * Constructor of User
-	 * @param $securityId
-	 * @param $description
-	 * @param $isDefault
-	 * @param $createTopic
-	 * @param $canEditOther
-	 * @param $canPromote
-	 * @param $siteAdmin
+	 * @param $securityId INT securityId (or null if new object)
+	 * @param $description VAR (description of constructor)
+	 * @param $isDefault INT (isDefault of constructor)
+	 * @param $createTopic INT (createTopic of constructor)
+	 * @param $canEditOther INT (canEditOther of constructor)
+	 * @param $canPromote INT (canPromote of constructor)
+	 * @param $siteAdmin INT (siteAdmin of constructor)
+	 * @throws RangeException if unable to construct securityId
 	 */
 
 	public function __construct($securityId, $description, $isDefault, $createTopic, $canEditOther, $canPromote,
