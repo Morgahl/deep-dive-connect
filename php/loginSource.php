@@ -1,27 +1,30 @@
 <?php
 
 /**
- * Author Joseph Bottone
- * http://josephmichaelbottone.com
- * bottone.joseph@gmail.
- * http://thundermedia.com
- **/
+ * MySQL Enabled Comment
+ *
+ * This is a MySQL enabled container for loginSouce creation and handling.
+ *
+ * @author Joseph Bottone <joseph@thundermedia.com>
+ */
 
 class LoginSource
 {
 	/**
-	 * @var // assigns the primary key
+	 * @var $loginSourceId INT loginSourceId for the loginSource; this is the Primary Key
 	 */
 	private $loginSourceId;
 	/**
-	 * @var names the sourceName
+	 * @var $sourceName VAR sourceName for the loginSource; FK to topic table
 	 */
 	private $sourceName;
 
 	/**
-	 * here is the constructor
-	 * @param $loginSourceId is the primary key
-	 * @param $sourceName is a VAR function
+	 * Constructor for loginSource
+	 * @param $loginSourceId INT loginSourceId (or null if new object)
+	 * @param $sourceName VAR topicId (sourcename of creator)
+	 * @throws UnexpectedValueException when a parameter is of the wrong type
+	 * @throes RangeException when a parameter is invalid
 	 */
 	public function __construct($loginSourceId, $sourceName)
 	{
@@ -38,8 +41,8 @@ class LoginSource
 	}
 
 	/**
-	 * gets the value of the loginSourceId
-	 * @return mixed value of the loginSourceId
+	 * gets the value of loginSourceId
+	 * @return INT user loginSourceId (or null if new object)
 	 */
 	public function getLoginSourceId()
 	{
@@ -48,7 +51,9 @@ class LoginSource
 
 	/**
 	 * sets the value of loginSource
-	 * @param $loginSourceId
+	 * @param $loginSourceId loginSourceId (or null if new object)
+	 * @throws UnexpectedValueException when a parameter is of the wrong type
+	 * @throes RangeException when a parameter is invalid
 	 */
 
 	public function setLoginSourceId($loginSourceId)
@@ -73,7 +78,7 @@ class LoginSource
 
 	/**
 	 * gets the value of sourceName
-	 * @return names of method sourceName
+	 * @return value of sourceName
 	 */
 
 	public function getSourceName()
@@ -84,6 +89,9 @@ class LoginSource
 	/**
 	 * sets the value of sourceName
 	 * @param $sourceName sets the sourceName
+	 * @throws UnexpectedValueException when a parameter is of the wrong type
+	 * @throws UnexpectedValueException when a parameter is of the wrong type
+	 * @throes RangeException when a parameter is invalid
 	 */
 
 	public function setSourceName($sourceName)
@@ -109,8 +117,9 @@ class LoginSource
 	}
 
 	/**
-	 * inserts the function in mysqli
-	 * @param $mysqli inserts the sourceName
+	 * inserts the loginSource in mysqli
+	 * @param $mysqli pointer to mySQL connection, by reference
+	 * @throws mysqli_sql_exception when mySQL related errors occur
 	 */
 
 	public function insert(&$mysqli)
@@ -147,8 +156,9 @@ class LoginSource
 	}
 
 	/**
-	 * deletes this LoginSource from mySQL
-	 * @param deletes the loginSource from sourceId
+	 * deletes this loginSource from mySQL
+	 * @param $mysqli pointer to mySQL connection, by referenc
+	 * @throws mysqli_sql_exception when mySQL related errors occur
 	 */
 
 	public function delete(&$mysqli) {
@@ -182,8 +192,10 @@ class LoginSource
 	}
 
 	/**
-	 * updates this LoginSource in mySQL
-	 * @param $mysqli takes loginSourceId and updates it in the database
+	 * updates this loginSource in mySQL
+	 * @param $mysqli pointer to mySQL connection, by reference
+	 * @return mixed loginSource if found or null if not found
+	 * @throws mysqli_sql_exception when mySQL related errors occur
 	 */
 
 	public function update(&$mysqli) {
@@ -218,9 +230,8 @@ class LoginSource
 
 	/**
 	 * gets the loginSource information by loginSourceId
-	 * @param $mysqli the database is called loginSource
-	 * @param $loginSourceId loginSourceId must be a numeric
-	 * @return LoginSource|null if the user is not found
+	 * @param $mysqli pointer to mySQL connection, by reference
+	 * @return loginSource|null if the user is not found
 	 * @throws Exception if it did not pass the throw
 	 */
 
@@ -235,8 +246,6 @@ class LoginSource
 		if ($loginSourceId = filter_var($loginSourceId, FILTER_VALIDATE_INT)=== false) {
 			throw(new Exception("$loginSourceId is not a number"));
 		}
-
-
 
 		// create query template
 		$query = "SELECT loginSourceId, sourceName FROM loginSource WHERE loginSourceId = ?";

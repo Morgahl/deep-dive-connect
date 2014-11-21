@@ -37,17 +37,18 @@ class Security
 	 * VAR this is siteAdmin
 	 */
 	private $siteAdmin;
+
 	/**
 	 * Constructor of User
-	 *
-	 *
-	 * @param int $securityId this INT is the primary key
-	 * @param string $description VAR this is the decription
-	 * @param string $isDefault VAR this is isDefault
-	 * @param string $canEditOther VAR this is canEditOther
-	 * @param string $canPromote VAR this is canPromote
-	 * @param int $siteAdmin VAR this is siteAdmin
+	 * @param $securityId
+	 * @param $description
+	 * @param $isDefault
+	 * @param $createTopic
+	 * @param $canEditOther
+	 * @param $canPromote
+	 * @param $siteAdmin
 	 */
+
 	public function __construct($securityId, $description, $isDefault, $createTopic, $canEditOther, $canPromote,
 										 $siteAdmin)
 	{
@@ -70,7 +71,7 @@ class Security
 
 	/**
 	 * gets value of securityId
-	 * @return mixed primary key securityId
+	 * @return mixed (or null if new object)
 	 *
 	 */
 	public function getSecurityId()
@@ -80,8 +81,9 @@ class Security
 
 	/**
 	 * sets the value of securityId
-	 * @param $securityId makes sure the securityId is an integer
-	 *
+	 * @param $securityId (or null if new object)
+	 * @throws UnexpectedValueException if not an integer or null
+	 * @throws RangeException if isn't positive
 	 */
 
 	public function setSecurityId($securityId)
@@ -107,7 +109,7 @@ class Security
 
 	/**
 	 * gets value of $description
-	 * @return mixed
+	 * @return mixed value of description
 	 */
 
 	public function getDescription()
@@ -117,7 +119,10 @@ class Security
 
 	/**
 	 * sets the value of description
-	 * @param $description the description should not be null
+	 * @param $description $description
+	 * @throws UnexpectedValueException if not an integer or null
+	 * @throws RangeException if not a string
+	 * @throws RangeException if over 256 characters
 	 */
 
 	public function setDescription($description)
@@ -143,7 +148,7 @@ class Security
 
 	/**
 	 * gets the value of isDefault
-	 * @return mixed returns the value of isDefault
+	 * @return mixed vkalue of isDefault
 	 */
 
 	public function getIsDefault()
@@ -153,7 +158,9 @@ class Security
 
 	/**
 	 * sets the value of isDefault
-	 * @param $isDefault allows the value to be null
+	 * @param $isDefault
+	 * @throws RangeException if not an integer
+	 * @throws RangeException if not a 1 or a 0
 	 */
 
 	public function setIsDefault($isDefault)
@@ -183,7 +190,7 @@ class Security
 
 	/**
 	 * gets the value of createTopic
-	 * @return mixed the value of createTopic
+	 * @return mixed value of createTopic
 	 */
 
 	public function getCreateTopic()
@@ -193,7 +200,9 @@ class Security
 
 	/**
 	 * sets the value of CreateTopic
-	 * @param $createTopic allows to be null
+	 * @param $createTopic null or if new object
+	 * @throws UnexpectedValueException if not numeric
+	 * @throws RangeException is not positive
 	 */
 
 	public function setCreateTopic($createTopic)
@@ -222,7 +231,7 @@ class Security
 
 	/**
 	 * gets the value of canEditOther
-	 * @return mixed returns the value of canEditOther
+	 * @return mixed value of canEditOther
 	 */
 
 	public function getCanEditOther()
@@ -232,7 +241,9 @@ class Security
 
 	/**
 	 * sets the value of canEditOther
-	 * @param $canEditOther if a new object allows to be null
+	 * @param $canEditOther null if new object
+	 * @throws RangeException if not numeric
+	 * @throws UnexpectedValueException if not positive
 	 */
 
 	public function setCanEditOther($canEditOther)
@@ -262,7 +273,7 @@ class Security
 
 	/**
 	 * gets the value of canPromote
-	 * @return mixed returns the value of canPromote
+	 * @return mixed value canPromote
 	 */
 
 	public function getCanPromote()
@@ -272,7 +283,9 @@ class Security
 
 	/**
 	 * sets the value of canPromote
-	 * @param $canPromote allows to be null if new object
+	 * @param $canPromote null if a new object
+	 * @throws UnexpectedValueException if not numeric
+	 * @throws RangeException if not positive
 	 */
 
 	public function setCanPromote($canPromote)
@@ -312,7 +325,9 @@ class Security
 
 	/**
 	 * sets the value of siteAdmin
-	 * @param $siteAdmin assigns the value
+	 * @param $siteAdmin null if a new object
+	 * @throws UnexpectedValueException if not numeric
+	 * @throws RangeException if not positive
 	 */
 
 	public function setSiteAdmin($siteAdmin)
@@ -342,7 +357,8 @@ class Security
 
 	/**
 	 * insert this User to mySQL
-	 * @param $mysqli inserts the object into the database loginSource
+	 * @param $mysqli pointer to mySQL connection, by reference
+	 * @throws mysqli_sql_exception when mySQL related errors occur
 	 */
 
 	public function insert(&$mysqli)
@@ -381,7 +397,8 @@ class Security
 
 	/**
 	 * deletes this from mySQL
-	 * @param $mysqli deletes the object from the database loginSource
+	 * @param $mysqli pointer to mySQL connection, by reference
+	 * @throws mysqli_sql_exception when mySQL related errors occur
 	 */
 
 	public function delete(&$mysqli)
@@ -417,7 +434,8 @@ class Security
 
 	/**
 	 * updates this securityClass in mySQL
-	 * @param $mysqli updates the securityClass into the database
+	 * @param $mysqli pointer to mySQL connection, by reference
+	 * @throws mysqli_sql_exception when mySQL related errors occur
 	 */
 
 	public function update(&$mysqli)
@@ -455,10 +473,11 @@ class Security
 
 	/**
 	 * gets the security information by securityId
-	 * @param $mysqli handles degenerate cases
-	 * @param $securityId sanatizes the securityId
-	 * @return null|Security returns the function if null
-	 * @throws Exception throws it out if does not pass
+	 * @param $mysqli pointer to mySQL connection, by reference
+	 * @param $securityId selects securityId
+	 * @return null|Security returns if object is null
+	 * @throws mysqli_sql_exception when mySQL related errors occur
+	 * @throws Exception if unable to convert row to user
 	 */
 
 	public static function getSecurityBySecurityId(&$mysqli, $securityId)
@@ -516,7 +535,7 @@ class Security
 			// if we got here, the Security is good - return it
 			return ($securityObject);
 		} else {
-			// 404 User not found - return null instead
+			// 404 object not found - return null instead
 			return (null);
 		}
 	}
