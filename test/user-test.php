@@ -53,12 +53,7 @@ class UserTest extends UnitTestCase {
 			$this->user = null;
 		}
 
-		// disconnect from mySQL
-		/*
-		if($this->mysqli !== null){
-			$this->mysqli->close();
-		}
-		*/
+
 	}
 
 	//test creating a new User and inserting it to mySQL
