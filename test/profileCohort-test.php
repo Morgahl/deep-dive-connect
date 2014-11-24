@@ -14,10 +14,10 @@
 require_once("/usr/lib/php5/simpletest/autorun.php");
 
 //require the classes under scrutiny
-require_once("../php/profileCohort.php");
-require_once("../php/profile.php");
-require_once("../php/cohort.php");
-require_once("../php/user.php");
+require_once("../php/class/profileCohort.php");
+require_once("../php/class/profile.php");
+require_once("../php/class/cohort.php");
+require_once("../php/class/user.php");
 
 //require the mysqli connection object
 require_once("/etc/apache2/capstone-mysql/ddconnect.php");

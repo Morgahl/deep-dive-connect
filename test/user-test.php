@@ -4,8 +4,8 @@ require_once("/usr/lib/php5/simpletest/autorun.php");
 require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 
 // then require the class under scrutiny
-require_once("../php/user.php");
-require_once("../php/loginSource.php");
+require_once("../php/class/user.php");
+require_once("../php/class/loginSource.php");
 
 // the UserTest is a container for all our tests
 class UserTest extends UnitTestCase {

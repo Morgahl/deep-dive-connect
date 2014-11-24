@@ -10,11 +10,11 @@
 require_once("/usr/lib/php5/simpletest/autorun.php");
 
 // require the class under scrutiny
-require_once("../php/topic.php");
+require_once("../php/class/topic.php");
 
 // require classes that table needs FK data from
-require_once("../php/user.php");
-require_once("../php/profile.php");
+require_once("../php/class/user.php");
+require_once("../php/class/profile.php");
 // TODO: bring these back in
 //require_once("../php/security.php");
 //require_once("../php/loginSource.php");

@@ -10,7 +10,7 @@
 require_once("/usr/lib/php5/simpletest/autorun.php");
 
 // require the class under scrutiny
-require_once("../php/comment.php");
+require_once("../php/class/comment.php");
 
 // require classes that table needs FK data from
 // TODO: bring these back in

@@ -14,7 +14,7 @@ require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 require_once("/usr/lib/php5/simpletest/autorun.php");
 
 // then require the class under scrutiny
-require_once("../php/security.php");
+require_once("../php/class/security.php");
 
 // the securityClassTest is a container for all our tests
 class SecurityClassTest extends UnitTestCase
