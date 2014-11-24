@@ -3,7 +3,7 @@
 	<head lang="en">
 		<meta charset="UTF-8">
 		<title>Facebook Login</title>
-		<script type="text/javascript" src="../javaScript/facebookAPI.js"></script>
+		<script type="text/javascript" src="../js/facebookAPI.js"></script>
 	</head>
 	<body>
 

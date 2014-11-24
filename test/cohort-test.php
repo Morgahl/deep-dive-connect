@@ -13,7 +13,7 @@
 require_once("/usr/lib/php5/simpletest/autorun.php");
 
 //require the class under scrutiny
-require_once("../php/cohort.php");
+require_once("../php/class/cohort.php");
 
 //require the mysqli connection object
 require_once("/etc/apache2/capstone-mysql/ddconnect.php");
