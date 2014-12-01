@@ -5,11 +5,11 @@
 		<title>Edit Profile</title>
 	</head>
 	<body>
-		<form action="/php/form-processor/profile-edit-form-processor.php" method="post">
+		<form action="/php/form/profile-edit-form-processor.php" method="post">
 			<!-- upload photo -->
 			<p>
 				<h3>Change Profile Picture</h3>
-				<form action="/php/form-processor/do-upload.php" enctype="multipart/form-data" method="post">
+				<form action="/php/form/do-upload.php" enctype="multipart/form-data" method="post">
 				<input type="hidden" name="MAX_FILE_SIZE" value="1048576">
 				<label for="file-upload">photo location:</label>
 				<input type="file" id="img-upload" name="img-upload"><br>

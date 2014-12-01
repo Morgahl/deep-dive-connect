@@ -6,7 +6,7 @@
 	</head>
 	<body>
 		<h3>Change Password</h3>
-		<form action="/php/form-processor/change-password-form-processor.php" method="post">
+		<form action="/php/form/change-password-form-processor.php" method="post">
 			<p>
 				<label for="current-password">Current Password:</label><br>
 				<input type="text" id="current-password" name="current-password">

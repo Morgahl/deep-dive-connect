@@ -29,6 +29,7 @@ class Topic {
 	private $topicBody;
 
 	/**
+	 *
 	 * Constructor for Topic
 	 *
 	 * @param $newTopicId INT topicId (or null if new object)
@@ -37,7 +38,7 @@ class Topic {
 	 * @param $newTopicSubject STRING subject of new Topic; 256 character limit
 	 * @param $newTopicBody STRING body of new Topic; 4096 character limit
 	 * @throws UnexpectedValueException when a parameter is of the wrong type
-	 * @throes RangeException when a parameter is invalid
+	 * @throws RangeException when a parameter is invalid
 	 */
 	function __construct($newTopicId, $newProfileId, $newTopicDate, $newTopicSubject, $newTopicBody) {
 		try{$this->setTopicId($newTopicId);
@@ -205,11 +206,12 @@ class Topic {
 	}
 
 	/**
+	 *
 	 * Sets the value of topicSubject
 	 *
 	 * @param $newTopicSubject STRING 256 character maximum length
 	 * @throws UnexpectedValueException when a parameter is of the wrong type
-	 * @throes RangeException when a parameter length is invalid
+	 * @throws RangeException when a parameter length is invalid
 	 */
 	public function setTopicSubject($newTopicSubject) {
 		// topicSubject should never be null
@@ -236,8 +238,8 @@ class Topic {
 	 * Sets the value of topicBody
 	 *
 	 * @param $newTopicBody STRING 4096 character maximum length
+	 * @throws RangeException string length to long
 	 * @throws UnexpectedValueException when a parameter is of the wrong type
-	 * @throes RangeException when a parameter length is invalid
 	 */
 	public function setTopicBody($newTopicBody) {
 		// topicBody should never be null
@@ -416,6 +418,8 @@ class Topic {
 	 *
 	 * @param $mysqli OBJECT mySQL connection object
 	 * @param $newTopicId INT topicId to retrieve from mySQL
+	 * @throws RangeException
+	 * @throws UnexpectedValueException
 	 * @throws mysqli_sql_exception when a MySQL error occurs
 	 * @return OBJECT new Topic is returned or null if id specified is not found
 	 */
@@ -494,6 +498,8 @@ class Topic {
 	 *
 	 * @param $mysqli OBJECT mySQL connection object
 	 * @param $limit INT top N records returned based on this int
+	 * @throws RangeException
+	 * @throws UnexpectedValueException
 	 * @throws mysqli_sql_exception when a MySQL error occurs
 	 * @return ARRAY new array of Topics is returned or null if none are found
 	 */
