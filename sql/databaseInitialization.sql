@@ -32,6 +32,7 @@ CREATE TABLE security (
 CREATE TABLE loginSource (
 	loginSourceId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	sourceName VARCHAR(256) NOT NULL,
+	apiKey VARCHAR(128) NOT NULL,
 	PRIMARY KEY (loginSourceId),
 	UNIQUE (sourceName)
 );
@@ -134,8 +135,8 @@ INSERT INTO security (description, isDefault, createTopic, canEditOther, canProm
 		('Admin', 0, 1, 1, 1, 1);
 
 -- insert for loginSource
-INSERT INTO loginSource (sourceName)
-	VALUES ('Facebook'),
-		('Twitter'),
-		('LinkedIn'),
-		('GooglePlus');
+INSERT INTO loginSource (sourceName, apiKey)
+	VALUES ('Facebook','a'),
+		('Twitter','b'),
+		('LinkedIn','c'),
+		('GooglePlus','d');

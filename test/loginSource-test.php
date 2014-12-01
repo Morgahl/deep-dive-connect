@@ -27,6 +27,7 @@ class LoginSourceTest extends UnitTestCase
 	// a few "global" variables for creating test data
 
 	private $sourceName = "Working?";
+	private $apiKey = "e77edf6dce3efd9e03c24718200bca859f560b2ab1a69650ef568e160dd4d1c1";
 
 	// setUp() is a method that is run before each test
 	// here, we use it to connect to mySQL and to calculate the salt, hash, and authenticationToken
@@ -56,7 +57,7 @@ class LoginSourceTest extends UnitTestCase
 		$this->assertNotNull($this->mysqli);
 
 		// second, create a LoginSource to post to mySQL
-		$this->loginSource = new LoginSource(null, $this->sourceName);
+		$this->loginSource = new LoginSource(null, $this->sourceName, $this->apiKey);
 
 		// third, insert the LoginSource to mySQL
 		$this->loginSource->insert($this->mysqli);
@@ -67,6 +68,8 @@ class LoginSourceTest extends UnitTestCase
 		$this->assertTrue($this->loginSource->getLoginSourceId() > 0);
 		$this->assertNotNull($this->loginSource->getSourceName());
 		$this->assertIdentical($this->loginSource->getSourceName(), $this->sourceName);
+		$this->assertNotNull($this->loginSource->getApiKey());
+		$this->assertIdentical($this->loginSource->getApiKey(), $this->apiKey);
 	}
 
 
@@ -77,7 +80,7 @@ class LoginSourceTest extends UnitTestCase
 		$this->assertNotNull($this->mysqli);
 
 		// second, create a LoginSource to post to mySQL
-		$this->loginSource = new LoginSource(null, $this->sourceName);
+		$this->loginSource = new LoginSource(null, $this->sourceName, $this->apiKey);
 
 		// third, insert the LoginSource to mySQL
 		$this->loginSource->insert($this->mysqli);
@@ -91,9 +94,10 @@ class LoginSourceTest extends UnitTestCase
 		// finally, compare the fields
 		$this->assertNotNull($this->loginSource->getLoginSourceId());
 		$this->assertTrue($this->loginSource->getLoginSourceId() > 0);
-
 		$this->assertNotNull($this->loginSource->getSourceName());
 		$this->assertIdentical($this->loginSource->getSourceName(), $sourceName);
+		$this->assertNotNull($this->loginSource->getApiKey());
+		$this->assertIdentical($this->loginSource->getApiKey(), $this->apiKey);
 	}
 
 	// test deleting a variable in LoginSource
@@ -103,7 +107,7 @@ class LoginSourceTest extends UnitTestCase
 		$this->assertNotNull($this->mysqli);
 
 		// second, create a loginSource to post to mySQL
-		$this->loginSource = new LoginSource(null, $this->SOURCENAME);
+		$this->loginSource = new LoginSource(null, $this->sourceName, $this->apiKey);
 
 		// third, insert the loginSource to mySQL
 		$this->loginSource->insert($this->mysqli);
@@ -129,22 +133,22 @@ class LoginSourceTest extends UnitTestCase
 		$this->assertNotNull($this->mysqli);
 
 		// second, create a LoginSource to post to mySQL
-		$this->loginSource = new LoginSource(null, $this->sourceName);
+		$this->loginSource = new LoginSource(null, $this->sourceName, $this->apiKey);
 
 		// third, insert the loginSource to mySQL
 		$this->loginSource->insert($this->mysqli);
 
 		// fourth, get the class by the static method
-		$staticUser = LoginSource::getLoginSourceByloginSourceId($this->mysqli, $this->loginSource->getLoginSourceId());
+		$staticUser = LoginSource::getLoginSourceByLoginSourceId($this->mysqli, $this->loginSource->getLoginSourceId());
 
 		// compare the fields
 
-		$this->assertNotNull($this->loginSource->getLoginSourceId());
-		$this->assertTrue($this->loginSource->getLoginSourceId() > 0);
-
-		$this->assertNotNull($this->loginSource->getSourceName());
-		$this->assertIdentical($this->loginSource->getSourceName(), $this->sourceName);
-
+		$this->assertNotNull($staticUser->getLoginSourceId());
+		$this->assertTrue($staticUser->getLoginSourceId() > 0);
+		$this->assertNotNull($staticUser->getSourceName());
+		$this->assertIdentical($staticUser->getSourceName(), $this->sourceName);
+		$this->assertNotNull($staticUser->getApiKey());
+		$this->assertIdentical($staticUser->getApiKey(), $this->apiKey);
 	}
 }
 
