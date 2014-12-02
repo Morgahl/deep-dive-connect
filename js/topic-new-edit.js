@@ -1,16 +1,26 @@
 $(document).ready(function() {
 	$("#topic").validate(
 		{
-			rules: {
-				city: {
-					pattern: /^[^";@#\$&\\\*]+$/
+			rules:
+			{
+				subject:
+				{
+					required: true
+				},
+				body:
+				{
+					required: true
 				}
 			},
 
-			messages: {
-				city: {
-					pattern : "Illegal characters detected",
-					required: "Please enter a city"
+			messages:
+			{
+				subject:
+				{
+					required: "Please enter a topic subject."
+				},
+				body: {
+					required: "Please enter a topic body."
 				}
 			},
 
@@ -18,9 +28,11 @@ $(document).ready(function() {
 				$(form).ajaxSubmit(
 					{
 						type   : "POST",
-						url    : "../php/weather.php",
+						url    : "../php/form/topic-new-edit.php",
 						success: function(ajaxOutput) {
-							$("#outputArea").html(ajaxOutput);
+							// redirect user to a new page
+							// TODO: change the below to tie over to an actual topic as received via ajaxOutput
+							location.replace('topic')
 						}
 					});
 			}
