@@ -14,6 +14,9 @@ try {
 	$profileId = $_SESSION["profileId"];
 	$subject = $_POST["subject"];
 	$body = $_POST["body"];
+	var_dump($profileId);
+	var_dump($subject);
+	var_dump($body);
 
 	// verify CSRF tokens
 	// todo: add CSRF token validation
@@ -21,14 +24,14 @@ try {
 	// verify user is authorized to create topics
 	if($_SESSION["secCreateTopic"] === 1) {
 		// check if this is a new topic or if user is editing an existing one
-		if(empty($_POST["topic"]) === false) {
+		if(@isset($_POST["topic"]) === false) {
 			// user creating a topic
 			// if new: insert into database
 			$topic = new Topic(null, $profileId, null, $subject, $body);
 			$topic->insert($mysqli);
 		} else {
 			// user editing a topic
-			$topicId = $_GET["t"];
+			$topicId = $_POST["topic"];
 			if (($topicId = filter_var($topicId, FILTER_VALIDATE_INT)) === false) {
 				throw (new UnexpectedValueException("Not a valid Topic Id"));
 			}
