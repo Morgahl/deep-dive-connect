@@ -293,4 +293,6 @@ Maecenas quis lobortis massa. Suspendisse ultricies aliquet dui, sit amet pharet
 		// manual trash collection :D
 		$newTopics = null;
 	}
+
+	// TODO: create test for getTopicByProfileId
 }

@@ -574,4 +574,71 @@ class Topic {
 			return(null);
 		}
 	}
+
+	public static function getTopicsByProfileId(&$mysqli, $profileId) {
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("Input is not a valid mysqli object"));
+		}
+
+		// enforce that limit is NOT null
+		if($profileId === null) {
+			throw(new UnexpectedValueException("ProfileID must not be null"));
+		}
+
+		// ensure that limit is an int
+		if(filter_var($profileId, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("ProfileID $profileId is not numeric"));
+		}
+
+		// convert the limit to int and enforce that it is positive
+		$profileId = intval($profileId);
+		if($profileId <= 0) {
+			throw(new RangeException("ProfileID $profileId is not positive"));
+		}
+
+		// create query template
+		$query = "SELECT topicId, profileId, topicDate, topicSubject, topicBody
+					FROM topic
+					WHERE profileId = ?
+					GROUP BY topicId
+					ORDER BY topicDate";
+
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// bind the variable to the place holder for the template
+		$wasClean = $statement->bind_param("i", $profileId);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		$results = $statement->execute();
+		if($results === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
+		// get results
+		$results = $statement->get_result();
+		if($results->num_rows > 0) {
+			// retrieve results in bulk into an array
+			$results = $results->fetch_all(MYSQL_ASSOC);
+			if($results === false) {
+				throw(new mysqli_sql_exception("Unable to process result set"));
+			}
+
+			// step through results array and convert to Topic objects
+			foreach ($results as $index => $row) {
+				$results[$index] = new Topic($row["topicId"], $row["profileId"], $row["topicDate"], $row["topicSubject"], $row["topicBody"]);
+			}
+
+			// return resulting array of Topic objects
+			return($results);
+		} else {
+			return(null);
+		}
+	}
 }
