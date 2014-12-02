@@ -9,52 +9,64 @@
  *  @author Steven Chavez <schavez256@yahoo.com>
  * @see Profile
  */
+session_start();
 //path to mysqli class
 require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 
 //require the classes you need
 require_once("../class/profile.php");
-require_once("../class/user.php");
 
 // connect to mySQL
-$this->mysqli = MysqliConfiguration::getMysqli();
+$mysqli = MysqliConfiguration::getMysqli();
 
-//obtain email from $_SESSION
-$email = $_SESSION["email"];
-
-//obtain user by email
-$user = User::getUserByEmail($mysqli, $email);
-$userId = $user->getUserId();
+//obtain profileId from $_SESSION
+$profileId = $_SESSION["profileId"];
 
 //obtain profile by userId
-$profile = Profile::getProfileByUserId($mysqli, $userId);
+$profile = Profile::getProfileByProfileId($mysqli, $profileId);
 
+$boolField = false;
 // obtain info from the form and set the values into the
 // object if it has a value
 $firstName = $_POST["firstName"];
-if($firstName !== null){
+if(empty($firstName) === false){
 	$profile->setFirstName($firstName);
+	$boolField = true;
 }
 
 $lastName = $_POST["lastName"];
-if($lastName !== null){
+if(empty($lastName) === false){
 	$profile->setLastName($lastName);
+	$boolField = true;
 }
 
 $middleName = $_POST["middleName"];
-if($middleName !== null){
+if(empty($middleName) === false){
 	$profile->setMiddleName($middleName);
+	$boolField = true;
 }
 
 $location = $_POST["location"];
-if($location !== null){
+if(empty($location) === false){
 	$profile->setLocation($location);
+	$boolField = true;
 }
 
 $description = $_POST["description"];
-if($description !== null){
-	$description->setDescription($description);
+if(empty($description) === false){
+	$profile->setDescription($description);
+	$boolField = true;
 }
 
-//now insert into database
-$profile->insert();
+if($boolField === true){
+	$profile->update($mysqli);
+	echo "<p>Updated Successful</p>";
+	echo $profile->getFirstName()."<br>";
+	echo $profile->getLastName()."<br>";
+	echo $profile->getMiddleName()."<br>";
+	echo $profile->getLocation()."<br>";
+	echo $profile->getDescription()."<br>";
+}
+else{
+	echo "<p>There was no entries</p>";
+}
