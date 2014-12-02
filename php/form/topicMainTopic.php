@@ -5,6 +5,13 @@ require_once("../class/topic.php");
 
 $mysqli = MysqliConfiguration::getMysqli();
 
+if(@isset($_SESSION["profileId"]) === false) {
+	$profileId = null;
+	$canEditOther= null;
+} else {
+	$profileId = $_SESSION["profileId"];
+	$canEditOther= $_SESSION["security"]["canEditOther"];
+}
 $topicId = $_GET["t"];
 
 if (($topicId = filter_var($topicId, FILTER_VALIDATE_INT)) === false) {
@@ -18,10 +25,15 @@ if ($topicId < 1) {
 $topic = Topic::getTopicByTopicId($mysqli, $topicId);
 
 if ($topic !== null) {
-	echo 	"<div class=\"row\">" .
-		"<h1><strong>" . $topic->getTopicSubject() . "</strong></h1><br>" .
-			"<p>" . $topic->getTopicSubject() . "</p>" .
-			"</div>";
+	$html =	"<div class=\"row\">" .
+				"<h2><strong>" . $topic->getTopicSubject() . "</strong></h2><br>" .
+				"<p>" . nl2br($topic->getTopicBody()) . "</p>";
+	if ($profileId === $topic->getProfileId() || $canEditOther === 1) {
+		$html = $html . "<a id=\"edit\" href=\"../html/topic-new-edit.html?t=$topicId\">Edit Topic</a>";
+	}
+	$html =	$html . "</div>";
+
+	echo $html;
 } else {
 	echo "<h1>Topic does not exist.</h1>";
 }

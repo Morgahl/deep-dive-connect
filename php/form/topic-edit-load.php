@@ -7,13 +7,11 @@ try {
 	$mysqli = MysqliConfiguration::getMysqli();
 
 	// verify that the form was properly filled out
-	if (@isset($_POST["subject"]) === false || @isset($_POST["body"]) === false || @isset($_SESSION["profileId"]) === false) {
-		throw(new RuntimeException("Form variables incomplete or missing."));
+	if (@isset($_SESSION["profileId"]) === false) {
+		throw(new RuntimeException("User not logged in."));
 	}
 
 	$profileId = $_SESSION["profileId"];
-	$subject = $_POST["subject"];
-	$body = $_POST["body"];
 	$createTopic = $_SESSION["security"]["createTopic"];
 	$canEditOther = $_SESSION["security"]["canEditOther"];
 
@@ -22,11 +20,12 @@ try {
 
 	// verify user is authorized to create topics
 	if($createTopic === 1) {
+		$form = array();
 		// check if this is a new topic or if user is editing an existing one
 		if(@isset($_GET["t"]) === false || $_GET["t"] === "undefined") {
-			// user creating a topic
-			$topic = new Topic(null, $profileId, null, $subject, $body);
-			$topic->insert($mysqli);
+			// user creating a new topic
+			$form["subject"] = "";
+			$form["body"] = "";
 		} else {
 			// user editing a topic
 			$topicId = $_GET["t"];
@@ -45,14 +44,13 @@ try {
 			}
 
 			if($topic->getProfileId() === $profileId || $canEditOther === 1) {
-				$topic->setTopicSubject($subject);
-				$topic->setTopicBody($body);
-				$topic->update($mysqli);
+				$form["subject"] = $topic->getTopicSubject();
+				$form["body"] = $topic->getTopicBody();
 			}
 		}
 
-		// return created topicId to calling JS
-		echo $topic->getTopicId();
+		// return json for topic text areas
+		echo json_encode($form);
 	}
 } catch(Exception $exception) {
 	// todo: add catch

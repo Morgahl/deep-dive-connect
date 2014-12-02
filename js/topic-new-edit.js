@@ -1,4 +1,22 @@
 $(document).ready(function() {
+	var topicId = getUrlParameter('t');
+	var urlGlue= "";
+
+	if (topicId != "") {
+		urlGlue = "?t=" + topicId
+	}
+
+	$.ajax({
+		url    : '../php/form/topic-edit-load.php' + urlGlue,
+		success: function(ajaxOutput) {
+			$.each(JSON.parse(ajaxOutput), function(idx, obj) {
+				var id = "#" + idx;
+				$(id).val(obj);
+			});
+		}
+	});
+
+
 	$("#topic").validate(
 		{
 			rules:
@@ -19,8 +37,7 @@ $(document).ready(function() {
 				{
 					required: "Please enter a topic subject."
 				},
-				body: {
-					required: "Please enter a topic body."
+				body: { required: "Please enter a topic body."
 				}
 			},
 
@@ -28,13 +45,27 @@ $(document).ready(function() {
 				$(form).ajaxSubmit(
 					{
 						type   : "POST",
-						url    : "../php/form/topic-new-edit.php",
+						url    : "../php/form/topic-new-edit.php" + urlGlue,
 						success: function(ajaxOutput) {
 							// redirect user to a new page
-							// TODO: change the below to tie over to an actual topic as received via ajaxOutput
-							location.replace('topicsRecent.html')
+							location.replace('topicMain.html?t=' + ajaxOutput)
 						}
 					});
 			}
 		});
 });
+
+
+function getUrlParameter(sParam)
+{
+	var sPageURL = window.location.search.substring(1);
+	var sURLVariables = sPageURL.split('&');
+	for (var i = 0; i < sURLVariables.length; i++)
+	{
+		var sParameterName = sURLVariables[i].split('=');
+		if (sParameterName[0] == sParam)
+		{
+			return sParameterName[1];
+		}
+	}
+}
