@@ -32,7 +32,7 @@ $(document).ready(function() {
 						success: function(ajaxOutput) {
 							// redirect user to a new page
 							// TODO: change the below to tie over to an actual topic as received via ajaxOutput
-							location.replace('topic')
+							location.replace('topicsRecent.html')
 						}
 					});
 			}
