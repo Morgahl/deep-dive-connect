@@ -489,11 +489,9 @@ class Security
 		}
 
 		// sanitize the securityId before searching
-		if ($securityId = filter_var($securityId, FILTER_VALIDATE_INT)=== false) {
+		if (($securityId = filter_var($securityId, FILTER_VALIDATE_INT)) === false) {
 			throw(new Exception("$securityId is not a number"));
 		}
-
-
 
 		// create query template
 		$query = "SELECT securityId, description, isDefault, createTopic, canEditOther, canPromote, siteAdmin FROM security WHERE securityId = ?";

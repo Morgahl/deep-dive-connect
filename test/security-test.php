@@ -174,23 +174,23 @@ class SecurityClassTest extends UnitTestCase
 
 		// compare the fields
 
-		$this->assertNotNull($this->security->getSecurityId());
-		$this->assertTrue($this->security->getSecurityId() > 0);
+		$this->assertNotNull($staticUser->getSecurityId());
+		$this->assertTrue($staticUser->getSecurityId() > 0);
 		// description
-		$this->assertNotNull($this->security->getDescription());
-		$this->assertIdentical($this->security->getDescription(), $this->DESCRIPTION);
+		$this->assertNotNull($staticUser->getDescription());
+		$this->assertIdentical($staticUser->getDescription(), $this->DESCRIPTION);
 		// isDefault
-		$this->assertNotNull($this->security->getIsDefault());
-		$this->assertIdentical($this->security->getIsDefault(), $this->ISDEFAULT);
+		$this->assertNotNull($staticUser->getIsDefault());
+		$this->assertIdentical($staticUser->getIsDefault(), $this->ISDEFAULT);
 		// canEditOther
-		$this->assertNotNull($this->security->getCanEditOther());
-		$this->assertIdentical($this->security->getCanEditOther(), $this->CANEDITOTHER);
+		$this->assertNotNull($staticUser->getCanEditOther());
+		$this->assertIdentical($staticUser->getCanEditOther(), $this->CANEDITOTHER);
 		// canPromote
-		$this->assertNotNull($this->security->getCanPromote());
-		$this->assertIdentical($this->security->getCanPromote(), $this->CANPROMOTE);
+		$this->assertNotNull($staticUser->getCanPromote());
+		$this->assertIdentical($staticUser->getCanPromote(), $this->CANPROMOTE);
 		// siteAdmin
-		$this->assertNotNull($this->security->getSiteAdmin());
-		$this->assertIdentical($this->security->getSiteAdmin(), $this->SITEADMIN);
+		$this->assertNotNull($staticUser->getSiteAdmin());
+		$this->assertIdentical($staticUser->getSiteAdmin(), $this->SITEADMIN);
 	}
 
 
