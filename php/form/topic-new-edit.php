@@ -14,10 +14,6 @@ try {
 	$profileId = $_SESSION["profileId"];
 	$subject = $_POST["subject"];
 	$body = $_POST["body"];
-	var_dump($profileId);
-	var_dump($subject);
-	var_dump($body);
-
 	// verify CSRF tokens
 	// todo: add CSRF token validation
 
