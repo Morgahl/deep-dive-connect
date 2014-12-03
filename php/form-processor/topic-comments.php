@@ -30,7 +30,7 @@ if ($comments !== null) {
 			"<h2><strong>" . $element->getCommentSubject() . "</strong></h2><br>" .
 			"<p>" . nl2br($element->getCommentBody()) . "</p>";
 		if ($profileId === $element->getProfileId() || $canEditOther === 1) {
-			$html = $html . "<a id=\"edit\" href=\"../html/comment-new-edit.html?t=$topicId&c=" . $element->getCommentId() . "\">Edit Comment</a>";
+			$html = $html . "<a id=\"edit\" href=\"../html/comment-newedit.php?t=$topicId&c=" . $element->getCommentId() . "\">Edit Comment</a>";
 		}
 		$html =	$html . "</div>";
 
