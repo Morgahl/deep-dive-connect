@@ -6,44 +6,40 @@ require_once("../class/comment.php");
 try {
 	$mysqli = MysqliConfiguration::getMysqli();
 
-	// verify that the form-processor was properly filled out
-	if (@isset($_SESSION["profileId"]) === false) {
-		throw(new RuntimeException("User not logged in."));
-	}
-
-	$profileId = $_SESSION["profileId"];
-	$createTopic = $_SESSION["security"]["createTopic"];
-	$canEditOther = $_SESSION["security"]["canEditOther"];
+	// Grab and sanitize all the super globals
+	$profileId = isset($_SESSION["profileId"]) ? $_SESSION["profileId"] : false;
+	$canEditOther = isset($_SESSION["security"]["canEditOther"]) ? $_SESSION["security"]["canEditOther"] : false;
+	$commentId = filter_input(INPUT_GET,"c",FILTER_VALIDATE_INT);
 
 	// verify CSRF tokens
 	// todo: add CSRF token validation
 
-	// verify user is authorized to create topics
+	// verify that the user is logged in
+	if ($profileId === false) {
+		throw(new RuntimeException("User not logged in."));
+	}
+
 	$form = array();
 	// check if this is a new topic or if user is editing an existing one
-	if(@isset($_GET["c"]) === false || $_GET["c"] === "undefined") {
+	if($commentId === false) {
 		// user creating a new topic
 		$form["subject"] = "";
 		$form["body"] = "";
 	} else {
 		// user editing a comment
-		$commentId = $_GET["c"];
-
-		if (($commentId = filter_var($commentId, FILTER_VALIDATE_INT)) === false) {
-			throw (new UnexpectedValueException("Not a valid Comment Id"));
-		}
-
 		if ($commentId < 1) {
 			throw (new UnexpectedValueException("Not a valid Comment Id"));
 		}
-		// if edit: verify that user is owner of comment or can editOther: then update.
+
+		// get comment from database
 		$comment = Comment::getCommentByCommentId($mysqli, $commentId);
 
-		if ($comment === null) {
-			throw (new UnexpectedValueException("Not a valid Comment Id"));
-		}
-
+		// if edit: verify that user is owner of comment or can editOther: then update.
 		if($comment->getProfileId() === $profileId || $canEditOther === 1) {
+			if ($comment === null) {
+				throw (new UnexpectedValueException("Not a valid Comment Id"));
+			}
+
 			$form["subject"] = $comment->getCommentSubject();
 			$form["body"] = $comment->getCommentBody();
 		}
@@ -53,5 +49,5 @@ try {
 	echo json_encode($form);
 
 } catch(Exception $exception) {
-	// todo: add catch
+	echo "<div class=\"alert alert-danger\" role=\"alert\">Unable to load comment to edit: " . $exception->getMessage() . "</div>";
 }
