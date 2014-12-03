@@ -19,7 +19,7 @@
 			</div>
 			<div class="row">
 				<div>
-					<form action="../html/topic-new-edit.html">
+					<form action="ew-edit.html">
 						<input type="submit" value="Create a Topic">
 					</form>
 				</div>

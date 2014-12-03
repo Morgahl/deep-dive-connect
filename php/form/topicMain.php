@@ -15,7 +15,7 @@
 	<body>
 		<div class="container">
 			<div class="topic-nav row">
-				<form action="../html/topicsRecent.html">
+				<form action="ecent.html">
 					<button onclick="submit">Recent Topics</button>
 				</form>
 			</div>

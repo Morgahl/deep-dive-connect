@@ -48,7 +48,7 @@ class Profile
 	/**
 	 * File destination for profile avatars
 	 **/
-	private $destination = "/var/www/html/ddconnect/avatars";
+	private $destination = "/var/www/form/ddconnect/avatars";
 
 	/**
 	 * Constructor of Profile

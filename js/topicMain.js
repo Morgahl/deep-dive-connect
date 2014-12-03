@@ -2,7 +2,7 @@ $(document).ready(function() {
 	var topicId;
 	topicId = getUrlParameter('t');
 
-	$(".addComment").html("<div class=\"row\"><a href=\"../html/comment-new-edit.html?t=" + topicId + "\">Comment on this Topic.</a></div>");
+	$(".addComment").html("<div class=\"row\"><a href=\"../form/comment-new-edit.form?t=" + topicId + "\">Comment on this Topic.</a></div>");
 
 	$.ajax({
 		url    : '../php/form-processor/topicMainTopic.php?t=' + topicId,
