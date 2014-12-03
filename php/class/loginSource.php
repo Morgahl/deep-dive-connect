@@ -1,12 +1,11 @@
 <?php
 
 /**
- * MySQL Enabled Comment
- *
- * This is a MySQL enabled container for loginSouce creation and handling.
- *
- * @author Joseph Bottone <joseph@thundermedia.com>
- */
+ * Author Joseph Bottone
+ * http://josephmichaelbottone.com
+ * bottone.joseph@gmail.
+ * http://thundermedia.com
+ **/
 
 class LoginSource
 {
