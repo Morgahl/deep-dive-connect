@@ -15,10 +15,10 @@ $(document).ready(function()
 			$(form).ajaxSubmit(
 				{
 					type: "POST",
-					url: "php/form-processor/profile-edit-form-processor-processor.php",
+					url: "php/form-processor/profile-edit-form-processor.php",
 					success: function(ajaxOutput)
 					{
-						$("#outputArea").html(ajaxOutput);
+						$("#outputProfileEdit").html(ajaxOutput);
 					}
 				});
 		}

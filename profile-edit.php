@@ -47,7 +47,7 @@
 				</p>
 				<button type="submit" name="submit">Submit</button>
 			</form>
-			<p id="outputArea"></p>
+			<p id="outputProfileEdit"></p>
 
 			<!-- Account Settings -->
 			<h3>Account Settings</h3>

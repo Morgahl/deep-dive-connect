@@ -64,5 +64,5 @@ if($boolField === true){
 
 }
 else{
-	echo "<div class=\"alert alert-warning\" role=\"alert\"><p>There was no entries</p></div>";
+	echo "<div class=\"alert alert-danger\" role=\"alert\"><p>There was no entries</p></div>";
 }
