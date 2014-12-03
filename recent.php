@@ -1,4 +1,6 @@
-<?php session_start()
+<?php
+require_once("php/lib/csrf.php");
+session_start();
 ?>
 <!DOCTYPE html>
 <html>
@@ -22,6 +24,7 @@
 			<div class="row">
 				<div>
 					<form action="topic-newedit.php">
+						<?php echo generateInputTags(); ?>
 						<input type="submit" value="Create a Topic">
 					</form>
 				</div>

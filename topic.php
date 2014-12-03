@@ -1,4 +1,6 @@
-<?php session_start()
+<?php
+require_once("php/lib/csrf.php");
+session_start();
 ?>
 <!DOCTYPE html>
 <html>
@@ -18,6 +20,7 @@
 		<div class="container">
 			<div class="topic-nav row">
 				<form action="recent.php">
+					<?php echo generateInputTags(); ?>
 					<button onclick="submit">Recent Topics</button>
 				</form>
 			</div>
