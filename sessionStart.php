@@ -23,6 +23,7 @@ $user->insert($mysqli);
 $userId = $user->getUserId();
 
 $profile = new Profile(null, $userId, "Steven", "Chavez", "M", null, null, null, null, null);
+
 $profile->insert($mysqli);
 
 $profileId = $profile->getProfileId();

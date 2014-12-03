@@ -11,16 +11,18 @@
 		<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
 		<script type="text/javascript" src="js/profile-edit.js"></script>
+		<script type="text/javascript" src="js/do-upload.js"></script>
 	</head>
 	<body>
 		<main class="container">
 			<h3>Change Profile Picture</h3>
-			<form action="/php/form-processor/do-upload.php" enctype="multipart/form-data" method="post">
+			<form id="imgUploadForm"action="/php/form-processor/do-upload.php" enctype="multipart/form-data" method="post">
 				<input type="hidden" name="MAX_FILE_SIZE" value="1048576">
 				<label for="file-upload">photo location:</label>
-				<input type="file" id="img-upload" name="img-upload"><br>
+				<input type="file" id="imgUpload" name="imgUpload"><br>
 				<button type="submit" name="submit" value="send">Change Image</button>
 			</form>
+			<p id="imgUploadOutput"></p>
 
 			<form id="profileEditForm" action="php/form-processor/profile-edit-form-processor.php" method="post">
 				<!-- Change profile information -->

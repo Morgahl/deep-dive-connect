@@ -45,6 +45,10 @@ class Profile
 	 * File type of the profile picture associated with Profile
 	 **/
 	private $profilePicFileType;
+	/**
+	 * File destination for profile avatars
+	 **/
+	private $destination = "/var/www/html/ddconnect/avatars";
 
 	/**
 	 * Constructor of Profile
@@ -388,19 +392,55 @@ class Profile
 			return;
 		}
 
-		//make directory to upload to
-		$uploadDir = "/uploads";   //TODO: not real directory for uploads
+		//create the white list of allowed types
+		$goodExtensions = array("jpg", "jpeg", "png", "gif");
+		$goodMimes      = array("image/jpeg", "image/png", "image/gif");
 
-		if((move_uploaded_file($newPicFileName, $uploadDir)) === false) {
-			//throw(new UnexpectedValueException("file name $newPicFileName is not a valid upload file"));
+		// verify the file was uploaded OK
+		if($_FILES["imgUpload"]["error"] !== UPLOAD_ERR_OK) {
+			throw(new RuntimeException("Error while uploading file: " . $_FILES["imgUpload"]["error"]));
 		}
 
-		//assign value
-		$this->profilePicFileName = $newPicFileName;
+		// verify the file is an allowed extension and type
+		$extension = end(explode(".", $_FILES["imgUpload"]["name"]));
+		if(in_array($extension, $goodExtensions) === false
+			|| in_array($_FILES["imgUpload"]["type"], $goodMimes) === false) {
+			throw(new RuntimeException($_FILES["imgUpload"]["name"] . " is not a JPEG, GIF or PNG file"));
+		}
 
-		//Todo Profile pic file name
-		//can you set up a place to upload pics ask dylan
-		//move_uploaded_file
+		// use PHP's GD library to ensure the image is actually an image
+		if($_FILES["imgUpload"]["type"] === "image/png") {
+			$image = @imagecreatefrompng($_FILES["imgUpload"]["tmp_name"]);
+			if($image === false) {
+				throw(new InvalidArgumentException("Image is not a valid PNG file"));
+			}
+			imagedestroy($image);
+		} else if($_FILES["imgUpload"]["type"] === "image/jpeg") {
+			$image = @imagecreatefromjpeg($_FILES["imgUpload"]["tmp_name"]);
+			if($image === false) {
+				throw(new InvalidArgumentException("Image is not a valid JPEG file"));
+			}
+			imagedestroy($image);
+		} else if($_FILES["imgUpload"]["type"] === "image/gif") {
+			$image = @imagecreatefromgif($_FILES["imgUpload"]["tmp_name"]);
+			if($image === false) {
+				throw(new InvalidArgumentException("Image is not a valid GIF file"));
+			}
+			imagedestroy($image);
+		} else {
+			throw(new InvalidArgumentException("Image is not a supported format. Please use a JPEG, GIF or PNG file."));
+		}
+
+		// move the file to its permanent home
+		$fileName    = "avatar-" . $this->profileId .$this->userId. "." . strtolower($extension);
+		if(move_uploaded_file($_FILES["imgUpload"]["tmp_name"], "$this->destination/$fileName") === false) {
+			throw(new RuntimeException("Unable to move file"));
+		}
+
+		//set $filename into $profilePicFileName
+		$this->profilePicFileName = $fileName;
+
+		Profile::setProfilePicFileType($extension);
 	}
 
 	/**
@@ -421,49 +461,23 @@ class Profile
 	 * @throws UnexpectedValueException if file type not allowed
 	 **/
 	public function setProfilePicFileType($newPicFileType){
-		//if file type is null let it be null
-		if($newPicFileType === null){
+		//zeroth, set allow the PicFileName to be null if null
+		if($newPicFileType === null) {
 			$this->profilePicFileType = null;
 			return;
 		}
 
-		//check file type given by browser and see if it matches
-		//one of the three png, jpg, gif.
-		if($newPicFileType == "png"){
-			/*$imgResourceId = imagecreatefrompng($newPicFileType);
-			if($imgResourceId === false){
-				throw(new UnexpectedValueException("file type $newPicFileType is not png"));
-			}*/
-		}
-		elseif($newPicFileType == "jpeg"){
-			/*$imgResourceId = imagecreatefromjpeg($newPicFileType);
-			if($imgResourceId === false) {
-				throw(new UnexpectedValueException("file type $newPicFileType is not jpeg"));
-			}*/
-		}
-		elseif($newPicFileType == "gif"){
-			/*$imgResourceId = imagecreatefromgif($newPicFileType);
-			if($imgResourceId === false){
-				throw(new UnexpectedValueException("file type $newPicFileType is not gif"));
-			}*/
-		}
-		else{
-			throw(new UnexpectedValueException("file type $newPicFileType is not supported"));
-		}
-
-		//free any memory associated with image
-		//imagedestroy($newPicFileType);
-
-		//Todo:Fix the above once you go over uploads
+		//second set $newPicFileType
 		$this->profilePicFileType = $newPicFileType;
+	}
 
-		//	TODO profile pic file type
-		//	in data base store mime type image/*
-		//	take type from browser
-		//	after taking that on faith; we through our faith away
-		//	imgcreatefromfoo
-		//	imgdestroy*/
-
+	/**
+	 * get value for $destination
+	 *
+	 * @return string $destination for avatars
+	 */
+	public function getDestination(){
+		return($this->destination);
 	}
 
 	/**
