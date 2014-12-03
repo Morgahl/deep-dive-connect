@@ -16,9 +16,10 @@
 	<body>
 		<main class="container">
 			<h3>Change Profile Picture</h3>
-			<form id="imgUploadForm"action="/php/form-processor/do-upload.php" enctype="multipart/form-data" method="post">
-				<input type="hidden" name="MAX_FILE_SIZE" value="1048576">
+			<form id="imgUploadForm" action="/php/form-processor/do-upload.php" enctype="multipart/form-data" method="post">
+				<input type="hidden" name="MAX_FILE_SIZE" value="5000000">
 				<label for="file-upload">photo location:</label>
+				<p>Max-size: 3 mb</p>
 				<input type="file" id="imgUpload" name="imgUpload"><br>
 				<button type="submit" name="submit" value="send">Change Image</button>
 			</form>

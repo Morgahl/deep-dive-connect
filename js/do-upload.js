@@ -28,4 +28,28 @@ $(document).ready(function()
 					});
 			}
 		});
+
+	$('#imgUpload').bind('change', function() {
+
+		//this.files[0].size gets the size of your file.
+		fileSize = this.files[0].size;
+
+
+
+		if(fileSize > 3000000){
+			$("#imgUploadOutput").empty().append("<div class=\"alert alert-danger\" role=\"alert\"><p><strong>Stop!</strong> File To Large</p></div>");
+		}
+		else{
+			$("#imgUploadOutput").empty().append("<div class=\"alert alert-success\" role=\"alert\"><p><strong>Proceed!</strong> File Size Is Good</p></div>");
+		}
+
+
+	});
 });
+
+function checkFileSize(){
+	imgUp = "hey";
+	alert(imgUp);
+	//sizeImg = imgUp.size;
+	//$("#imgUploadOutput").append();
+}

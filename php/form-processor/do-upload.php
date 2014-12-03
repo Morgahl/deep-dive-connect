@@ -17,19 +17,24 @@ require_once("../class/profile.php");
 // connect to mySQL
 $mysqli = MysqliConfiguration::getMysqli();
 
-//obtain profileId from $_SESSION
-$profileId = $_SESSION["profileId"];
+if($_FILES["imgUpload"]["size"] > 3000000){
+	echo"<div class=\"alert alert-danger\" role=\"alert\"><p>File to large</p></div>";
+}
+else{
+	//obtain profileId from $_SESSION
+	$profileId = $_SESSION["profileId"];
 
 //obtain profile by userId
-$profile = Profile::getProfileByProfileId($mysqli, $profileId);
+	$profile = Profile::getProfileByProfileId($mysqli, $profileId);
 
-$img = "nothing";
+	$img = "nothing";
 
-$profile->setProfilePicFileName($img);
+	$profile->setProfilePicFileName($img);
 
-$filename = $profile->getProfilePicFileName();
+	$filename = $profile->getProfilePicFileName();
 
-if($profile->getProfilePicFileName() !== null){
-	echo "<div class=\"alert alert-success\" role=\"alert\"><p>Upload Successful</p></div>";
+	if($profile->getProfilePicFileName() !== null){
+		echo "<div class=\"alert alert-success\" role=\"alert\"><p>Upload Successful</p></div>";
+	}
+
 }
-
