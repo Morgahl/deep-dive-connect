@@ -2,15 +2,15 @@ $(document).ready(function() {
 	var topicId;
 	topicId = getUrlParameter('t');
 
-	$(".addComment").html("<div class=\"row\"><a href=\"../php/form-processor/comment-new-edit.php?t=" + topicId + "\">Comment on this Topic.</a></div>");
+	$(".addComment").html("<div class=\"row\"><a href=\"../form/comment-new-edit.form?t=" + topicId + "\">Comment on this Topic.</a></div>");
 
 	$.ajax({
-		url    : '../php/form-processor/topic-main-topic.php?t=' + topicId,
+		url    : '../php/form-processor/topicMainTopic.php?t=' + topicId,
 		success: function(ajaxOutput) {
 			$("#topic").html(ajaxOutput);
 			if(ajaxOutput !== "<h1>Topic does not exist.</h1>") {
 				$.ajax({
-					url    : '../php/form-processor/topic-main-comments.php?t=' + topicId,
+					url    : '../php/form-processor/topicMainComments.php?t=' + topicId,
 					success: function(ajaxOutput) {
 						$("#comments").html(ajaxOutput);
 					}
