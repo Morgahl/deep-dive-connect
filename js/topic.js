@@ -3,13 +3,13 @@ $(document).ready(function() {
 	topicId = getUrlParameter('t');
 
 	$.ajax({
-		url    : '../php/form-processor/topic-topic.php?t=' + topicId,
+		url    : 'php/form-processor/topic-topic.php?t=' + topicId,
 		success: function(ajaxOutput) {
 			$("#topic").html(ajaxOutput);
 			if(ajaxOutput !== "<h1>Topic does not exist.</h1>") {
-				$(".addComment").html("<div class=\"row\"><a href=\"../html/comment-newedit.php?t=" + topicId + "\">Comment on this Topic.</a></div>");
+				$(".addComment").html("<div class=\"row\"><a href=\"comment-newedit.php?t=" + topicId + "\">Comment on this Topic.</a></div>");
 				$.ajax({
-					url    : '../php/form-processor/topic-comments.php?t=' + topicId,
+					url    : 'php/form-processor/topic-comments.php?t=' + topicId,
 					success: function(ajaxOutput) {
 						$("#comments").html(ajaxOutput);
 					}

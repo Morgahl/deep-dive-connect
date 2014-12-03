@@ -10,12 +10,12 @@
 		<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
 		<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
 		<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="../js/comment-new-edit.js"></script>
+		<script type="text/javascript" src="js/comment-new-edit.js"></script>
 	</head>
 	<body>
 		<div class="container">
 			<div class="row">
-				<form id="comment" method="post" action="../php/form-processor/comment-new-edit.php">
+				<form id="comment" method="post" action="php/form-processor/comment-new-edit.php">
 					<label for="subject">Subject: </label><br />
 					<textarea id="subject" name="subject" class="form-control" rows="2" maxlength="256"></textarea><br />
 					<label for="body">Body: </label><br />
