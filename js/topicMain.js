@@ -5,12 +5,12 @@ $(document).ready(function() {
 	$(".addComment").html("<div class=\"row\"><a href=\"../html/comment-new-edit.html?t=" + topicId + "\">Comment on this Topic.</a></div>");
 
 	$.ajax({
-		url    : '../php/form/topicMainTopic.php?t=' + topicId,
+		url    : '../php/form-processor/topicMainTopic.php?t=' + topicId,
 		success: function(ajaxOutput) {
 			$("#topic").html(ajaxOutput);
 			if(ajaxOutput !== "<h1>Topic does not exist.</h1>") {
 				$.ajax({
-					url    : '../php/form/topicMainComments.php?t=' + topicId,
+					url    : '../php/form-processor/topicMainComments.php?t=' + topicId,
 					success: function(ajaxOutput) {
 						$("#comments").html(ajaxOutput);
 					}

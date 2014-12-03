@@ -48,7 +48,7 @@ $(document).ready(function()
 				$(form).ajaxSubmit(
 					{
 						type: "POST",
-						url: "php/form-processor/change-password-form-processor.php",
+						url: "php/form-processor-processor/change-password-form-processor-processor.php",
 						success: function(ajaxOutput)
 						{
 							$("#outputArea").html(ajaxOutput);

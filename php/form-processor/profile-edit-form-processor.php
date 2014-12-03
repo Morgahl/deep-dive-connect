@@ -2,7 +2,7 @@
 /**
  * Form processor for profile-edit.php
  *
- * Takes the information from the form and sends it to the profile class
+ * Takes the information from the form-processor and sends it to the profile class
  * for filtering and if the information is sanitized inserted into the
  * database.
  *
@@ -26,7 +26,7 @@ $profileId = $_SESSION["profileId"];
 $profile = Profile::getProfileByProfileId($mysqli, $profileId);
 
 $boolField = false;
-// obtain info from the form and set the values into the
+// obtain info from the form-processor and set the values into the
 // object if it has a value
 $firstName = $_POST["firstName"];
 if(empty($firstName) === false){
@@ -60,13 +60,9 @@ if(empty($description) === false){
 
 if($boolField === true){
 	$profile->update($mysqli);
-	echo "<p>Updated Successful</p>";
-	echo $profile->getFirstName()."<br>";
-	echo $profile->getLastName()."<br>";
-	echo $profile->getMiddleName()."<br>";
-	echo $profile->getLocation()."<br>";
-	echo $profile->getDescription()."<br>";
+	echo "<div class=\"alert alert-success\" role=\"alert\"><p>Updated Successful</p></div>";
+
 }
 else{
-	echo "<p>There was no entries</p>";
+	echo "<div class=\"alert alert-warning\" role=\"alert\"><p>There was no entries</p></div>";
 }

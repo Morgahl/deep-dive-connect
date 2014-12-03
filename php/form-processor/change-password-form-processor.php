@@ -1,6 +1,6 @@
 <?php
 /**
- * change password form processor
+ * change password form-processor processor
  *
  * @author Steven Chavez <schavez256@yahoo.com>
  */

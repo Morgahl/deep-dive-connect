@@ -7,7 +7,7 @@ $(document).ready(function() {
 	}
 
 	$.ajax({
-		url    : '../php/form/topic-edit-load.php' + urlGlue,
+		url    : '../php/form-processor/topic-edit-load.php' + urlGlue,
 		success: function(ajaxOutput) {
 			$.each(JSON.parse(ajaxOutput), function(idx, obj) {
 				var id = "#" + idx;
@@ -45,7 +45,7 @@ $(document).ready(function() {
 				$(form).ajaxSubmit(
 					{
 						type   : "POST",
-						url    : "../php/form/topic-new-edit.php" + urlGlue,
+						url    : "../php/form-processor/topic-new-edit.php" + urlGlue,
 						success: function(ajaxOutput) {
 							// redirect user to a new page
 							location.replace('topicMain.html?t=' + ajaxOutput)
