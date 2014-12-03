@@ -9,7 +9,7 @@ $topics = Topic::getRecentTopics($mysqli, 10);
 
 if ($topics !== null) {
 	foreach($topics as $index => $element) {
-		echo "<p><a href=\"../form/topicMain?t=" . $element->getTopicId() . "\">" . $element->getTopicSubject() . "</a></p>";
+		echo "<p><a href=\"../html/topicMain?t=" . $element->getTopicId() . "\">" . $element->getTopicSubject() . "</a></p>";
 	}
 } else {
 	echo "No topics currently exist.";

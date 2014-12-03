@@ -61,7 +61,7 @@ $(document).ready(function() {
 						url    : "../php/form-processor/comment-new-edit.php" + urlGlue,
 						success: function(ajaxOutput) {
 							// redirect user to a new page
-							location.replace('topicMain.form?t=' + ajaxOutput)
+							location.replace('topicMain.html?t=' + ajaxOutput)
 						}
 					});
 			}

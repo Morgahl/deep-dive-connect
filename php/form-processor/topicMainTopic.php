@@ -29,7 +29,7 @@ if ($topic !== null) {
 				"<h2><strong>" . $topic->getTopicSubject() . "</strong></h2><br>" .
 				"<p>" . nl2br($topic->getTopicBody()) . "</p>";
 	if ($profileId === $topic->getProfileId() || $canEditOther === 1) {
-		$html = $html . "<a id=\"edit\" href=\"../form/topic-new-edit.form?t=$topicId\">Edit Topic</a>";
+		$html = $html . "<a id=\"edit\" href=\"../html/topic-new-edit.html?t=$topicId\">Edit Topic</a>";
 	}
 	$html =	$html . "</div>";
 
