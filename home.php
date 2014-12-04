@@ -5,7 +5,9 @@ session_start();
 require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 
 //require the classes you need
+require_once("php/lib/csrf.php");
 require_once("php/class/profile.php");
+require_once("php/class/topic.php");
 
 // connect to mySQL
 $mysqli = MysqliConfiguration::getMysqli();
