@@ -21,7 +21,7 @@
 				<label for="file-upload">photo location:</label>
 				<p>Max-size: 3 mb</p>
 				<input type="file" id="imgUpload" name="imgUpload"><br>
-				<button type="submit" name="submit" value="send">Change Image</button>
+				<button id="uploadSubmit" type="submit" name="submit" value="send">Change Image</button>
 			</form>
 			<p id="imgUploadOutput"></p>
 
@@ -48,7 +48,7 @@
 					<label for="description">Description:</label><br>
 					<input type="text" id="description" name="description">
 				</p>
-				<button type="submit" name="submit">Submit</button>
+				<button id="profileSubmit" type="submit" name="submit">Submit</button>
 			</form>
 			<p id="outputProfileEdit"></p>
 
