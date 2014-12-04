@@ -7,7 +7,6 @@ require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 //require the classes you need
 require_once("php/lib/csrf.php");
 require_once("php/class/profile.php");
-require_once("php/class/topic.php");
 
 // connect to mySQL
 $mysqli = MysqliConfiguration::getMysqli();
@@ -52,26 +51,7 @@ $_SESSION["picFileName"] = $profile->getProfilePicFileName();
 				</aside>
 				<article id="content" class="col-md-8 col-xs-12">
 					<?php
-					try {
-						$mysqli = MysqliConfiguration::getMysqli();
-
-						// grab topic from database
-						$topics = Topic::getRecentTopics($mysqli, 100000);
-
-						// make sure it exists
-						if ($topics !== null) {
-							// iterate down array and prep html
-							foreach($topics as $index => $element) {
-								echo	"<p><a href=\"topic.php?t=" . $element->getTopicId() . "\">" . $element->getTopicSubject() . "</a></p>" .
-									"<p>" . substr($element->getTopicBody(), 0, 140) . "...</p>";
-							}
-						} else {
-							echo "<h4>No topics currently exist.</h4>";
-						}
-
-					} catch(Exception $exception) {
-						echo "<div class=\"alert alert-danger\" role=\"alert\">Unable to load recent topics: " . $exception->getMessage() . "</div>";
-					}
+					require_once("php/stub/recent.php");
 					?>
 				</article>
 			</section><!-- row -->
