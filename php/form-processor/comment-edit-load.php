@@ -11,9 +11,6 @@ try {
 	$canEditOther = isset($_SESSION["security"]["canEditOther"]) ? $_SESSION["security"]["canEditOther"] : false;
 	$commentId = filter_input(INPUT_GET,"c",FILTER_VALIDATE_INT);
 
-	// verify CSRF tokens
-	// todo: add CSRF token validation
-
 	// verify that the user is logged in
 	if ($profileId === false) {
 		throw(new RuntimeException("User not logged in."));

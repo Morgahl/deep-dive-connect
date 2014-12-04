@@ -11,9 +11,6 @@ try {
 	$canEditOther = isset($_SESSION["security"]["canEditOther"]) ? $_SESSION["security"]["canEditOther"] : false;
 	$topicId = filter_input(INPUT_GET,"t",FILTER_VALIDATE_INT);
 
-	// verify CSRF tokens
-	// todo: add CSRF token validation
-
 	if ($topicId < 1) {
 		throw (new UnexpectedValueException("Not a valid Topic Id"));
 	}

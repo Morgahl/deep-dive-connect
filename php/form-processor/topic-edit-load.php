@@ -12,10 +12,6 @@ try {
 	$canEditOther = isset($_SESSION["security"]["canEditOther"]) ? $_SESSION["security"]["canEditOther"] : false;
 	$topicId = filter_input(INPUT_GET,"t",FILTER_VALIDATE_INT);
 
-
-	// verify CSRF tokens
-	// todo: add CSRF token validation
-
 	// verify that the form-processor was properly filled out
 	if ($profileId === false) {
 		throw(new RuntimeException("User not logged in."));

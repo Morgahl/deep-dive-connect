@@ -2,8 +2,17 @@
 session_start();
 require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 require_once("../class/topic.php");
+require_once("../lib/csrf.php");
 
 try {
+	$csrfName = isset($_POST["csrfName"]) ? $_POST["csrfName"] : false;
+	$csrfToken = isset($_POST["csrfToken"]) ? $_POST["csrfToken"] : false;
+
+	// verify CSRF tokens
+	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false){
+		throw (new RuntimeException("External call made."));
+	}
+
 	$mysqli = MysqliConfiguration::getMysqli();
 
 	// Grab and sanitize all the super globals
@@ -13,9 +22,6 @@ try {
 	$subject = filter_input(INPUT_POST,"subject",FILTER_SANITIZE_STRING);
 	$body = filter_input(INPUT_POST,"body",FILTER_SANITIZE_STRING);
 	$topicId = filter_input(INPUT_GET,"t",FILTER_VALIDATE_INT);
-
-	// verify CSRF tokens
-	// todo: add CSRF token validation
 
 	// verify that the form-processor was properly filled out
 	if ($subject === false || @isset($_POST["body"]) === false || $profileId === false) {
@@ -56,5 +62,6 @@ try {
 		echo $topic->getTopicId();
 	}
 } catch(Exception $exception) {
-	//echo "<div class=\"alert alert-danger\" role=\"alert\">Unable to create or edit topic: " . $exception->getMessage() . "</div>";
+	$_SESSION[$csrfName] = $csrfToken;
+	echo "<div class=\"alert alert-danger\" role=\"alert\">Unable to create or edit topic: " . $exception->getMessage() . "</div>";
 }
