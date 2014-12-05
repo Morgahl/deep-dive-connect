@@ -17,7 +17,7 @@ $salt		= bin2hex(openssl_random_pseudo_bytes(32));
 $authKey = bin2hex(openssl_random_pseudo_bytes(16));
 $hash 	= hash_pbkdf2("sha512", $password, $salt, 2048, 128);
 
-echo "<p>".$hash."</p>";
+
 $user = new User(null, "schavez256@yahoo.com", $hash, $salt, $authKey, 1, null);
 $user->insert($mysqli);
 $userId = $user->getUserId();
@@ -30,4 +30,4 @@ $profileId = $profile->getProfileId();
 
 $_SESSION["profileId"] = $profileId;
 
-echo "<form action=\"profile-edit.php\" method=\"POST\"><button type=\"submit\">Submit</button></form>";
+echo "<form action=\"home.php\" method=\"POST\"><button type=\"submit\">Submit</button></form>";

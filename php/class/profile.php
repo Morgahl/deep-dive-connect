@@ -392,6 +392,14 @@ class Profile
 			return;
 		}
 
+
+
+		//Catch if the
+		if(empty($_FILES) === true) {
+			$this->profilePicFileName = $newPicFileName;
+			return;
+		}
+
 		//create the white list of allowed types
 		$goodExtensions = array("jpg", "jpeg", "png", "gif");
 		$goodMimes      = array("image/jpeg", "image/png", "image/gif");
@@ -441,6 +449,7 @@ class Profile
 		$this->profilePicFileName = $fileName;
 
 		Profile::setProfilePicFileType($extension);
+
 	}
 
 	/**

@@ -1,3 +1,8 @@
+<?php
+require_once("php/lib/csrf.php");
+session_start();
+?>
+
 <!DOCTYPE html>
 <html>
 	<head lang="en">
@@ -15,8 +20,10 @@
 	</head>
 	<body>
 		<main class="container">
+			<p><a href="home.php">Home</a> </p>
 			<h3>Change Profile Picture</h3>
 			<form id="imgUploadForm" action="/php/form-processor/do-upload.php" enctype="multipart/form-data" method="post">
+				<?php echo generateInputTags(); ?>
 				<input type="hidden" name="MAX_FILE_SIZE" value="5000000">
 				<label for="file-upload">photo location:</label>
 				<p>Max-size: 3 mb</p>
@@ -26,6 +33,7 @@
 			<p id="imgUploadOutput"></p>
 
 			<form id="profileEditForm" action="php/form-processor/profile-edit-form-processor.php" method="post">
+				<?php echo generateInputTags(); ?>
 				<!-- Change profile information -->
 				<h3>Change Profile Information</h3>
 				<p>

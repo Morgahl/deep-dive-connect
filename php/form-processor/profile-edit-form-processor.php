@@ -15,54 +15,66 @@ require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 
 //require the classes you need
 require_once("../class/profile.php");
+require_once("php/lib/csrf.php");
 
-// connect to mySQL
-$mysqli = MysqliConfiguration::getMysqli();
+try{
+
+	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false){
+		throw(new Exception("external source violation"));
+	}
+
+	// connect to mySQL
+	$mysqli = MysqliConfiguration::getMysqli();
 
 //obtain profileId from $_SESSION
-$profileId = $_SESSION["profileId"];
+	$profileId = $_SESSION["profileId"];
 
 //obtain profile by userId
-$profile = Profile::getProfileByProfileId($mysqli, $profileId);
+	$profile = Profile::getProfileByProfileId($mysqli, $profileId);
 
-$boolField = false;
+	$boolField = false;
 // obtain info from the form-processor and set the values into the
 // object if it has a value
-$firstName = $_POST["firstName"];
-if(empty($firstName) === false){
-	$profile->setFirstName($firstName);
-	$boolField = true;
-}
+	$firstName = $_POST["firstName"];
+	if(empty($firstName) === false){
+		$profile->setFirstName($firstName);
+		$boolField = true;
+	}
 
-$lastName = $_POST["lastName"];
-if(empty($lastName) === false){
-	$profile->setLastName($lastName);
-	$boolField = true;
-}
+	$lastName = $_POST["lastName"];
+	if(empty($lastName) === false){
+		$profile->setLastName($lastName);
+		$boolField = true;
+	}
 
-$middleName = $_POST["middleName"];
-if(empty($middleName) === false){
-	$profile->setMiddleName($middleName);
-	$boolField = true;
-}
+	$middleName = $_POST["middleName"];
+	if(empty($middleName) === false){
+		$profile->setMiddleName($middleName);
+		$boolField = true;
+	}
 
-$location = $_POST["location"];
-if(empty($location) === false){
-	$profile->setLocation($location);
-	$boolField = true;
-}
+	$location = $_POST["location"];
+	if(empty($location) === false){
+		$profile->setLocation($location);
+		$boolField = true;
+	}
 
-$description = $_POST["description"];
-if(empty($description) === false){
-	$profile->setDescription($description);
-	$boolField = true;
-}
+	$description = $_POST["description"];
+	if(empty($description) === false){
+		$profile->setDescription($description);
+		$boolField = true;
+	}
 
-if($boolField === true){
-	$profile->update($mysqli);
-	echo "<div class=\"alert alert-success\" role=\"alert\"><p>Updated Successful</p></div>";
+	if($boolField === true){
+		$profile->update($mysqli);
+		echo "<div class=\"alert alert-success\" role=\"alert\"><p>Updated Successful</p></div>";
 
+	}
+	else{
+		echo "<div class=\"alert alert-danger\" role=\"alert\"><p>There was no entries</p></div>";
+	}
 }
-else{
-	echo "<div class=\"alert alert-danger\" role=\"alert\"><p>There was no entries</p></div>";
+catch (Exception $exception){
+	//rethrow to the caller
+	echo "<div class=\"alert alert-danger\" role=\"alert\">Unable to verify CSRF token</div>";
 }

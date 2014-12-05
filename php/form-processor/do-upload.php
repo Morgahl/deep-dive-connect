@@ -24,7 +24,7 @@ else{
 	//obtain profileId from $_SESSION
 	$profileId = $_SESSION["profileId"];
 
-//obtain profile by userId
+	//obtain profile by userId
 	$profile = Profile::getProfileByProfileId($mysqli, $profileId);
 
 	$img = "nothing";
@@ -33,8 +33,11 @@ else{
 
 	$filename = $profile->getProfilePicFileName();
 
+	$_SESSION["picFileName"] = $filename;
+
 	if($profile->getProfilePicFileName() !== null){
 		echo "<div class=\"alert alert-success\" role=\"alert\"><p>Upload Successful</p></div>";
+		$profile->update($mysqli);
 	}
 
 }
