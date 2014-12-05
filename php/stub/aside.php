@@ -29,6 +29,7 @@ try {
 	}
 
 	//location
+	echo "<p><strong>Location:</strong></p>";
 	if($location === false) {
 		echo "<p><a href=\"\">edit-profile</a></p>";
 	} else {
