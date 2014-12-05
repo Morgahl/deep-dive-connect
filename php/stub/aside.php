@@ -18,7 +18,7 @@ try {
 	$fileName = isset($_SESSION["profilePicFilename"]) ? $_SESSION["profilePicFilename"] : false;
 
 	//name
-	echo "<p><h4>" . $firstName . " " . $lastName . "</h4></p>";
+	echo "<p><h4><strong>" . $firstName . " " . $lastName . "</strong></h4></p>";
 
 	//profile pic
 	if ($fileName !== false) {
