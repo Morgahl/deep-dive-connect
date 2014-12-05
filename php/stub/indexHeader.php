@@ -3,11 +3,11 @@
 require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 
 //require the files needed
-require_once("../class/user.php");
-require_once("../class/profile.php");
+require_once("php/class/user.php");
+require_once("php/class/profile.php");
 
 //CSRF path
-require_once("../lib/csrf.php");
+require_once("php/lib/csrf.php");
 
 try{
 	// connect to mySQL
@@ -39,9 +39,9 @@ echo
 	<section class=\"row\">
 		<aside class=\"col-md-4\">";
 
-//if $_session is set call aside.php
+//if $_session["profileId"] is set call aside.php
 //if not call login
-if(isset($_SESSION) === false){
+if(@isset($_SESSION["profileId"]) === false){
 	//TODO: Add login here
 }
 else{
