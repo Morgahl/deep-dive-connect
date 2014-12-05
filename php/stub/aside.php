@@ -11,16 +11,25 @@ try {
 
 
 	//If session is new or session timed out show login if not show profile
+	$firstName = isset($_SESSION["firstName"]) ? $_SESSION["firstName"] : false;
+	$lastName = isset($_SESSION["lastName"]) ? $_SESSION["lastName"] : false;
+	$location = isset($_SESSION["location"]) ? $_SESSION["location"] : false;
+	$description = isset($_SESSION["description"]) ? $_SESSION["description"] : false;
+	$fileName = isset($_SESSION["profilePicFilename"]) ? $_SESSION["profilePicFilename"] : false;
 
 	//name
-	echo "<p>" . $firstName . " " . $lastName . "</p>";
+	echo "<p><h4>" . $firstName . " " . $lastName . "</h4></p>";
 
 	//profile pic
-	echo "<img id=\"profilePic\" src=\"/ddconnect/avatars/" .
-		$fileName . "\" /><br>";
+	if ($fileName !== false) {
+		echo "<div class=\"row\"><div class=\"col-md-6\"><img id=\"profilePic\" class=\"img-responsive\" src=\"/ddconnect/avatars/" .
+			$fileName . "\" /></div></div><br>";
+	} else {
+		echo "<div class=\"row\"><div class=\"col-md-6\"><img id=\"profilePic\" class=\"img-responsive\" src=\"resources/avatar-default.png\" /></div></div><br>";
+	}
 
 	//location
-	if(isset($description) === false) {
+	if($location === false) {
 		echo "<p><a href=\"\">edit-profile</a></p>";
 	} else {
 		echo "<p>" . $location . "</p>";
@@ -29,7 +38,7 @@ try {
 
 	//Description
 	echo "<p><strong>Description:</strong></p>";
-	if(isset($description) === false) {
+	if($description === false) {
 		echo "<p><a href=\"\">edit-profile</a></p>";
 	} else {
 		echo "<p>" . $description . "</p>";
