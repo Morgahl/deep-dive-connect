@@ -66,12 +66,16 @@ try {
 
 					// send it back to calling JS
 					echo $html;
-					echo	"<div class=\"row\"><a href=\"comment-newedit.php?t=" . $topicId . "\">Comment on this Topic.</a></div>";
+					if ($profileId !== false){
+						echo	"<div class=\"row\"><a href=\"comment-newedit.php?t=" . $topicId . "\">Comment on this Topic.</a></div>";
+					}
 				}
 
 			} else {
-				echo "<div class=\"row\"><h4>Be the first to comment on this topic!</h4></div>";
-				echo	"<div class=\"row\"><a href=\"comment-newedit.php?t=" . $topicId . "\">Comment on this Topic.</a></div>";
+				if ($profileId !== false){
+					echo "<div class=\"row\"><h4>Be the first to comment on this topic!</h4></div>";
+					echo	"<div class=\"row\"><a href=\"comment-newedit.php?t=" . $topicId . "\">Comment on this Topic.</a></div>";
+				}
 			}
 		} catch(Exception $exception) {
 			echo "<div class=\"alert alert-danger\" role=\"alert\">Unable to load comments: " . $exception->getMessage() . "</div>";
