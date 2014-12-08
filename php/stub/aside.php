@@ -28,10 +28,13 @@ try {
 		echo "<div class=\"row\"><div class=\"col-md-6\"><img id=\"profilePic\" class=\"img-responsive\" src=\"resources/avatar-default.png\" /></div></div><br>";
 	}
 
+	//Always visible
+	echo "<p><a href=\"../../profile-edit.php\">edit-profile</a></p>";
+
 	//location
 	echo "<p><strong>Location:</strong></p>";
 	if($location === false) {
-		echo "<p><a href=\"\">edit-profile</a></p>";
+		echo "<p><a href=\"../../profile-edit.php\">edit-profile</a></p>";
 	} else {
 		echo "<p>" . $location . "</p>";
 	}
@@ -40,7 +43,7 @@ try {
 	//Description
 	echo "<p><strong>Description:</strong></p>";
 	if($description === false) {
-		echo "<p><a href=\"\">edit-profile</a></p>";
+		echo "<p><a href=\"../../profile-edit.php\">edit-profile</a></p>";
 	} else {
 		echo "<p>" . $description . "</p>";
 	}
