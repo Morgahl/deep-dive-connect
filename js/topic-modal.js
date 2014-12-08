@@ -3,19 +3,19 @@ $(document).ready(function()
 	$("#topicModalForm").validate(
 		{
 			rules: {
-				subject: {
+				topicSubject: {
 					required: true
 				},
-				body   : {
+				topicBody: {
 					required: true
 				}
 			},
 
 			messages: {
-				subject: {
+				topicSubject: {
 					required: "Please enter a topic subject."
 				},
-				body   : {
+				topicBody: {
 					required: "Please enter a topic body."
 				}
 			}
@@ -24,19 +24,19 @@ $(document).ready(function()
 	$("#commentModalForm").validate(
 		{
 			rules: {
-				subject: {
+				commentSubject: {
 					required: true
 				},
-				body   : {
+				commentBody: {
 					required: true
 				}
 			},
 
 			messages: {
-				subject: {
+				commentSubject: {
 					required: "Please enter a topic subject."
 				},
-				body   : {
+				commentBody: {
 					required: "Please enter a topic body."
 				}
 			}
