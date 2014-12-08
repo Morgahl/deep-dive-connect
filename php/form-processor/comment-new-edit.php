@@ -16,12 +16,12 @@ try {
 	$mysqli = MysqliConfiguration::getMysqli();
 
 	// Grab and sanitize all the super globals
-	$profileId = isset($_SESSION["profileId"]) ? $_SESSION["profileId"] : false;
+	$profileId = isset($_SESSION["profile"]["profileId"]) ? $_SESSION["profile"]["profileId"] : false;
 	$canEditOther = isset($_SESSION["security"]["canEditOther"]) ? $_SESSION["security"]["canEditOther"] : false;
-	$subject = filter_input(INPUT_POST,"subject",FILTER_SANITIZE_STRING);
-	$body = filter_input(INPUT_POST,"body",FILTER_SANITIZE_STRING);
-	$topicId = filter_input(INPUT_GET,"t",FILTER_VALIDATE_INT);
-	$commentId = filter_input(INPUT_GET,"c",FILTER_VALIDATE_INT);
+	$subject = filter_input(INPUT_POST,"commentSubject",FILTER_SANITIZE_STRING);
+	$body = filter_input(INPUT_POST,"commentBody",FILTER_SANITIZE_STRING);
+	$topicId = filter_input(INPUT_POST,"commentTopicId",FILTER_VALIDATE_INT);
+	$commentId = filter_input(INPUT_POST,"commentCommentId",FILTER_VALIDATE_INT);
 
 // verify that the form-processor was properly filled out
 	if ($subject === false || $body === false || $profileId === false || $topicId === false) {
@@ -56,7 +56,7 @@ try {
 	}
 
 	// return created topicId to calling JS
-	echo $comment->getTopicId();
+	header("Location: ../../topic.php?topic=" . $topicId);
 
 } catch(Exception $exception) {
 	$_SESSION[$csrfName] = $csrfToken;

@@ -25,7 +25,7 @@ try {
 			<div class=\"modal-content\">
 				<div class=\"modal-header\">
 					<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\" onclick=\"dePopulateTopicModal();\">&times;</button>
-					<h4 class=\"modal-title\" id=\"TopicModalLabel\"></h4>
+					<h4 class=\"modal-title\" id=\"topicModalLabel\"></h4>
 				</div>
 				<form id=\"topicModalForm\" method=\"POST\" action=\"php/form-processor/topic-new-edit.php\">
 					<div class=\"modal-body\">";
@@ -45,6 +45,32 @@ try {
 		</div>
 	</div>";
 
+	echo "<div class=\"modal\" id=\"commentModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal\" aria-hidden=\"true\">
+		<div class=\"modal-dialog\">
+			<div class=\"modal-content\">
+				<div class=\"modal-header\">
+					<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\" onclick=\"dePopulateCommentModal();\">&times;</button>
+					<h4 class=\"modal-title\" id=\"commentModalLabel\"> Comment:</h4>
+				</div>
+				<form id=\"commentModalForm\" method=\"POST\" action=\"php/form-processor/comment-new-edit.php\">
+					<div class=\"modal-body\">";
+	echo generateInputTags();
+	echo "<label for=\"commentSubject\">Subject: </label><br />
+						<textarea id=\"commentSubject\" name=\"commentSubject\" class=\"form-control\" rows=\"2\" maxlength=\"256\"></textarea><br />
+						<label for=\"commentBody\">Body: </label><br />
+						<textarea id=\"commentBody\" name=\"commentBody\" class=\"form-control\" rows=\"10\" maxlength=\"4096\"></textarea><br />
+						<input id=\"commentTopicId\" name=\"commentTopicId\" type=\"hidden\">
+						<input id=\"commentCommentId\" name=\"commentCommentId\" type=\"hidden\">
+					</div>
+					<div class=\"modal-footer\">
+						<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" onclick=\"dePopulateCommentModal();\">Close</button>
+						<button type=\"submit\" class=\"btn btn-primary\">Save changes</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>";
+
 	if ($topic !== null) {
 		// prep topic
 		$html =	"<div class=\"row\">" .
@@ -53,7 +79,7 @@ try {
 
 		// if topic is owner by user or is viewed by someone with edit other
 		if ($profileId === $topic->getProfileId() || $canEditOther === 1) {
-			$html = $html . "<button type=\"submit\" class=\"btn btn-sm\" data-toggle=\"modal\" data-target=\"#topicModal\" onclick=\"populateTopicModal(" . $topicId . ");\">Edit Topic</button>";
+			$html = $html . "<button type=\"submit\" class=\"btn btn-sm\" data-toggle=\"modal\" data-target=\"#topicModal\" onclick=\"populateTopicModal();\">Edit Topic</button>";
 		}
 
 		$html =	$html . "</div>";
@@ -73,13 +99,24 @@ try {
 				// iterate across array of received objects
 				foreach($comments as $index => $element) {
 					// prep comments
+					$commentTopicId = $element->getTopicId();
+					$commentProfileId = $element->getProfileId();
+					$commentId = $element->getCommentId();
+					$commentSubject = $element->getCommentSubject();
+					$commentBody = $element->getCommentBody();
+
 					$html =	"<div class=\"row\">" .
-						"<h2><strong>" . $element->getCommentSubject() . "</strong></h2><br>" .
-						"<p>" . nl2br($element->getCommentBody()) . "</p>";
+						"<h2><strong>" . $commentSubject . "</strong></h2><br>" .
+						"<p>" . nl2br($commentBody) . "</p>";
 
 					// if user is owner of comment or can edit other give them a link to modify
-					if ($profileId === $element->getProfileId() || $canEditOther === 1) {
-						$html = $html . "<a id=\"edit\" href=\"comment-newedit.php?t=" . $element->getTopicId() . "&c=" . $element->getCommentId() . "\">Edit Comment</a>";
+					if ($profileId === $commentProfileId || $canEditOther === 1) {
+						$html = $html .
+							"<button type=\"submit\" class=\"btn btn-sm\" data-toggle=\"modal\" data-target=\"#commentModal\" onclick=\"populateCommentModal($commentId);\">Edit Comment</button>" .
+							"<input id=\"topicId$commentId\" name=\"topic\" type=\"hidden\" value=\"$commentTopicId\">" .
+							"<input id=\"commentId$commentId\" name=\"comment\" type=\"hidden\" value=\"$commentId\">" .
+							"<input id=\"subject$commentId\" name=\"subject\" type=\"hidden\" value=\"$commentSubject\">" .
+							"<input id=\"body$commentId\" name=\"body\" type=\"hidden\" value=\"$commentBody\">";
 					}
 
 					$html =	$html . "</div>";
