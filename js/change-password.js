@@ -1,6 +1,3 @@
-/**
- * Created by Steven on 12/2/2014.
- */
 $(document).ready(function()
 {
 	$("#changePasswordForm").validate(
