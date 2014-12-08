@@ -59,7 +59,7 @@ try {
 						<textarea id=\"commentSubject\" name=\"commentSubject\" class=\"form-control\" rows=\"2\" maxlength=\"256\"></textarea><br />
 						<label for=\"commentBody\">Body: </label><br />
 						<textarea id=\"commentBody\" name=\"commentBody\" class=\"form-control\" rows=\"10\" maxlength=\"4096\"></textarea><br />
-						<input id=\"commentTopicId\" name=\"commentTopicId\" type=\"hidden\">
+						<input id=\"commentTopicId\" name=\"commentTopicId\" type=\"hidden\" value=\"" . $topicId . "\">
 						<input id=\"commentCommentId\" name=\"commentCommentId\" type=\"hidden\">
 					</div>
 					<div class=\"modal-footer\">
@@ -113,7 +113,6 @@ try {
 					if ($profileId === $commentProfileId || $canEditOther === 1) {
 						$html = $html .
 							"<button type=\"submit\" class=\"btn btn-sm\" data-toggle=\"modal\" data-target=\"#commentModal\" onclick=\"populateCommentModal($commentId);\">Edit Comment</button>" .
-							"<input id=\"topicId$commentId\" name=\"topic\" type=\"hidden\" value=\"$commentTopicId\">" .
 							"<input id=\"commentId$commentId\" name=\"comment\" type=\"hidden\" value=\"$commentId\">" .
 							"<input id=\"subject$commentId\" name=\"subject\" type=\"hidden\" value=\"$commentSubject\">" .
 							"<input id=\"body$commentId\" name=\"body\" type=\"hidden\" value=\"$commentBody\">";
@@ -124,14 +123,14 @@ try {
 					// send it back to calling JS
 					echo $html;
 					if ($profileId !== false){
-						echo	"<div class=\"row\"><a href=\"comment-newedit.php?t=" . $topicId . "\">Comment on this Topic.</a></div>";
+						echo	"<div class=\"row\"><button type=\"submit\" class=\"btn btn-sm\" data-toggle=\"modal\" data-target=\"#commentModal\" onclick=\"populateCommentModal(0);\">Add Comment</button></div>";
 					}
 				}
 
 			} else {
 				if ($profileId !== false){
 					echo "<div class=\"row\"><h4>Be the first to comment on this topic!</h4></div>";
-					echo	"<div class=\"row\"><a href=\"comment-newedit.php?t=" . $topicId . "\">Comment on this Topic.</a></div>";
+					echo	"<div class=\"row\"><button type=\"submit\" class=\"btn btn-sm\" data-toggle=\"modal\" data-target=\"#commentModal\" onclick=\"populateCommentModal(0);\">Add Comment</button></div>";
 				}
 			}
 		} catch(Exception $exception) {
