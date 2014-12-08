@@ -31,10 +31,11 @@ try {
 	// verify user is authorized to create topics
 	if($createTopic === 1) {
 		// check if this is a new topic or if user is editing an existing one
-		if($topicId === false) {
+		if($topicId === false || $topicId === null) {
 			// user creating a topic
 			$topic = new Topic(null, $profileId, null, $subject, $body);
 			$topic->insert($mysqli);
+			$topicId = $topic->getTopicId();
 		} else {
 			// user editing a topic
 

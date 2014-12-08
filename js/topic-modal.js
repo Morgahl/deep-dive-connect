@@ -1,3 +1,48 @@
+$(document).ready(function()
+{
+	$("#topicModalForm").validate(
+		{
+			rules: {
+				subject: {
+					required: true
+				},
+				body   : {
+					required: true
+				}
+			},
+
+			messages: {
+				subject: {
+					required: "Please enter a topic subject."
+				},
+				body   : {
+					required: "Please enter a topic body."
+				}
+			}
+		});
+
+	$("#commentModalForm").validate(
+		{
+			rules: {
+				subject: {
+					required: true
+				},
+				body   : {
+					required: true
+				}
+			},
+
+			messages: {
+				subject: {
+					required: "Please enter a topic subject."
+				},
+				body   : {
+					required: "Please enter a topic body."
+				}
+			}
+		});
+});
+
 function populateTopicModal(){
 	$('#topicModal').show();
 }
