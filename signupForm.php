@@ -14,7 +14,7 @@
 </head>
 <body>
 
-<form id="signup-and-login-form-processor" action="php/form-processor/signup-and-login-form-processor.php" method="post">
+<form id="signup-and-login-form-processor" action="php/form-processor/signup-form-processor.php" method="post">
 	<!-- submit signup form -->
 	<h3>submit signup form</h3>
 	<p>
