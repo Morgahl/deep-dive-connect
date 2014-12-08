@@ -71,7 +71,7 @@ try{
 
 	}
 	else{
-		echo "<div class=\"alert alert-danger\" role=\"alert\"><p>There was no entries</p></div>";
+		echo "<div class=\"alert alert-danger\" role=\"alert\"><p><strong>WARNING!</strong> no entries</p></div>";
 	}
 }
 catch (Exception $exception){
