@@ -14,7 +14,7 @@ try {
 	if ($topics !== null) {
 		// iterate down array and prep html
 		foreach($topics as $index => $element) {
-			echo	"<p><a href=\"topic.php?t=" . $element->getTopicId() . "\">" . $element->getTopicSubject() . "</a></p>" .
+			echo	"<p><a href=\"topic.php?topic=" . $element->getTopicId() . "\">" . $element->getTopicSubject() . "</a></p>" .
 				"<p>" . substr($element->getTopicBody(), 0, 100) . "...</p>";
 		}
 	} else {

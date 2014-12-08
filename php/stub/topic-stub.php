@@ -3,13 +3,14 @@ require_once("php/lib/csrf.php");
 require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 require_once("php/class/topic.php");
 require_once("php/class/comment.php");
+
 try {
 	$mysqli = MysqliConfiguration::getMysqli();
 
 	// Grab and sanitize all the super globals
-	$profileId = isset($_SESSION["profileId"]) ? $_SESSION["profileId"] : false;
+	$profileId = isset($_SESSION["profile"]["profileId"]) ? $_SESSION["profile"]["profileId"] : false;
 	$canEditOther = isset($_SESSION["security"]["canEditOther"]) ? $_SESSION["security"]["canEditOther"] : false;
-	$topicId = filter_input(INPUT_GET,"t",FILTER_VALIDATE_INT);
+	$topicId = filter_input(INPUT_GET,"topic",FILTER_VALIDATE_INT);
 
 	if ($topicId < 1) {
 		throw (new UnexpectedValueException("Not a valid Topic Id"));
@@ -17,6 +18,32 @@ try {
 
 	// get topic from database
 	$topic = Topic::getTopicByTopicId($mysqli, $topicId);
+
+	echo "<script src=\"js/topic-modal.js\"></script>
+	<div class=\"modal\" id=\"topicModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal\" aria-hidden=\"true\">
+		<div class=\"modal-dialog\">
+			<div class=\"modal-content\">
+				<div class=\"modal-header\">
+					<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\" onclick=\"dePopulateTopicModal();\">&times;</button>
+					<h4 class=\"modal-title\" id=\"TopicModalLabel\"></h4>
+				</div>
+				<form id=\"topicModalForm\" method=\"POST\" action=\"php/form-processor/topic-new-edit.php\">
+					<div class=\"modal-body\">";
+	echo generateInputTags();
+		echo "<label for=\"topicSubject\">Subject: </label><br />
+						<textarea id=\"topicSubject\" name=\"topicSubject\" class=\"form-control\" rows=\"2\" maxlength=\"256\">" . $topic->getTopicSubject() . "</textarea><br />
+						<label for=\"topicBody\">Body: </label><br />
+						<textarea id=\"topicBody\" name=\"topicBody\" class=\"form-control\" rows=\"10\" maxlength=\"4096\">" . $topic->getTopicBody() . "</textarea><br />
+						<input id=\"topic\" name=\"topic\" type=\"hidden\" value=\"" . $topicId . "\">
+					</div>
+					<div class=\"modal-footer\">
+						<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" onclick=\"dePopulateTopicModal();\">Close</button>
+						<button type=\"submit\" class=\"btn btn-primary\">Save changes</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>";
 
 	if ($topic !== null) {
 		// prep topic
@@ -26,7 +53,7 @@ try {
 
 		// if topic is owner by user or is viewed by someone with edit other
 		if ($profileId === $topic->getProfileId() || $canEditOther === 1) {
-			$html = $html . "<a id=\"edit\" href=\"topic-newedit.php?t=$topicId\">Edit Topic</a>";
+			$html = $html . "<button type=\"submit\" class=\"btn btn-sm\" data-toggle=\"modal\" data-target=\"#topicModal\" onclick=\"populateTopicModal(" . $topicId . ");\">Edit Topic</button>";
 		}
 
 		$html =	$html . "</div>";
@@ -34,13 +61,6 @@ try {
 		echo $html;
 
 		try {
-			$mysqli = MysqliConfiguration::getMysqli();
-
-			// Grab and sanitize all the super globals
-			$profileId = isset($_SESSION["profileId"]) ? $_SESSION["profileId"] : false;
-			$canEditOther = isset($_SESSION["security"]["canEditOther"]) ? $_SESSION["security"]["canEditOther"] : false;
-			$topicId = filter_input(INPUT_GET,"t",FILTER_VALIDATE_INT);
-
 			if ($topicId < 1) {
 				throw (new UnexpectedValueException("Not a valid Topic Id"));
 			}

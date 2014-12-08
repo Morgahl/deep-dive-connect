@@ -16,15 +16,15 @@ try {
 	$mysqli = MysqliConfiguration::getMysqli();
 
 	// Grab and sanitize all the super globals
-	$profileId = isset($_SESSION["profileId"]) ? $_SESSION["profileId"] : false;
+	$profileId = isset($_SESSION["profile"]["profileId"]) ? $_SESSION["profile"]["profileId"] : false;
 	$createTopic = isset($_SESSION["security"]["createTopic"]) ? $_SESSION["security"]["createTopic"] : false;
 	$canEditOther = isset($_SESSION["security"]["canEditOther"]) ? $_SESSION["security"]["canEditOther"] : false;
-	$subject = filter_input(INPUT_POST,"subject",FILTER_SANITIZE_STRING);
-	$body = filter_input(INPUT_POST,"body",FILTER_SANITIZE_STRING);
-	$topicId = filter_input(INPUT_GET,"t",FILTER_VALIDATE_INT);
+	$subject = filter_input(INPUT_POST,"topicSubject",FILTER_SANITIZE_STRING);
+	$body = filter_input(INPUT_POST,"topicBody",FILTER_SANITIZE_STRING);
+	$topicId = filter_input(INPUT_POST,"topic",FILTER_VALIDATE_INT);
 
 	// verify that the form-processor was properly filled out
-	if ($subject === false || @isset($_POST["body"]) === false || $profileId === false) {
+	if ($subject === false || $body === false || $profileId === false) {
 		throw(new RuntimeException("Form variables incomplete or missing."));
 	}
 
@@ -59,7 +59,7 @@ try {
 			}
 		}
 		// return created topicId to calling JS
-		echo $topic->getTopicId();
+		header("Location: ../../topic.php?topic=" . $topicId);
 	}
 } catch(Exception $exception) {
 	$_SESSION[$csrfName] = $csrfToken;
