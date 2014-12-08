@@ -42,7 +42,9 @@ echo 	  "<h3>Change Profile Picture</h3>
 				<button id=\"profileSubmit\" type=\"submit\" name=\"submit\">Submit</button>
 			</form>
 			<p id=\"outputProfileEdit\"></p>
+			<h3>Cohort Association</h3>
+			<p><a href=\"php/stub/cohort-edit-stub.php\">change cohort</a></p>
 
 			<!-- Account Settings -->
 			<h3>Account Settings</h3>
-			<p><a href=\"../../change-password.php\">change password</a></p>";
+			<p><a href=\"php/form-processor/change-password.php\">change password</a></p>";

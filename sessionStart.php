@@ -28,6 +28,9 @@ $profile->insert($mysqli);
 
 $profileId = $profile->getProfileId();
 
-$_SESSION["profileId"] = $profileId;
+$_SESSION["profile"]["firstName"] = $profile->getFirstName();
+$_SESSION["profile"]["lastName"] = $profile->getLastName();
+$_SESSION["profile"]["description"]= $profile->getDescription();
+$_SESSION["profile"]["location"]= $profile->getLocation();
 
-echo "<form action=\"home.php\" method=\"POST\"><button type=\"submit\">Submit</button></form>";
+echo "<form action=\"index.php\" method=\"POST\"><button type=\"submit\">Submit</button></form>";

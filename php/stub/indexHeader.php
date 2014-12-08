@@ -44,7 +44,7 @@ echo
 
 //if $_session["profileId"] is set call aside.php
 //if not call login
-if(@isset($_SESSION["profile"]["profileId"]) === false){
+if(@isset($_SESSION["profile"]) === false){
 	//TODO: Add login here
 }
 else{
