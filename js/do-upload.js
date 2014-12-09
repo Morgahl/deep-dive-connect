@@ -46,10 +46,3 @@ $(document).ready(function()
 
 	});
 });
-
-function checkFileSize(){
-	imgUp = "hey";
-	alert(imgUp);
-	//sizeImg = imgUp.size;
-	//$("#imgUploadOutput").append();
-}
