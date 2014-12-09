@@ -79,7 +79,7 @@ try {
 
 		// if topic is owner by user or is viewed by someone with edit other
 		if ($profileId === $topic->getProfileId() || $canEditOther === 1) {
-			$html = $html . "<button type=\"submit\" class=\"btn btn-sm\" data-toggle=\"modal\" data-target=\"#topicModal\" onclick=\"populateTopicModal();\">Edit Topic</button>";
+			$html = $html . "<button type=\"submit\" class=\"btn btn-sm btn-right\" data-toggle=\"modal\" data-target=\"#topicModal\" onclick=\"populateTopicModal();\">Edit Topic</button>";
 		}
 
 		$html =	$html . "</div>";
@@ -105,26 +105,22 @@ try {
 					$commentSubject = $element->getCommentSubject();
 					$commentBody = $element->getCommentBody();
 
-					$html =	"<div class=\"row test-unit-comment\">" .
-						"<h2><strong>" . $commentSubject . "</strong></h2><br>" .
-						"<p>" . nl2br($commentBody) . "</p>";
+					$html =	"<div class=\"row test-unit-comment\"><blockquote>" .
+						"<h4><strong>" . $commentSubject . "</strong></h4><br>" .
+						"<h5>" . nl2br($commentBody) . "</h5>";
 
 					// if user is owner of comment or can edit other give them a link to modify
 					if ($profileId === $commentProfileId || $canEditOther === 1) {
 						$html = $html .
-							"<button type=\"submit\" class=\"btn btn-sm\" data-toggle=\"modal\" data-target=\"#commentModal\" onclick=\"populateCommentModal($commentId);\">Edit Comment</button>" .
+							"<button type=\"submit\" class=\"btn btn-sm btn-right\" data-toggle=\"modal\" data-target=\"#commentModal\" onclick=\"populateCommentModal($commentId);\">Edit Comment</button>" .
 							"<input id=\"commentId$commentId\" name=\"comment\" type=\"hidden\" value=\"$commentId\">" .
 							"<input id=\"subject$commentId\" name=\"subject\" type=\"hidden\" value=\"$commentSubject\">" .
 							"<input id=\"body$commentId\" name=\"body\" type=\"hidden\" value=\"$commentBody\">";
 					}
 
-					$html =	$html . "</div>";
+					$html =	$html . "</blockquote></div>";
 
-					// send it back to calling JS
 					echo $html;
-					if ($profileId !== false){
-						echo	"<div class=\"row\"><button type=\"submit\" class=\"btn btn-sm\" data-toggle=\"modal\" data-target=\"#commentModal\" onclick=\"populateCommentModal(0);\">Add Comment</button></div>";
-					}
 				}
 
 			} else {
@@ -132,6 +128,9 @@ try {
 					echo "<div class=\"row\"><h4>Be the first to comment on this topic!</h4></div>";
 					echo	"<div class=\"row\"><button type=\"submit\" id=\"newComment\" class=\"btn btn-sm\" data-toggle=\"modal\" data-target=\"#commentModal\" onclick=\"populateCommentModal(0);\">Add Comment</button></div>";
 				}
+			}
+			if ($profileId !== false){
+				echo	"<div class=\"row\"><button type=\"submit\" class=\"btn btn-sm\" data-toggle=\"modal\" data-target=\"#commentModal\" onclick=\"populateCommentModal(0);\">Add Comment</button></div>";
 			}
 		} catch(Exception $exception) {
 			echo "<div class=\"alert alert-danger\" role=\"alert\">Unable to load comments: " . $exception->getMessage() . "</div>";

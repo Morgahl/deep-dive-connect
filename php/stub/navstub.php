@@ -12,7 +12,7 @@
 
 //Added ternary
 
-$Admin = isset($_Session["security"]["siteAdmin"]) ? $_Session["security"]["siteAdmin"] : false;
+$Admin = isset($_SESSION["security"]["siteAdmin"]) ? $_SESSION["security"]["siteAdmin"] : false;
 
 
 
@@ -25,7 +25,7 @@ echo "<a href=\"profile.php\" class=\"btn btn-default\"><h4><strong>Profile</str
 
 echo "<a href=\"cohort.php\" class=\"btn btn-default\"><h4><strong>Cohort</strong></h4></a>";
 if ($Admin === 1){
-   echo "<a href=\"admin.php\" class=\"btn btn-default\"><h4><strong>Admin Page</strong></h4></a>";
+   echo "<a href=\"admin.php\" class=\"btn btn-default\"><h4><strong>Admin</strong></h4></a>";
 }
 echo "</div>";
 
