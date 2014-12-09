@@ -22,18 +22,17 @@ if($_FILES["imgUpload"]["size"] > 3000000){
 }
 else{
 	//obtain profileId from $_SESSION
-	$profileId = $_SESSION["profileId"];
+	$profileId = $_SESSION["profile"]["profileId"];
 
 	//obtain profile by userId
 	$profile = Profile::getProfileByProfileId($mysqli, $profileId);
-
 	$img = "nothing";
 
 	$profile->setProfilePicFileName($img);
 
 	$filename = $profile->getProfilePicFileName();
 
-	$_SESSION["picFileName"] = $filename;
+	$_SESSION["profile"]["profilePicFilename"] = $filename;
 
 	if($profile->getProfilePicFileName() !== null){
 		echo "<div class=\"alert alert-success\" role=\"alert\"><p>Upload Successful</p></div>";

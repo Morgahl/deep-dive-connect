@@ -17,7 +17,7 @@ require_once("../class/profile.php");
 $mysqli = MysqliConfiguration::getMysqli();
 
 //obtain profileId from $_SESSION
-$profileId = $_SESSION["profileId"];
+$profileId = $_SESSION["profile"]["profileId"];
 
 //obtain profile by userId
 $profile = Profile::getProfileByProfileId($mysqli, $profileId);

@@ -13,6 +13,12 @@ $location = isset($_SESSION["profile"]["location"]) ? $_SESSION["profile"]["loca
 $description = isset($_SESSION["profile"]["description"]) ? $_SESSION["profile"]["description"] : false;
 $fileName = isset($_SESSION["profile"]["profilePicFilename"]) ? $_SESSION["profile"]["profilePicFilename"] : false;
 
+// assciate array of the cohort session
+$cohort["startDate"] = isset($_SESSION["cohort"]["startDate"]) ? $_SESSION["cohort"]["startDate"] : false;
+$cohort["endDate"] = isset($_SESSION["cohort"]["endDate"]) ? $_SESSION["cohort"]["endDate"] : false;
+$cohort["location"] = isset($_SESSION["cohort"]["location"]) ? $_SESSION["cohort"]["location"] : false;
+$cohort["description"] = isset($_SESSION["cohort"]["description"]) ? $_SESSION["cohort"]["description"] : false;
+
 //name
 echo "<p><h4><strong>" . $firstName . " " . $lastName . "</strong></h4></p>";
 
@@ -45,4 +51,18 @@ if($description === false) {
 
 //Cohort
 echo "<p><strong>Cohort:</strong></p>";
-echo "<div class=\"alert alert-warning\" role=\"alert\">Under Construction</div>";
+if($cohort === false){
+	echo "<p><a href=\"cohort-edit.php\">edit-cohort</a>";
+}
+if($cohort["description"] !== false){
+	echo "<p>Description: " . $cohort["description"] . "</p>";
+}
+
+if($cohort["location"] !== false){
+	echo "<p>Location: " . $cohort["location"] . "</p>";
+}
+
+if($cohort["startDate"] !== false || $cohort["endDate"] !== false){
+	echo "<p>Dates Attended: " . $cohort["startDate"]. " - " . $cohort["endDate"] . "</p>";
+}
+

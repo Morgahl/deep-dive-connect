@@ -5,43 +5,49 @@
  * Date: 12/8/2014
  * Time: 11:53 AM
  */
-require_once("php/class/cohort-main.php");
+require_once("php/class/cohort.php");
 
 //declare variables
 //$cohort[] = array();
-$cohortBool = true;
-$id = 1;
+//$cohortBool = true;
+//$id = 1;
+//
+////catch all the cohort objects in $cohort array
+//while($cohortBool){
+//if(($cohort[] = Cohort::getCohortByCohortId($mysqli, $id)) !== null){
+//		$id++;
+//	}
+//	else{
+//		$cohortBool = false;
+//	}
+//}
+//
+////get total number of elements in array
+//$total = count($cohort);
 
-//catch all the cohort objects in $cohort array
-while($cohortBool){
-if(($cohort[] = Cohort::getCohortByCohortId($mysqli, $id)) !== null){
-		$id++;
-	}
-	else{
-		$cohortBool = false;
-	}
-}
+$cohorts[] = Cohort::getCohorts($mysqli);
 
-//get total number of elements in array
-$total = count($cohort);
-
+//var_dump($cohorts);
+//for($i = 0; $i <6; $i++){
+//	echo $cohorts[0][$i]->getStartDate()->format("M Y");
+//}
+$total = count($cohorts[0]);
 
 
 echo "<h3>Cohort Edit</h3>
 		<form id=\"cohortEditForm\" action=\"php/form-processor/cohort-edit-processor.php\" method=\"POST\">
-			<select id=\"cohortOption\" name=\"cohortOption\">
-				<option value=\"null\">pick your cohort...</option>";
+			<select id=\"cohortOption\" name=\"cohortOption\">";
 
-for($i = 0; $i < $total-1; $i++) {
-	$startDate = $cohort[$i][0]->getStartDate();
-	$endDate = $cohort[$i][0]->getEndDate();
+for($i = 0; $i < 6; $i++) {
+	$startDate = $cohorts[0][$i]->getStartDate();
+	$endDate = $cohorts[0][$i]->getEndDate();
 
-	echo "<option value=\"" . $id . "\">";
-	echo $startDate->format("M Y") . " - " . $endDate->format("M Y") . "<br>";
+	echo "<option value=\"" . ($i+1) . "\">";
+	echo $startDate->format("M Y") . " - " . $endDate->format("M Y");
 	echo "</option>";
 }
 
 echo "	</select>
-	<button id=\"profileSubmit\" type=\"submit\" name=\"submit\">Submit</button>
+	<button id=\"cohortSubmit\" type=\"submit\" name=\"submit\">Submit</button>
 </form>
-<p id=\"CohortEditOutput\"></p>";
+<p id=\"cohortEditOutput\"></p>";

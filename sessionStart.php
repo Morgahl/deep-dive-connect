@@ -28,6 +28,7 @@ $profile->insert($mysqli);
 
 $profileId = $profile->getProfileId();
 
+$_SESSION["profile"]["profileId"] = $profile->getProfileId();
 $_SESSION["profile"]["firstName"] = $profile->getFirstName();
 $_SESSION["profile"]["lastName"] = $profile->getLastName();
 $_SESSION["profile"]["description"]= $profile->getDescription();
