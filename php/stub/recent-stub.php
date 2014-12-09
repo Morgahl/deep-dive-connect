@@ -23,7 +23,7 @@ try {
 					</div>
 					<div class=\"modal-footer\">
 						<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" onclick=\"dePopulateTopicModal();\">Close</button>
-						<button type=\"submit\" class=\"btn btn-primary\">Save changes</button>
+						<button type=\"submit\" id=\"modTopicSubmit\" class=\"btn btn-primary\">Save changes</button>
 					</div>
 				</form>
 			</div>
@@ -47,7 +47,7 @@ try {
 	}
 
 	if($createTopic === 1){
-	echo	"<button type=\"submit\" class=\"btn btn-sm\" data-toggle=\"modal\" data-target=\"#topicModal\" onclick=\"populateTopicModal();\">Create a Topic</button>";
+	echo	"<button type=\"submit\" id=\"topicCreate\" class=\"btn btn-sm\" data-toggle=\"modal\" data-target=\"#topicModal\" onclick=\"populateTopicModal();\">Create a Topic</button>";
 	}
 
 } catch(Exception $exception) {

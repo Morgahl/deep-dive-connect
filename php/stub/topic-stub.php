@@ -38,7 +38,7 @@ try {
 					</div>
 					<div class=\"modal-footer\">
 						<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" onclick=\"dePopulateTopicModal();\">Close</button>
-						<button type=\"submit\" class=\"btn btn-primary\">Save changes</button>
+						<button type=\"submit\" id=\"modTopicSubmit\"  class=\"btn btn-primary\">Save changes</button>
 					</div>
 				</form>
 			</div>
@@ -64,7 +64,7 @@ try {
 					</div>
 					<div class=\"modal-footer\">
 						<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" onclick=\"dePopulateCommentModal();\">Close</button>
-						<button type=\"submit\" class=\"btn btn-primary\">Save changes</button>
+						<button type=\"submit\" id=\"modCommentSubmit\"  class=\"btn btn-primary\">Save changes</button>
 					</div>
 				</form>
 			</div>
@@ -73,7 +73,7 @@ try {
 
 	if ($topic !== null) {
 		// prep topic
-		$html =	"<div class=\"row\">" .
+		$html =	"<div class=\"row test-unit-topic\">" .
 			"<h2><strong>" . $topic->getTopicSubject() . "</strong></h2><br>" .
 			"<p>" . nl2br($topic->getTopicBody()) . "</p>";
 
@@ -105,7 +105,7 @@ try {
 					$commentSubject = $element->getCommentSubject();
 					$commentBody = $element->getCommentBody();
 
-					$html =	"<div class=\"row\">" .
+					$html =	"<div class=\"row test-unit-comment\">" .
 						"<h2><strong>" . $commentSubject . "</strong></h2><br>" .
 						"<p>" . nl2br($commentBody) . "</p>";
 
@@ -130,7 +130,7 @@ try {
 			} else {
 				if ($profileId !== false){
 					echo "<div class=\"row\"><h4>Be the first to comment on this topic!</h4></div>";
-					echo	"<div class=\"row\"><button type=\"submit\" class=\"btn btn-sm\" data-toggle=\"modal\" data-target=\"#commentModal\" onclick=\"populateCommentModal(0);\">Add Comment</button></div>";
+					echo	"<div class=\"row\"><button type=\"submit\" id=\"newComment\" class=\"btn btn-sm\" data-toggle=\"modal\" data-target=\"#commentModal\" onclick=\"populateCommentModal(0);\">Add Comment</button></div>";
 				}
 			}
 		} catch(Exception $exception) {
