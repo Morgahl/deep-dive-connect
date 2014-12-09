@@ -11,6 +11,7 @@ $inputTagPic = generateInputTags();
 $inputTagProfile = generateInputTags();
 
 echo		"<h3>Change Profile Picture</h3>
+			<script src=\"js/do-upload.js\"></script>
 			<form id=\"imgUploadForm\" action=\"php/form-processor/do-upload.php\" enctype=\"multipart/form-data\" method=\"post\">". $inputTagPic .
 				"<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"5000000\">
 				<label for=\"file-upload\">photo location:</label>
@@ -18,6 +19,7 @@ echo		"<h3>Change Profile Picture</h3>
 				<input type=\"file\" id=\"imgUpload\" name=\"imgUpload\"><br>
 				<button id=\"uploadSubmit\" type=\"submit\" name=\"submit\" value=\"send\">Change Image</button>
 			</form>
+			<p id=\"imgUploadOutput\"></p>
 			<script src=\"js/profile-edit.js\"></script>
 			<form id=\"profileEditForm\" action=\"php/form-processor/profile-edit-form-processor.php\" method=\"post\">". $inputTagProfile ."
 				<!-- Change profile information -->
