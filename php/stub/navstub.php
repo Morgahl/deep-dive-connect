@@ -10,14 +10,14 @@
  */
 
 
-//Add ternary
-
+//Added ternary
 
 $Admin = isset($_Session["security"]["siteAdmin"]) ? $_Session["security"]["siteAdmin"] : false;
 
 
 
-//pseudo code for Onloader - Navigation Bar
+//Code for Onloader - Navigation Bar
+
 echo "<div class= \"btn-group btn-group-justified\">
       <a href=\"index.php\" class=\"btn btn-default\"><h4><strong>Home</strong></h4></a>";
 
