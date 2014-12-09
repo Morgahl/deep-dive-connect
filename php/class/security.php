@@ -356,6 +356,38 @@ class Security
 
 	}
 
+	public static function getIdForDefault(){
+		$query = "SELECT securityId, description, isDefault, createTopic, canEditOther, canPromote, siteAdmin FROM security WHERE isDefault = 1";
+
+		$query->execute();
+
+		$result = $query->get_result();
+		if($result === false) {
+			throw(new mysqli_sql_exception("Unable to get result set"));
+		}
+
+		// since this is a unique field, this will only return 0 or 1 results. So...
+		// 1) if there's a result, we can make it into a Profile object normally
+		// 2) if there's no result, we can just return null
+		$row = $result->fetch_assoc(); // fetch_assoc() returns a row as an associative array
+
+		// convert the associative array to a Security
+		if($row !== null) {
+			try {
+				$security = new Security($row["securityId"], $row["description"], $row["isDefault"], $row["createTopic"], $row["canEditOther"], $row["canPromote"], $row["siteAdmin"]);
+			} catch(Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new mysqli_sql_exception("Unable to convert row to Security", 0, $exception));
+			}
+			//if we got here the Security is good - return it
+			return ($security);
+		}
+		else {
+			//404 Profile not found - return null instead
+			return (null);
+		}
+	}
+
 	/**
 	 * insert this User to mySQL
 	 * @param $mysqli pointer to mySQL connection, by reference
