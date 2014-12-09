@@ -23,7 +23,7 @@ echo "<div class= \"btn-group btn-group-justified\">
 
 echo "<a href=\"profile.php\" class=\"btn btn-default\"><h4><strong>Profile</strong></h4></a>";
 
-echo "<a href=\"cohort.php\" class=\"btn btn-default\"><h4><strong>Cohort</strong></h4></a>";
+echo "<a href=\"cohort-main.php\" class=\"btn btn-default\"><h4><strong>Cohort</strong></h4></a>";
 if ($Admin === 1){
    echo "<a href=\"admin.php\" class=\"btn btn-default\"><h4><strong>Admin</strong></h4></a>";
 }

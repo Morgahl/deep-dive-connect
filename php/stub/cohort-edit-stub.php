@@ -5,7 +5,7 @@
  * Date: 12/8/2014
  * Time: 11:53 AM
  */
-require_once("php/class/cohort.php");
+require_once("php/class/cohort-main.php");
 
 //declare variables
 //$cohort[] = array();
