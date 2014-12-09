@@ -35,7 +35,7 @@ echo "<!DOCTYPE html>
 		<main class=\"container\">
 			<nav class=\"row\">";
 
-echo "<div class=\"alert alert-danger\" role=\"alert\"><strong>Nav goes here</strong></div>";
+require_once("php/stub/navstub.php");
 
 echo
 	"</nav>
