@@ -40,16 +40,16 @@ echo "<div class=\"alert alert-danger\" role=\"alert\"><strong>Nav goes here</st
 echo
 	"</nav>
 	<section class=\"row\">
-		<aside class=\"col-md-4\">";
+		<aside class=\"col-md-4 col-sm-4\">";
 
 //if $_session["profileId"] is set call aside.php
 //if not call login
 if(@isset($_SESSION["profile"]) === false){
-	//TODO: Add login here
+	require_once("login-stub.php");
 }
 else{
 	require_once("aside.php");
 }
 
 echo	"</aside>
-		<article id=\"content\" class=\"col-md-8 col-xs-12\">";
+		<article id=\"content\" class=\"col-md-8 col-sm-8 col-xs-12\">";

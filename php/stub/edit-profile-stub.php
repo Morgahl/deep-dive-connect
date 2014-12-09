@@ -5,18 +5,21 @@
  * Date: 12/5/2014
  * Time: 11:07 AM
  */
+require_once("php/lib/csrf.php");
 
-echo 	  "<h3>Change Profile Picture</h3>
-			<form id=\"imgUploadForm\" action=\"../form-processor/do-upload.php\" enctype=\"multipart/form-data\" method=\"post\">
-				<?php echo generateInputTags(); ?>
-				<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"5000000\">
+$inputTagPic = generateInputTags();
+$inputTagProfile = generateInputTags();
+
+echo		"<h3>Change Profile Picture</h3>
+			<form id=\"imgUploadForm\" action=\"php/form-processor/do-upload.php\" enctype=\"multipart/form-data\" method=\"post\">". $inputTagPic .
+				"<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"5000000\">
 				<label for=\"file-upload\">photo location:</label>
 				<p>Max-size: 3 mb</p>
 				<input type=\"file\" id=\"imgUpload\" name=\"imgUpload\"><br>
 				<button id=\"uploadSubmit\" type=\"submit\" name=\"submit\" value=\"send\">Change Image</button>
 			</form>
-			<form id=\"profileEditForm\" action=\"../form-processor/profile-edit-form-processor.php\" method=\"post\">
-				<?php echo generateInputTags(); ?>
+			<script src=\"js/profile-edit.js\"></script>
+			<form id=\"profileEditForm\" action=\"php/form-processor/profile-edit-form-processor.php\" method=\"post\">". $inputTagProfile ."
 				<!-- Change profile information -->
 				<h3>Change Profile Information</h3>
 				<p>
@@ -43,7 +46,7 @@ echo 	  "<h3>Change Profile Picture</h3>
 			</form>
 			<p id=\"outputProfileEdit\"></p>
 			<h3>Cohort Association</h3>
-			<p><a href=\"php/stub/cohort-edit-stub.php\">change cohort</a></p>
+			<p><a href=\"cohort-edit.php\">change cohort</a></p>
 
 			<!-- Account Settings -->
 			<h3>Account Settings</h3>

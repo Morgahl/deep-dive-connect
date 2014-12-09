@@ -15,19 +15,22 @@ require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 
 //require the classes you need
 require_once("../class/profile.php");
-require_once("php/lib/csrf.php");
+require_once("../lib/csrf.php");
 
 try{
+	$csrfName = isset($_POST["csrfName"]) ? $_POST["csrfName"] : false;
+	$csrfToken = isset($_POST["csrfToken"]) ? $_POST["csrfToken"] : false;
 
-	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false){
-		throw(new Exception("external source violation"));
+	// verify CSRF tokens
+	if(verifyCsrf($_POST["csrfName"] ,$_POST["csrfToken"]) === false){
+		throw (new RuntimeException("External call made."));
 	}
 
 	// connect to mySQL
 	$mysqli = MysqliConfiguration::getMysqli();
 
 //obtain profileId from $_SESSION
-	$profileId = $_SESSION["profileId"];
+	$profileId = $_SESSION["profile"]["profileId"];
 
 //obtain profile by userId
 	$profile = Profile::getProfileByProfileId($mysqli, $profileId);
@@ -38,12 +41,14 @@ try{
 	$firstName = $_POST["firstName"];
 	if(empty($firstName) === false){
 		$profile->setFirstName($firstName);
+		$_SESSION["profile"]["firstName"] = $profile->getFirstName();
 		$boolField = true;
 	}
 
 	$lastName = $_POST["lastName"];
 	if(empty($lastName) === false){
 		$profile->setLastName($lastName);
+		$_SESSION["profile"]["lastName"] = $profile->getLastName();
 		$boolField = true;
 	}
 
@@ -56,12 +61,14 @@ try{
 	$location = $_POST["location"];
 	if(empty($location) === false){
 		$profile->setLocation($location);
+		$_SESSION["profile"]["location"]= $profile->getLocation();
 		$boolField = true;
 	}
 
 	$description = $_POST["description"];
 	if(empty($description) === false){
 		$profile->setDescription($description);
+		$_SESSION["profile"]["description"]= $profile->getDescription();
 		$boolField = true;
 	}
 
@@ -75,6 +82,6 @@ try{
 	}
 }
 catch (Exception $exception){
-	//rethrow to the caller
-	echo "<div class=\"alert alert-danger\" role=\"alert\">Unable to verify CSRF token</div>";
+	$_SESSION[$csrfName] = $csrfToken;
+	echo "<div class=\"alert alert-danger\" role=\"alert\">Unable to edit Profile: " . $exception->getMessage() . "</div>";
 }
