@@ -14,41 +14,26 @@
 </head>
 <body>
 
-<form id="signup-and-login-form-processor" action="php/form-processor/signup-form-processor.php" method="post">
+<form id="signup-form-processor.php" action="php/form-processor/signup-form-processor.php" method="post">
 	<!-- submit signup form -->
-	<h3>submit signup form</h3>
-	<p>
-		<label for="email">Email:</label><br>
-		<input type="text" id="email" name="email">
-	</p>
+	<h3>Signup Form</h3>
 	<p>
 		<label for="firstName">First Name:</label><br>
 		<input type="text" id="firstName" name="firstName">
-	</p>
-	<p>
-		<label for="middleName">Middle Name:</label><br>
-		<input type="text" id="middleName" name="middleName">
 	</p>
 	<p>
 		<label for="lastName">Last Name:</label><br>
 		<input type="text" id="lastName" name="lastName">
 	</p>
 	<p>
-		<label for="location">Location:</label><br>
-		<input type="text" id="location" name="location">
+		<label for="email">Email:</label><br>
+		<input type="text" id="email" name="email">
 	</p>
 	<p>
-		<label for="description">Description:</label><br>
-		<input type="text" id="description" name="description">
+		<label for="password">Password:</label><br>
+		<input type="text" id="password" name="password">
 	</p>
 	<p>
-		<label for="description">Photo:</label><br>
-	<form id="imgUploadForm" action="/php/form-processor/do-upload.php" enctype="multipart/form-data" method="post">
-		<input type="hidden" name="MAX_FILE_SIZE" value="5000000">
-		<label for="file-upload">photo location:</label>
-		<p>Max-size: 3 mb</p>
-		<input type="file" id="imgUpload" name="imgUpload"><br>
-	</p>
 	<button id="profileSubmit" type="submit" name="submit">Submit</button>
 </form>
 <p id="outputProfileEdit"></p>

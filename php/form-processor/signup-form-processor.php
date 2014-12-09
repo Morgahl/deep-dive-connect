@@ -19,4 +19,7 @@ $mysqli = MysqliConfiguration::getMysqli();
 
 //obtain profileId from $_SESSION
 $email = $_SESSION["email"];
+$password = $_POST["password"];
+
+
 
