@@ -524,8 +524,8 @@ class Profile
 
 		//bind the member variables to the place holders in the template
 		$wasClean = $statement->bind_param("isssssss", $this->userId, $this->firstName, $this->lastName,
-														$this->middleName, $this->location, $this->description,
-														$this->profilePicFileName, $this->profilePicFileType);
+			$this->middleName, $this->location, $this->description,
+			$this->profilePicFileName, $this->profilePicFileType);
 		if($wasClean === false){
 			throw(new mysqli_sql_exception("unable to bind parameters"));
 		}
@@ -849,6 +849,62 @@ class Profile
 				throw(new mysqli_sql_exception("Unable to bind parameters"));
 			}
 		}
+
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
+		// get results
+		$results = $statement->get_result();
+		if($results->num_rows > 0) {
+			// retrieve results in bulk into an array
+			$results = $results->fetch_all(MYSQL_ASSOC);
+			if($results === false) {
+				throw(new mysqli_sql_exception("Unable to process result set"));
+			}
+
+			// step through results array and convert to Topic objects
+			foreach ($results as $index => $row) {
+				$results[$index] = new Profile($row["profileId"], $row["userId"], $row["firstName"], $row["lastName"], $row["middleName"], $row["location"], $row["description"], $row["profilePicFileName"], $row["profilePicFileType"]);
+			}
+
+			// return resulting array of Topic objects
+			return($results);
+		}
+		else {
+			return(null);
+		}
+	}
+
+	public static function getProfilesByCohortId(&$mysqli, $cohortId)
+	{
+
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
+
+		// sanitize the cohortId before searching
+		$cohortId = trim($cohortId);
+		$cohortId = filter_var($cohortId, FILTER_SANITIZE_NUMBER_INT);
+
+		//create query template
+		$query = 	"SELECT profile.profileId, userId, firstName, lastName, middleName, location, description, profilePicFileName, profilePicFileType
+						FROM profile
+						INNER JOIN profileCohort ON profile.profileId = profileCohort.profileId
+						WHERE firstName = ?";
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		//bind the $firstName and $lastName to the place holder in the template
+		$wasClean = $statement->bind_param("i", $cohortId);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
 
 		// execute the statement
 		if($statement->execute() === false) {
