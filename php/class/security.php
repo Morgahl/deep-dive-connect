@@ -100,7 +100,7 @@ class Security
 		}
 
 		$securityId = intval($securityId);
-		if($securityId <= 0) {
+		if($securityId < 0 || $securityId > 1) {
 			throw(new RangeException("securityId $securityId is not positive"));
 		}
 
@@ -222,7 +222,7 @@ class Security
 		}
 
 		$createTopic = intval($createTopic);
-		if($createTopic <= 0) {
+		if($createTopic < 0 || $createTopic > 1) {
 			throw(new RangeException("createTopic $createTopic is not positive"));
 		}
 
@@ -263,7 +263,7 @@ class Security
 		}
 
 		$canEditOther = intval($canEditOther);
-		if($canEditOther <= 0) {
+		if($canEditOther < 0 || $canEditOther > 1) {
 			throw(new RangeException("canEditOther $canEditOther is not positive"));
 		}
 
@@ -305,7 +305,7 @@ class Security
 		}
 
 		$canPromote = intval($canPromote);
-		if($canPromote <= 0) {
+		if($canPromote < 0 || $canPromote > 1) {
 			throw(new RangeException("canPromote $canPromote is not positive"));
 		}
 
@@ -347,7 +347,7 @@ class Security
 		}
 
 		$siteAdmin = intval($siteAdmin);
-		if($siteAdmin <= 0) {
+		if($siteAdmin < 0 || $siteAdmin > 1) {
 			throw(new RangeException("siteAdmin $siteAdmin is not positive"));
 		}
 
@@ -428,9 +428,6 @@ class Security
 			return (null);
 		}
 	}
-
-
-
 
 	/**
 	 * insert this User to mySQL
@@ -556,7 +553,6 @@ class Security
 	 * @throws mysqli_sql_exception when mySQL related errors occur
 	 * @throws Exception if unable to convert row to user
 	 */
-
 	public static function getSecurityBySecurityId(&$mysqli, $securityId)
 	{
 		// handle degenerate cases
