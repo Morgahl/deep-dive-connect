@@ -1,22 +1,45 @@
 <?php
 
-echo "<form id=\"signup-form-processor.php\" action=\"php/form-processor/signup-form-processor.php\" method=\"post\">
-	<!-- submit signup form -->
-	<h3>Signup Form</h3>
-	<p>
-		<label for=\"email\">Email:</label><br>
-		<input type=\"text\" id=\"email\" name=\"email\">
-	</p>
-	<p>
-		<label for=\"firstName\">First Name:</label><br>
-		<input type=\"text\" id=\"firstName\" name=\"firstName\">
-	</p>
-	<p>
-		<label for=\"lastName\">Last Name:</label><br>
-		<input type=\"text\" id=\"lastName\" name=\"lastName\">
-	</p>
-	<p>
-	<button id=\"profileSubmit\" type=\"submit\" name=\"submit\">Submit</button>
-</form>
+/**
+* Signup HTML form
+*
+* Author Joseph Bottone  bottone.joseph@gmail.com
+*/
 
-<p id=\"outputProfileEdit"></p>";
+
+echo "		<head>
+		<title>SignUp Form</title>
+	</head>
+<body>
+<h4>SignUp Form</h4>
+<div id=\"outputArea\"></div>
+<form id=\"signUp\" action=\"php/form-processor/signup-form-processor.php\" method=\"POST\">
+		<?php echo generateInputTags();?>
+		<label for=\"email\">Email</label>
+		<br>
+		<input type=\"email\" id=\"email\" name=\"email\" autocomplete=\"off\">
+		<br>
+		<label for=\"firstName\">First Name:</label>
+		<br>
+		<input type=\"firstName\" id=\"firstName\" name=\"firstName\" autocomplete=\"off\">
+		<br>
+		<label for=\"lastName\">Last Name:</label>
+		<br>
+		<input type=\"lastName\" id=\"lastName\" name=\"lastName\" autocomplete=\"off\">
+		<br>
+		<label for=\"password\">Password:</label>
+		<br>
+		<input type=\"password\" id=\"password\" name=\"password\" autocomplete=\"off\">
+		<br>
+		<label for=\"confPassword\">Confirm Password:</label>
+		<br>
+		<input type=\"password\" id=\"confPassword\" name=\"confPassword\" autocomplete=\"off\">
+		<br>
+		<br>
+		<br>
+		<input type=\"submit\" value=\"Sign Up\">
+
+	</form>
+
+</body>
+</html>";

@@ -1,7 +1,7 @@
 <?php
 
 echo "<aside class=\"col-xs-4\">
-		<form name=\"login\" action=\"index_submit\" method=\"get\" accept-charset=\"utf-8\">
+		<form name=\"login\" action=\"php/form-processor/login-form-processor.php\" method=\"POST\" accept-charset=\"utf-8\">
         <p>
         		<label for=\"email\">Email</label><br>
         		<input type=\"email\" name=\"email\" placeholder=\"yourname@email.com\" required>
