@@ -409,7 +409,6 @@ class Profile
 	public function uploadNewProfilePic() {
 		//Catch if the
 		if(empty($_FILES) === true) {
-			$this->profilePicFileName = $newPicFileName;
 			return;
 		}
 
