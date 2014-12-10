@@ -34,10 +34,10 @@ $(document).ready(function()
 
 			messages: {
 				commentSubject: {
-					required: "Please enter a topic subject."
+					required: "Please enter a comment subject."
 				},
 				commentBody: {
-					required: "Please enter a topic body."
+					required: "Please enter a comment body."
 				}
 			}
 		});
