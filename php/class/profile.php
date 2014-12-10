@@ -392,8 +392,18 @@ class Profile
 			return;
 		}
 
+		$newPicFileName = filter_var($newPicFileName, FILTER_SANITIZE_STRING);
+		if($newPicFileName === false) {
+			throw(new RangeException("Invalid profile picture file name"));
+		}
 
+		$this->profilePicFileName = $newPicFileName;
+	}
 
+	/**
+	 * TODO: write doc block :D
+	 */
+	public function uploadNewProfilePic() {
 		//Catch if the
 		if(empty($_FILES) === true) {
 			$this->profilePicFileName = $newPicFileName;
@@ -440,7 +450,7 @@ class Profile
 		}
 
 		// move the file to its permanent home
-		$fileName    = "avatar-" . $this->profileId .$this->userId. "." . strtolower($extension);
+		$fileName    = "avatar-" . $this->profileId . "." . strtolower($extension);
 		if(move_uploaded_file($_FILES["imgUpload"]["tmp_name"], "$this->destination/$fileName") === false) {
 			throw(new RuntimeException("Unable to move file"));
 		}
@@ -449,7 +459,6 @@ class Profile
 		$this->profilePicFileName = $fileName;
 
 		Profile::setProfilePicFileType($extension);
-
 	}
 
 	/**

@@ -26,9 +26,8 @@ else{
 
 	//obtain profile by userId
 	$profile = Profile::getProfileByProfileId($mysqli, $profileId);
-	$img = "nothing";
 
-	$profile->setProfilePicFileName($img);
+	$profile->uploadNewProfilePic();
 
 	$filename = $profile->getProfilePicFileName();
 
