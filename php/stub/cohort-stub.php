@@ -29,10 +29,21 @@ if ($profileId === false || $profileId === null){
 } else {
 	if ($profiles !== null){
 		foreach ($profiles as $index => $element) {
-			echo "<div class=\"row\"><p>";
-			echo "";
-			var_dump($element);
-			echo "</p></div>";
+			echo "<h4>" . $index . "</h4>";
+			echo "<div class=\"row\">";
+			foreach ($element as $innerIndex => $innerElement){
+				echo "<div class=\"col-xs-2\">";
+//				var_dump($innerElement);
+				if (($fileName = $innerElement["profile"]->getProfilePicFileName()) !== false) {
+					echo "<div class=\"row\"><img id=\"profilePic\" class=\"img-responsive\" src=\"/ddconnect/avatars/" .
+						$fileName . "\" /></div>";
+				} else {
+					echo "<div class=\"row\"><div class=\"col-md-6\"><img id=\"profilePic\" class=\"img-responsive\" src=\"resources/avatar-default.png\" /></div></div><br>";
+				}
+				echo "<p><a href=\"profile.php?profile=" . $innerElement["profile"]->getProfileId() . "\">" . $innerElement["profile"]->getFirstName() . " " . $innerElement["profile"]->getLastName() . "</a>";
+				echo "</div>";
+			}
+			echo "</div>";
 		}
 	} else {
 		echo "<p>0 user(s) signed up for this cohort</p>";

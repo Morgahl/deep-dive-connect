@@ -896,7 +896,7 @@ class Profile
 						FROM profile
 						INNER JOIN profileCohort ON profile.profileId = profileCohort.profileId
 						WHERE cohortId = ?
-						ORDER BY CASE WHEN role = 'Admin' THEN 0 WHEN role = 'Instructor' THEN 1 WHEN role = 'Student' THEN 2 ELSE 3 END";
+						ORDER BY CASE WHEN role = 'Admin' THEN 0 WHEN role = 'Instructor' THEN 1 WHEN role = 'Student' THEN 2 ELSE 3 END, firstName";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
@@ -923,14 +923,18 @@ class Profile
 				throw(new mysqli_sql_exception("Unable to process result set"));
 			}
 
+			$output = array();
+			$count = 0;
+
 			// step through results array and convert to Topic objects
 			foreach ($results as $index => $row) {
-				$results[$index]["profile"] = new Profile($row["profileId"], $row["userId"], $row["firstName"], $row["lastName"], $row["middleName"], $row["location"], $row["description"], $row["profilePicFileName"], $row["profilePicFileType"]);
-				$results[$index]["profileCohort"] = new ProfileCohort($row["profileCohortId"], $row["profileId"], $row["cohortId"], $row["role"]);
+				$output[$row["role"]][$count]["profile"] = new Profile($row["profileId"], $row["userId"], $row["firstName"], $row["lastName"], $row["middleName"], $row["location"], $row["description"], $row["profilePicFileName"], $row["profilePicFileType"]);
+				$output[$row["role"]][$count]["profileCohort"] = new ProfileCohort($row["profileCohortId"], $row["profileId"], $row["cohortId"], $row["role"]);
+				$count++;
 			}
 
 			// return resulting array of Topic objects
-			return($results);
+			return($output);
 		}
 		else {
 			return(null);
