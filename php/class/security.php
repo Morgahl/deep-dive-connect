@@ -100,7 +100,7 @@ class Security
 		}
 
 		$securityId = intval($securityId);
-		if($securityId < 0 || $securityId > 1) {
+		if($securityId <= 0) {
 			throw(new RangeException("securityId $securityId is not positive"));
 		}
 
