@@ -456,9 +456,10 @@ class Profile
 		if(move_uploaded_file($_FILES["imgUpload"]["tmp_name"], "$this->destination/$fileName") === false) {
 			throw(new RuntimeException("Unable to move file"));
 		}
-
-		//set $filename into $profilePicFileName
-		$this->profilePicFileName = $fileName;
+		else{
+			//set $filename into $profilePicFileName
+			$this->profilePicFileName = $fileName;
+		}
 
 		Profile::setProfilePicFileType($extension);
 	}
