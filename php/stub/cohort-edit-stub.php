@@ -42,7 +42,7 @@ for($i = 0; $i < 6; $i++) {
 	$startDate = $cohorts[0][$i]->getStartDate();
 	$endDate = $cohorts[0][$i]->getEndDate();
 
-	echo "<option value=\"" . ($i+1) . "\">";
+	echo "<option value=\"" . $cohorts[0][$i]->getCohortId() . "\">";
 	echo $startDate->format("M Y") . " - " . $endDate->format("M Y");
 	echo "</option>";
 }
