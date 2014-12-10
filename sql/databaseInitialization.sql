@@ -147,6 +147,6 @@ INSERT INTO cohort (startDate, endDate, location, description)
 	VALUES ('2013-10-14','2013-12-13','Central Ave','First Cohort'),
 		('2014-01-06','2014-03-07','Central Ave','Second Cohort'),
 		('2014-03-17','2014-05-16','Central Ave','Third Cohort'),
-		('2014-06-02','2014-08-01','Central Ave','Forth Cohort'),
+		('2014-06-02','2014-08-01','Central Ave','Fourth Cohort'),
 		('2014-08-11','2014-10-10','CNM Stemulus Center','Fifth Cohort'),
 		('2014-10-17','2014-12-19','CNM Stemulus Center','Sixth Cohort (Best)')
