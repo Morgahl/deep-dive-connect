@@ -7,6 +7,9 @@
  * @author Steven Chavez <schavez256@yahoo.com>
  * @see Profile
  **/
+
+require_once("profileCohort.php");
+
 class Profile
 {
 	/**
@@ -890,10 +893,11 @@ class Profile
 		$cohortId = filter_var($cohortId, FILTER_SANITIZE_NUMBER_INT);
 
 		//create query template
-		$query = 	"SELECT profile.profileId, userId, firstName, lastName, middleName, location, description, profilePicFileName, profilePicFileType
+		$query = 	"SELECT profile.profileId, userId, firstName, lastName, middleName, location, description, profilePicFileName, profilePicFileType, profileCohortId, profileCohort.profileId, cohortId, role
 						FROM profile
 						INNER JOIN profileCohort ON profile.profileId = profileCohort.profileId
-						WHERE firstName = ?";
+						WHERE cohortId = ?
+						ORDER BY CASE WHEN role = 'Admin' THEN 0 WHEN role = 'Instructor' THEN 1 WHEN role = 'Student' THEN 2 ELSE 3 END";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
@@ -922,7 +926,8 @@ class Profile
 
 			// step through results array and convert to Topic objects
 			foreach ($results as $index => $row) {
-				$results[$index] = new Profile($row["profileId"], $row["userId"], $row["firstName"], $row["lastName"], $row["middleName"], $row["location"], $row["description"], $row["profilePicFileName"], $row["profilePicFileType"]);
+				$results[$index]["profile"] = new Profile($row["profileId"], $row["userId"], $row["firstName"], $row["lastName"], $row["middleName"], $row["location"], $row["description"], $row["profilePicFileName"], $row["profilePicFileType"]);
+				$results[$index]["profileCohort"] = new ProfileCohort($row["profileCohortId"], $row["profileId"], $row["cohortId"], $row["role"]);
 			}
 
 			// return resulting array of Topic objects

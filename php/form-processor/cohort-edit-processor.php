@@ -30,7 +30,7 @@ $profileCohort->insert($mysqli);
 
 $cohort = Cohort::getCohortByCohortId($mysqli, $cohortId);
 
-$_SESSION["cohort"] = Cohort::getCohortByProfileId($mysqli, $profileId);
+//$_SESSION["cohort"] = Cohort::getCohortByProfileId($mysqli, $profileId);
 
 $_SESSION["cohort"]["cohortId"] = $cohort[0]->getCohortId();
 $_SESSION["cohort"]["startDate"] = $cohort[0]->getStartDate()->format("M Y");
