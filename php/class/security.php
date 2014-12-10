@@ -388,6 +388,50 @@ class Security
 		}
 	}
 
+
+	public static function getSecurityObjects(&$mysqli) {
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
+
+		// create query template for role
+		$query = "SELECT securityId, description, isDefault, createTopic, canEditOther, canPromote, siteAdmin FROM security ORDER BY securityId";
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
+		// get results
+		$results = $statement->get_result();
+		if($results->num_rows > 0) {
+
+			// retrieve results in bulk into an array
+			$results = $results->fetch_all(MYSQL_ASSOC);
+			if($results === false) {
+				throw(new mysqli_sql_exception("Unable to process result set"));
+			}
+
+			// step through results array and convert to Cohort objects
+			foreach($results as $index => $row) {
+				$results[$index] = new security($row["securityId"], $row["description"], $row["isDefault"], $row["createTopic"], $row["canEditOther"], $row["canPromote"] , $row["siteAdmin"]);
+			}
+
+			// return resulting array of Cohort objects
+			return ($results);
+		} else {
+			return (null);
+		}
+	}
+
+
+
+
 	/**
 	 * insert this User to mySQL
 	 * @param $mysqli pointer to mySQL connection, by reference
