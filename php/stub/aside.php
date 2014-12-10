@@ -18,6 +18,7 @@ $cohort["startDate"] = isset($_SESSION["cohort"]["startDate"]) ? $_SESSION["coho
 $cohort["endDate"] = isset($_SESSION["cohort"]["endDate"]) ? $_SESSION["cohort"]["endDate"] : false;
 $cohort["location"] = isset($_SESSION["cohort"]["location"]) ? $_SESSION["cohort"]["location"] : false;
 $cohort["description"] = isset($_SESSION["cohort"]["description"]) ? $_SESSION["cohort"]["description"] : false;
+echo "<aside class=\"col-sm-4 hidden-xs\">";
 
 //name
 echo "<p><h4><strong>" . $firstName . " " . $lastName . "</strong></h4></p>";
@@ -66,3 +67,4 @@ if($cohort["startDate"] !== false || $cohort["endDate"] !== false){
 	echo "<p>Dates Attended: " . $cohort["startDate"]. " - " . $cohort["endDate"] . "</p>";
 }
 
+echo "</aside>";

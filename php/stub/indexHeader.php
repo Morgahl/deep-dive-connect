@@ -44,8 +44,7 @@ require_once("php/stub/navstub.php");
 
 echo
 "</nav>
-	<section class=\"row\">
-		<aside class=\"col-sm-4 hidden-xs\">";
+	<section class=\"row\">";
 
 //if $_session["profileId"] is set call aside.php
 //if not call login
@@ -56,5 +55,4 @@ else{
 	require_once("aside.php");
 }
 
-echo	"</aside>
-		<article id=\"content\" class=\"col-sm-8 col-sm-offset-0 col-xs-10 col-xs-offset-1\">";
+echo	"<article id=\"content\" class=\"col-sm-8 col-sm-offset-0 col-xs-10 col-xs-offset-1\">";

@@ -1,6 +1,7 @@
 <?php
 
-echo "<form name=\"login\" action=\"index_submit\" method=\"get\" accept-charset=\"utf-8\">
+echo "<aside class=\"col-xs-4\">
+		<form name=\"login\" action=\"index_submit\" method=\"get\" accept-charset=\"utf-8\">
         <p>
         		<label for=\"email\">Email</label><br>
         		<input type=\"email\" name=\"email\" placeholder=\"yourname@email.com\" required>
@@ -10,4 +11,5 @@ echo "<form name=\"login\" action=\"index_submit\" method=\"get\" accept-charset
         		<input type=\"passwordHash\" name=\"passwordHash\" placeholder=\"password\" required>
 			</p>
 			<button id=\"loginBtn\" type=\"submit\" name=\"submit\">Login</button>
-		</form>";
+		</form>
+		</aside>";
