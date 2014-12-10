@@ -560,7 +560,7 @@ class Cohort
 		$profileId = filter_var($profileId, FILTER_SANITIZE_NUMBER_INT);
 
 		// create query template for role
-		$query = 	"SELECT cohortId, startDate, endDate, location, description
+		$query = 	"SELECT cohort.cohortId, startDate, endDate, location, description
 						FROM cohort
 						INNER JOIN profileCohort ON cohort.cohortId = profileCohort.cohortId
 						WHERE profileId = ?
