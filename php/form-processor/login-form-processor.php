@@ -21,7 +21,7 @@ $password = $_POST["password"];
 
 //obtain user by userId
 $user = User::getUserByEmail($mysqli, $email);
-
+var_dump($user);
 if(isset($user) === false){
 	//use bootstrap div alert to echo to user
 	echo "<div class=\"alert alert-danger\" role=\"alert\"><p>No User Found/p></div>";
@@ -30,14 +30,15 @@ else{
 	//No that you made it this far set new password
 	$salt		= $user->getSalt();
 	$newHash 	= hash_pbkdf2("sha512", $password, $salt, 2048, 128);
-
 	$oldPassword		= $user->getPasswordHash();
 
 	if($oldPassword === $newHash){
 		// comparing oldPassword with newHash
 
 		require_once("../class/security.php");
-
+		$userId = $user->getUserId();
+		$profile = Profile::getProfileByUserId($mysqli, $userId);
+		var_dump($profile);
 		$security = Security::getSecurityBySecurityId($mysqli, $user->getSecurityId());
 
 		$_SESSION["userId"] = $user->getUserId();
@@ -53,6 +54,7 @@ else{
 		$_SESSION["security"]["canPromote"] = $security->getCanPromote();
 		$_SESSION["security"]["siteAdmin"] = $security->getSiteAdmin();
 
+		header("Location: ../../index.php");
 	}
 	else {
 		echo "<div class=\"alert alert-danger\" role=\"alert\"><p>Wrong Password/p></div>";

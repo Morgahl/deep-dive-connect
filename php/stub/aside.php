@@ -30,7 +30,7 @@ if ($fileName !== false) {
 } else {
 	echo "<div class=\"row\"><div class=\"col-md-6\"><img id=\"profilePic\" class=\"img-responsive\" src=\"resources/avatar-default.png\" /></div></div><br>";
 }
-
+echo "<p><a href=\"php/form-processor/sessionDestroy.php\">sign out</a></p>";
 //Always visible
 echo "<p><a href=\"profile-edit.php\">edit-profile</a></p>";
 
