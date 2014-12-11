@@ -48,9 +48,9 @@ body {
 nav {
    background-color: black;
    /*<link href='http://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>*/
-   font-family: font-family: 'Titillium Web', sans-serif;
-   padding:
-   text-align:;
+   font-family: 'Titillium Web', sans-serif;
+   padding: 0;
+   text-align: auto;
 
 
 
@@ -59,7 +59,7 @@ nav {
 
 .section {
    background-color:
-   width:
+   width: auto;
 
 }
 
