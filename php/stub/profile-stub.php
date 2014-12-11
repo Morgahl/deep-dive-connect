@@ -57,7 +57,7 @@ if ($profile !== null) {
 	if ($comments !== null) {
 		echo "<h4><strong>Recent Comments:</strong></h4>";
 		foreach ($comments as $index => $element) {
-			echo	"<p><a href=\"topic.php?topic=" . $element->getTopicId() . "#comment" . $element->getCommentId() . "\">" . substr($element->getCommentSubject(), 0, 100) . "...</a><br>" .
+			echo	"<p><a href=\"topic.php?topic=" . $element->getTopicId() . "#comment" . $element->getCommentId() . "\"><strong>" . substr($element->getCommentSubject(), 0, 100) . "...</strong></a><br>" .
 				substr($element->getCommentBody(), 0, 100) . "...</p>";
 		}
 	}
@@ -67,7 +67,7 @@ if ($profile !== null) {
 	if ($topics !== null) {
 		echo "<h4><strong>Recent Topics:</strong></h4>";
 		foreach ($topics as $index => $element) {
-			echo	"<p><a href=\"topic.php?topic=" . $element->getTopicId() . "\">" . substr($element->getTopicSubject(), 0, 100) . "...</a><br>" .
+			echo	"<p><a href=\"topic.php?topic=" . $element->getTopicId() . "\"><strong>" . substr($element->getTopicSubject(), 0, 100) . "...</strong></a><br>" .
 				substr($element->getTopicBody(), 0, 100) . "...</p>";
 		}
 	}

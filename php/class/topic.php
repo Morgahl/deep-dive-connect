@@ -6,6 +6,9 @@
  *
  * @author Marc Hayes <marc.hayes.tech@gmail.com>
  */
+
+require_once("php/class/profile.php");
+
 class Topic {
 	/**
 	 * @var $topicID INT topicId for the Topic; this is the primary key

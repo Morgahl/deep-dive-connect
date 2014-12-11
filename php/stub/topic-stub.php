@@ -73,8 +73,11 @@ try {
 
 	if ($topic !== null) {
 		// prep topic
+		$topicDate = date_format(DateTime::createFromFormat("Y-m-d H:i:s", $topic->getTopicDate()),"F d, Y g:i a");
+
 		$html =	"<div class=\"row test-unit-topic\">" .
-			"<h2><strong>" . $topic->getTopicSubject() . "</strong></h2><br>" .
+			"<h2><strong>" . $topic->getTopicSubject() . "</strong></h2>" .
+			"<h6><a href=\"profile.php?profile=" . $topic->getProfileId() . "\"><em>First Last on " . $topicDate . "</em></a></h6>" .
 			"<p>" . nl2br($topic->getTopicBody()) . "</p>";
 
 		// if topic is owner by user or is viewed by someone with edit other
@@ -99,15 +102,19 @@ try {
 				// iterate across array of received objects
 				foreach($comments as $index => $element) {
 					// prep comments
-					$commentTopicId = $element->getTopicId();
-					$commentProfileId = $element->getProfileId();
-					$commentId = $element->getCommentId();
-					$commentSubject = $element->getCommentSubject();
-					$commentBody = $element->getCommentBody();
+					$commentTopicId = $element["comment"]->getTopicId();
+					$commentProfileId = $element["comment"]->getProfileId();
+					$commentId = $element["comment"]->getCommentId();
+					$commentSubject = $element["comment"]->getCommentSubject();
+					$commentBody = $element["comment"]->getCommentBody();
+					$commentDate = date_format(DateTime::createFromFormat("Y-m-d H:i:s", $element["comment"]->getCommentDate()),"F d, Y g:i a");
 
-					$html =	"<div class=\"row test-unit-comment\" id=\"comment$commentId\"><blockquote>" .
-						"<h4><strong>" . $commentSubject . "</strong></h4><br>" .
+					$html =	"<div class=\"row test-unit-comment\" id=\"comment$commentId\">" .
+						"<blockquote>" .
+						"<h4><strong>" . $commentSubject . "</strong></h4>" .
+						"<h6><a href=\"profile.php?profile=$commentProfileId\"><em>" . $element["profile"]->getFirstName() . " " . $element["profile"]->getLastName() . " on " . $commentDate . "</em></a></h6>" .
 						"<h5>" . nl2br($commentBody) . "</h5>";
+						;
 
 					// if user is owner of comment or can edit other give them a link to modify
 					if ($profileId === $commentProfileId || $canEditOther === 1) {

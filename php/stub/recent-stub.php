@@ -39,7 +39,7 @@ try {
 	if ($topics !== null) {
 		// iterate down array and prep html
 		foreach($topics as $index => $element) {
-			echo	"<p><a href=\"topic.php?topic=" . $element->getTopicId() . "\">" . substr($element->getTopicSubject(), 0, 100) . "...</a><br>" .
+			echo	"<p><a href=\"topic.php?topic=" . $element->getTopicId() . "\"><strong>" . substr($element->getTopicSubject(), 0, 100) . "...</strong></a><br>" .
 				substr($element->getTopicBody(), 0, 100) . "...</p>";
 		}
 	} else {

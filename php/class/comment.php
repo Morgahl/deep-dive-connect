@@ -6,6 +6,9 @@
  *
  * @author Marc Hayes <marc.hayes.tech@gmail.com>
  */
+
+require_once("php/class/profile.php");
+
 class Comment {
 	/**
 	 * @var $commentId INT commentId for the Comment; this is the Primary Key
@@ -603,8 +606,9 @@ class Comment {
 		}
 
 		// create query template
-		$query = "SELECT commentId, topicId, profileId, commentDate, commentSubject, commentBody
+		$query = "SELECT commentId, topicId, comment.profileId, commentDate, commentSubject, commentBody, profile.profileId, userId, firstName, lastName, middleName, location, description, profilePicFileName, profilePicFileType
 					FROM comment
+					INNER JOIN profile ON profile.profileId = comment.profileId
 					WHERE topicId = ?
 					ORDER BY commentId
 					LIMIT ?
@@ -636,6 +640,8 @@ class Comment {
 			throw(new mysqli_sql_exception("Unable to get result set"));
 		}
 
+		$output = array();
+
 		 // process results
 		if($results->num_rows > 0) {
 			// retrieve results in bulk into an array
@@ -646,11 +652,12 @@ class Comment {
 
 			// step through results array and convert to Comment objects
 			foreach ($results as $index => $row) {
-				$results[$index] = new Comment($row["commentId"], $row["topicId"], $row["profileId"], $row["commentDate"], $row["commentSubject"], $row["commentBody"]);
+				$output[$index]["comment"] = new Comment($row["commentId"], $row["topicId"], $row["profileId"], $row["commentDate"], $row["commentSubject"], $row["commentBody"]);
+				$output[$index]["profile"] = new Profile($row["profileId"], $row["userId"], $row["firstName"], $row["lastName"], $row["middleName"], $row["location"], $row["description"], $row["profilePicFileName"], $row["profilePicFileType"]);
 			}
 
 			// return resulting array of Comment objects
-			return($results);
+			return($output);
 		} else {
 			return(null);
 		}
@@ -723,7 +730,7 @@ class Comment {
 		$query = "SELECT commentId, topicId, profileId, commentDate, commentSubject, commentBody
 					FROM comment
 					WHERE profileId = ?
-					ORDER BY commentId
+					ORDER BY commentId DESC
 					LIMIT ?
 					OFFSET ?";
 
