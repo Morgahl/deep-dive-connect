@@ -40,7 +40,7 @@ echo "<p><a href=\"profile-edit.php\">edit-profile</a></p>";
 //location
 echo "<p><strong>Location:</strong></p>";
 if($location === false) {
-	echo "<p><a href=\"profile-edit.php\">edit-profile</a></p>";
+	echo "<p id=\"asideLoc\"><a href=\"profile-edit.php\">edit-profile</a></p>";
 } else {
 	echo "<p>" . $location . "</p>";
 }
@@ -48,26 +48,26 @@ if($location === false) {
 //Description
 echo "<p><strong>Description:</strong></p>";
 if($description === false) {
-	echo "<p><a href=\"profile-edit.php\">edit-profile</a></p>";
+	echo "<p id=\"asideDesc\"><a href=\"profile-edit.php\">edit-profile</a></p>";
 } else {
 	echo "<p>" . $description . "</p>";
 }
 
 //Cohort
 echo "<p><strong>Cohort:</strong></p>";
-if($cohort === false){
+if($cohort["description"] === false){
 	echo "<p><a href=\"cohort-edit.php\">edit-cohort</a>";
 }
 if($cohort["description"] !== false){
-	echo "<p>Description: " . $cohort["description"] . "</p>";
+	echo "<p> " . $cohort["description"] . "</p>";
 }
 
 if($cohort["location"] !== false){
-	echo "<p>Location: " . $cohort["location"] . "</p>";
+	echo "<p>" . $cohort["location"] . "</p>";
 }
 
 if($cohort["startDate"] !== false || $cohort["endDate"] !== false){
-	echo "<p>Dates Attended: " . $cohort["startDate"]. " - " . $cohort["endDate"] . "</p>";
+	echo "<p>" . $cohort["startDate"]. " - " . $cohort["endDate"] . "</p>";
 }
 
 echo "</aside>";

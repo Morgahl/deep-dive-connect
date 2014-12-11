@@ -12,4 +12,6 @@ echo "<aside class=\"col-xs-3\">
 			</p>
 			<button id=\"loginBtn\" type=\"submit\" name=\"submit\">Login</button>
 		</form>
-		</aside>";
+		<p><a href=\"signupForm.php\">Sign-up</a></p>
+		</aside>
+		";

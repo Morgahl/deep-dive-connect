@@ -19,6 +19,9 @@ $(document).ready(function()
 					success: function(ajaxOutput)
 					{
 						$("#outputProfileEdit").html(ajaxOutput);
+						// if the ajax was a success...
+							// hehe - just assume the user input is what's there
+							// take each field's value and write it to the profile area
 					}
 				});
 		}
