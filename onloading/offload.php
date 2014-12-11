@@ -5,6 +5,7 @@ require_once("../php/class/user.php");
 require_once("../php/class/profile.php");
 require_once("../php/class/topic.php");
 require_once("../php/class/comment.php");
+require_once("../php/class/profileCohort.php");
 
 echo "<form id=\"back\" action=\"loading.html\">
 			<button type=\"submit\">Back</button>
@@ -48,6 +49,14 @@ if($comments !== null) {
 	foreach($comments as $index => $element) {
 		$comments[$index]->delete($mysqli);
 	}
+}
+
+// get profileCohort
+$profileCohort = ProfileCohort::getCohortByProfileId($mysqli, $profile);
+
+if ($profileCohort !== null) {
+// nuke profile
+	$profileCohort->delete($mysqli);
 }
 
 // get profile
