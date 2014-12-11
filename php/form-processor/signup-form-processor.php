@@ -13,6 +13,7 @@ require_once("../class/user.php");
 require_once("Mail.php");
 
 try{
+	$mysqli = MysqliConfiguration::getMysqli();
 	//verify the form was submitted properly
 			if (@isset($_POST["email"]) === false || @isset($_POST["passwordHash"]) === false ||
 					  		@isset($_POST["firstName"]) === false || @isset($_POST["lastName"]) === false ||
@@ -31,7 +32,10 @@ try{
 					throw(new RuntimeException("Email already exist please try again."));
 				}
 
-
+						// verify the CSRF tokens
+				if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
+					throw(new RuntimeException("CSRF tokens incorrect or missing. Make sure cookies are enabled."));
+				}
 						//create a new object and insert it to mySQL
 
 					$salt = bin2hex(openssl_random_pseudo_bytes(32));
