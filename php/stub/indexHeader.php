@@ -55,4 +55,4 @@ else{
 	require_once("aside.php");
 }
 
-echo	"<article id=\"content\" class=\"col-sm-8 col-sm-offset-0 col-xs-10 col-xs-offset-1\">";
+echo	"<article id=\"content\" class=\"col-sm-9 col-sm-offset-0 col-xs-10 col-xs-offset-1\">";
