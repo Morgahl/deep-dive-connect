@@ -1,19 +1,57 @@
+Prelim Stylesheet
+
+
 #outerContainer{}
+
 #rowContainer{}
+
 #rowContainer aside, section {}
+
 #placeholder {}
 
-.header { }
+#na
+
+header {
+   background-color:#000000;
+}
+
+.btn-group-justified {
+   display: table;
+   width: 100%;
+   table-layout: fixed;
+   border-collapse: separate;
+   font-family: fantasy;
+
+}
+.btn-group.btn-group-justified {
+}
+
+
+body {
+   background:
+   width: 90%;
+   margin: 0 auto;}
+
+
+
+
 
 .main {
-   background-color:
+   background-color: whitesmoke;
+
 
 }
 
 
 
-.nav {
-   background-color:
+
+nav {
+   background-color: black;
+   /*<link href='http://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>*/
+   font-family: font-family: 'Titillium Web', sans-serif;
+   padding:
+   text-align:;
+
 
 
 }
@@ -33,10 +71,21 @@
 
 }
 
+h4,.h4 {
+   font-size: 1.125em;
+   background-color: black
 
+}
+
+.row {
+   margin-right: -15px;
+   margin-left: -15px;
+   color: blue;
+}
 
 
 .article {
+   background color: #FAF5F5
 
 }
 
