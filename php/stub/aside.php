@@ -23,9 +23,6 @@ echo "<aside class=\"col-sm-3 hidden-xs\">";
 //name
 echo "<p><h4><strong>" . $firstName . " " . $lastName . "</strong></h4></p>";
 
-//sign out
-echo "<p><a href=\"php/form-processor/sessionDestroy.php\">sign out</a></p>";
-
 //profile pic
 if ($fileName !== false) {
 	echo "<div class=\"row\"><div class=\"col-md-6\"><img id=\"profilePic\" class=\"img-responsive\" src=\"/ddconnect/avatars/" .
@@ -34,8 +31,10 @@ if ($fileName !== false) {
 	echo "<div class=\"row\"><div class=\"col-md-6\"><img id=\"profilePic\" class=\"img-responsive\" src=\"resources/avatar-default.png\" /></div></div><br>";
 }
 
+//sign out
+echo "<p><a href=\"php/form-processor/sessionDestroy.php\"><button>sign out</button></a>";
 //Always visible
-echo "<p><a href=\"profile-edit.php\">edit-profile</a></p>";
+echo "<a href=\"profile-edit.php\"><button>edit-profile</button></a></p>";
 
 //location
 echo "<p><strong>Location:</strong></p>";
