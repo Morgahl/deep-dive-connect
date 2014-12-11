@@ -5,6 +5,7 @@
 *
 * Author Joseph Bottone  bottone.joseph@gmail.com
 */
+require_once("php/lib/csrf.php");
 
 
 echo "		<head>
@@ -34,9 +35,9 @@ echo "		<head>
 		<label for=\"confPassword\">Confirm Password:</label>
 		<br>
 		<input type=\"password\" id=\"confPassword\" name=\"confPassword\" autocomplete=\"off\">
-		<br>
-		<br>
-		<br>
+		<br>";
+echo generateInputTags();
+echo "<br>
 		<input type=\"submit\" value=\"Sign Up\">
 
 	</form>
