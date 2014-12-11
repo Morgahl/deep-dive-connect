@@ -1,6 +1,6 @@
 <?php
 
-echo "<aside class=\"col-xs-4\">
+echo "<aside class=\"col-xs-3\">
 		<form name=\"login\" action=\"php/form-processor/login-form-processor.php\" method=\"POST\" accept-charset=\"utf-8\">
         <p>
         		<label for=\"email\">Email</label><br>
