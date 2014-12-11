@@ -449,8 +449,9 @@ class Topic {
 		}
 
 		// create query template
-		$query = "SELECT topicId, profileId, topicDate, topicSubject, topicBody
+		$query = "SELECT topicId, topic.profileId, topicDate, topicSubject, topicBody, profile.profileId, userId, firstName, lastName, middleName, location, description, profilePicFileType, profilePicFileName
 					FROM topic
+					INNER JOIN profile ON profile.profileId = topic.profileId
 					WHERE topicId = ?";
 
 		$statement = $mysqli->prepare($query);
@@ -479,16 +480,19 @@ class Topic {
 		// since this is unique this will return only 1 row
 		$row = $results->fetch_assoc();
 
+		$output = array();
+
 		//convert assoc array to Topic object
 		if($row !== null) {
 			try {
-				$topics = new Topic($row["topicId"], $row["profileId"], $row["topicDate"], $row["topicSubject"], $row["topicBody"]);
+				$output["topic"] = new Topic($row["topicId"], $row["profileId"], $row["topicDate"], $row["topicSubject"], $row["topicBody"]);
+				$output["profile"] = new Profile($row["profileId"], $row["userId"], $row["firstName"], $row["lastName"], $row["middleName"], $row["location"], $row["description"], $row["profilePicFileName"], $row["profilePicFileType"]);
 			} catch(Exception $exception) {
 				// if the row could not be converted throw it
 				throw(new mysqli_sql_exception("Unable to process result set"));
 			}
 			// if we got here, the Topic is good
-			return($topics);
+			return($output);
 		} else {
 			// no result found return null
 			return(null);

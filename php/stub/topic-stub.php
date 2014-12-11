@@ -31,9 +31,9 @@ try {
 					<div class=\"modal-body\">";
 	echo generateInputTags();
 		echo "<label for=\"topicSubject\">Subject: </label><br />
-						<textarea id=\"topicSubject\" name=\"topicSubject\" class=\"form-control\" rows=\"2\" maxlength=\"256\">" . $topic->getTopicSubject() . "</textarea><br />
+						<textarea id=\"topicSubject\" name=\"topicSubject\" class=\"form-control\" rows=\"2\" maxlength=\"256\">" . $topic["topic"]->getTopicSubject() . "</textarea><br />
 						<label for=\"topicBody\">Body: </label><br />
-						<textarea id=\"topicBody\" name=\"topicBody\" class=\"form-control\" rows=\"10\" maxlength=\"4096\">" . $topic->getTopicBody() . "</textarea><br />
+						<textarea id=\"topicBody\" name=\"topicBody\" class=\"form-control\" rows=\"10\" maxlength=\"4096\">" . $topic["topic"]->getTopicBody() . "</textarea><br />
 						<input id=\"topic\" name=\"topic\" type=\"hidden\" value=\"" . $topicId . "\">
 					</div>
 					<div class=\"modal-footer\">
@@ -73,15 +73,15 @@ try {
 
 	if ($topic !== null) {
 		// prep topic
-		$topicDate = date_format(DateTime::createFromFormat("Y-m-d H:i:s", $topic->getTopicDate()),"F d, Y g:i a");
+		$topicDate = date_format(DateTime::createFromFormat("Y-m-d H:i:s", $topic["topic"]->getTopicDate()),"F d, Y g:i a");
 
 		$html =	"<div class=\"row test-unit-topic\">" .
-			"<h2><strong>" . $topic->getTopicSubject() . "</strong></h2>" .
-			"<h6><a href=\"profile.php?profile=" . $topic->getProfileId() . "\"><em>First Last on " . $topicDate . "</em></a></h6>" .
-			"<p>" . nl2br($topic->getTopicBody()) . "</p>";
+			"<h2><strong>" . $topic["topic"]->getTopicSubject() . "</strong></h2>" .
+			"<h6><a href=\"profile.php?profile=" . $topic["topic"]->getProfileId() . "\"><em>" . $topic["profile"]->getFirstName() . " " . $topic["profile"]->getLastName() . " on " . $topicDate . "</em></a></h6>" .
+			"<p>" . nl2br($topic["topic"]->getTopicBody()) . "</p>";
 
 		// if topic is owner by user or is viewed by someone with edit other
-		if ($profileId === $topic->getProfileId() || $canEditOther === 1) {
+		if ($profileId === $topic["topic"]->getProfileId() || $canEditOther === 1) {
 			$html = $html . "<button type=\"submit\" class=\"btn btn-sm btn-right\" data-toggle=\"modal\" data-target=\"#topicModal\" onclick=\"populateTopicModal();\">Edit Topic</button>";
 		}
 
