@@ -354,19 +354,6 @@ class User{
 			throw(new UnexpectedValueException("Sign up with external source or internal not both"));
 		}
 
-		//if security id is null pull value default from securityClass
-		if($this->securityId !== null) {
-			//confirm it exists in Security Class $exist
-			//todo: make static method in Security search by id; if can't find throw
-			//if($exist === null){
-				//throw(new UnexpectedValueException("security Id $this->securityId does not exist in Security table"));
-			//}
-		}else{
-			//get default
-			//$this->securityId = 0; //todo: need Security Static Method to get default
-		}
-
-
 		//create query template
 		$query 		= "INSERT INTO user(email, passwordHash, salt, authKey, securityId, loginSourceId) VALUES(?,?,?,?,?,?)";
 		$statement 	= $mysqli->prepare($query);
@@ -445,19 +432,14 @@ class User{
 			throw(new mysqli_sql_exception("Unable to update a user that does not exist"));
 		}
 
+		//Todo: only in update we allow authKey to be updated as null
 		//enforce: if hash, authkey, and salt are null loginsource is not null and vice versa
-		if($this->loginSourceId !== null && ($this->passwordHash !== null || $this->authKey !== null || $this->salt !== null)){
+		if($this->loginSourceId !== null && ($this->passwordHash !== null /*|| $this->authKey !== null*/ || $this->salt !== null)){
 			throw(new UnexpectedValueException("Sign up with external source or internal not both"));
 		}
 		elseif($this->loginSourceId === null && ($this->passwordHash === null || $this->authKey === null || $this->salt === null)){
 			throw(new UnexpectedValueException("Sign up with external source or internal not both"));
 		}
-
-		//todo:securityId update
-		//if(exist)
-			//you are good
-		//else
-			//throw exp
 
 
 		//create query template
@@ -507,6 +489,77 @@ class User{
 
 		// bind the email to the place holder in the template
 		$wasClean = $statement->bind_param("s", $email);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
+		// get result from the SELECT query *pounds fists*
+		$result = $statement->get_result();
+		if($result === false) {
+			throw(new mysqli_sql_exception("Unable to get result set"));
+		}
+
+		// since this is a unique field, this will only return 0 or 1 results. So...
+		// 1) if there's a result, we can make it into a User object normally
+		// 2) if there's no result, we can just return null
+		$row = $result->fetch_assoc(); // fetch_assoc() returns a row as an associative array
+
+		// convert the associative array to a User
+		if($row !== null) {
+			try{
+				$user = new User($row["userId"], $row["email"], $row["passwordHash"], $row["salt"], $row["authKey"], $row["securityId"], $row["loginSourceId"]);
+			}
+			catch(Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new mysqli_sql_exception("Unable to convert row to User", 0, $exception));
+			}
+			// if we got here, the User is good - return it
+			return($user);
+		}
+		else {
+			// 404 User not found - return null instead
+			return(null);
+		}
+	}
+
+	/**
+	 * Gets user by Auth Key
+	 *
+	 * @param resource $mysqli pointer to mySQL connection, by reference
+	 * @param string $authKey authKey to search for
+	 * @return mixed User found or null if not found
+	 * @throws mysqli_sql_exception when mySQL related errors occur
+	 */
+	public static function getUserByAuthKey(&$mysqli, $authKey){
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
+
+		// sanitize the authKey before searching
+		$authKey = trim($authKey);
+		$authKey	=strtolower($authKey);
+		$filterOptions = array("options" => array("regexp" => "/^[\da-f]{32}$/"));
+
+		if(filter_var($authKey, FILTER_VALIDATE_REGEXP, $filterOptions) === false){
+			throw(new RangeException("authentication token is not 32 hexadecimal bytes"));
+		}
+
+		//create query template
+		$query	= "SELECT userId, email, passwordHash, salt, authKey, securityId, loginSourceId FROM user WHERE authKey = ?";
+
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// bind the email to the place holder in the template
+		$wasClean = $statement->bind_param("s", $authKey);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
