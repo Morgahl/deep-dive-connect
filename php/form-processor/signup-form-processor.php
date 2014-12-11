@@ -6,7 +6,7 @@
  */
 
 session_start();
-require_once("/etc/apache2/capstone-mysql/helpabq.php");
+require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 require_once("../lib/csrf.php");
 require_once("../class/profile.php");
 require_once("../class/user.php");
@@ -40,15 +40,14 @@ try{
 
 
 $mysqli = MysqliConfiguration::getMysqli();
-		$signupUser = new User(null, $_POST["userName"], $_POST["email"], $passwordHash, $salt, $authToken, 0);
-		$signupUser = new User(null, $_POST["userName"], $_POST["email"], $passwordHash, $salt, $authToken, 1);
+		$signupUser = new User(null, $_POST["email"], $passwordHash, $salt, $authKey, 2, 1);
  		$signupUser->insert($mysqli);
  		$signupProfile = new Profile(null, $signupUser->getUserId(), $_POST["firstName"], $_POST["lastName"], null, null, null,
 			null, null);
  		$signupProfile->insert($mysqli);
 
 	// email the user with an activation message
-	$to = $newUser->getEmail();
+	$to = $signupUser->getEmail();
 	$from = "noreply@deepdiveconnect.com";
 
 	// build headers
@@ -64,7 +63,7 @@ $mysqli = MysqliConfiguration::getMysqli();
 	// build message
 	$pageName = end(explode("/", $_SERVER["PHP_SELF"]));
 	$url = "https://" . $_SERVER["SERVER_NAME"] . $_SERVER["PHP_SELF"];
-	$url = str_replace($pageName, "activate.php", $url);
+	$url = str_replace($pageName, "../../validation/activate.php", $url);
 	$url = "$url?authToken=$authToken";
 	$message = <<< EOF
 <html>

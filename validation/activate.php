@@ -5,7 +5,7 @@
  * Author Joseph Bottone  bottone.joseph@gmail.com
  */
 session_start();
-require_once("/etc/apache2/capstone-mysql/helpabq.php");
+require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 require_once("csrf.php");
 require_once("../profile.php");
 require_once("../user.php");

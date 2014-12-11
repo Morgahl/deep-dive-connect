@@ -1,5 +1,5 @@
 /**
- * Signup HTML form
+ * Signup Javascript form
  *
  * Author Joseph Bottone  bottone.joseph@gmail.com
  */
