@@ -1,16 +1,43 @@
 <?php
 
 require_once("php/class/security.php");
+require_once("php/lib/csrf.php");
 
 //create array to catch security objects
 $security[] = Security::getSecurityObjects($mysqli);
 
 $total = count($security[0]);
 
+$inputTag = generateInputTags();
+
+//create table of Security Objects
+echo "<table style=\"width:100%; border: solid black 0.1em\">
+			<tr>
+				<td>Id</td>
+				<td>Description</td>
+				<td>isDefault</td>
+				<td>createTopic</td>
+				<td>canPromote</td>
+				<td>siteAdmin</td>
+			</tr>";
+
+for($i = 0; $i < $total; $i++){
+	echo"<tr>
+			<td>".$security[0][$i]->getSecurityId()."</td>
+			<td>".$security[0][$i]->getDescription()."</td>
+			<td>".$security[0][$i]->getIsDefault()."</td>
+			<td>".$security[0][$i]->getCreateTopic()."</td>
+			<td>".$security[0][$i]->getCanEditOther()."</td>
+			<td>".$security[0][$i]->getSiteAdmin()."</td>
+			</tr>";
+}
+
+echo "</table>";
+
 echo"<h3>Select Security Description</h3>
 		<script src=\"js/admin.js\"></script>
 		<p>Select title to change permissions or create add a new one </p>
-		<form id=\"securityDropDown\" action=\"php/form-processor/admin-processor.php\" method=\"POST\">
+		<form id=\"securityDropDown\" action=\"php/form-processor/admin-processor.php\" method=\"POST\">".$inputTag."
 			<select id=\"securityOption\" name=\"securityOption\" >";
 
 for($i = 0; $i <$total; $i++){
@@ -19,6 +46,7 @@ for($i = 0; $i <$total; $i++){
 }
 
 echo "	<option value=\"new\">*Create*</option>
+			<option value=\"delete\">*Delete*</option>
 			</select>
 			<p id=\"newOutput\"></p>
 			<h3>Change Values</h3>

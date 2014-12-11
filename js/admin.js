@@ -11,6 +11,11 @@ $(document).ready(function(){
 					"<input type=\"text\" id=\"newPermission\" name=\"newPermission\">";
 			document.getElementById("newOutput").innerHTML = string;
 		}
+		else if(val == "delete"){
+			var string = "<h3>Delete</h3><p>Enter id below and press submit</p>"+
+				"<input type=\"text\" id=\"deletePermission\" name=\"deletePermission\" size=\"3\">";
+			document.getElementById("newOutput").innerHTML = string;
+		}
 		else{
 			document.getElementById("newOutput").innerHTML = "";
 		}
