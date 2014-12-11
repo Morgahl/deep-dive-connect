@@ -11,6 +11,9 @@
  **/
 
 //**Wrote Cohort class below; primary key is the cohortId;
+
+require_once("profileCohort.php");
+
 class Cohort
 {
    // CohortID identifies primary key for Cohort
@@ -560,11 +563,11 @@ class Cohort
 		$profileId = filter_var($profileId, FILTER_SANITIZE_NUMBER_INT);
 
 		// create query template for role
-		$query = 	"SELECT cohort.cohortId, startDate, endDate, location, description
+		$query = 	"SELECT cohort.cohortId, startDate, endDate, location, description, profileCohortId, profileId, profileCohort.cohortId, role
 						FROM cohort
 						INNER JOIN profileCohort ON cohort.cohortId = profileCohort.cohortId
 						WHERE profileId = ?
-						ORDER BY startDate DESC";
+						ORDER BY CASE WHEN role = 'Admin' THEN 0 WHEN role = 'Instructor' THEN 1 WHEN role = 'Student' THEN 2 ELSE 3 END, startDate DESC";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
@@ -591,13 +594,18 @@ class Cohort
 				throw(new mysqli_sql_exception("Unable to process result set"));
 			}
 
-			// step through results array and convert to Cohort objects
-			foreach($results as $index => $row) {
-				$results[$index] = new Cohort($row["cohortId"], $row["startDate"], $row["endDate"], $row["location"], $row["description"]);
+			$output = array();
+			$count = 0;
+
+			// step through results array and convert to Topic objects
+			foreach ($results as $index => $row) {
+				$output[$row["role"]][$count]["cohort"] = new cohort($row["cohortId"], $row["startDate"], $row["endDate"], $row["location"], $row["description"]);
+				$output[$row["role"]][$count]["profileCohort"] = new ProfileCohort($row["profileCohortId"], $row["profileId"], $row["cohortId"], $row["role"]);
+				$count++;
 			}
 
-			// return resulting array of Cohort objects
-			return ($results);
+			// return resulting array of Topic objects
+			return($output);
 		} else {
 			return (null);
 		}

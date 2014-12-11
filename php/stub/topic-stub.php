@@ -105,7 +105,7 @@ try {
 					$commentSubject = $element->getCommentSubject();
 					$commentBody = $element->getCommentBody();
 
-					$html =	"<div class=\"row test-unit-comment\"><blockquote>" .
+					$html =	"<div class=\"row test-unit-comment\" id=\"comment$commentId\"><blockquote>" .
 						"<h4><strong>" . $commentSubject . "</strong></h4><br>" .
 						"<h5>" . nl2br($commentBody) . "</h5>";
 

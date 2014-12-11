@@ -575,26 +575,42 @@ class Topic {
 		}
 	}
 
-	public static function getTopicsByProfileId(&$mysqli, $profileId) {
+	public static function getTopicsByProfileId(&$mysqli, $profileId, $limit = 10) {
 		// handle degenerate cases
 		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
 			throw(new mysqli_sql_exception("Input is not a valid mysqli object"));
 		}
 
-		// enforce that limit is NOT null
+		// enforce that profileId is NOT null
 		if($profileId === null) {
 			throw(new UnexpectedValueException("ProfileID must not be null"));
 		}
 
-		// ensure that limit is an int
+		// ensure that profileId is an int
 		if(filter_var($profileId, FILTER_VALIDATE_INT) === false) {
 			throw(new UnexpectedValueException("ProfileID $profileId is not numeric"));
 		}
 
-		// convert the limit to int and enforce that it is positive
+		// convert the profileId to int and enforce that it is positive
 		$profileId = intval($profileId);
 		if($profileId <= 0) {
 			throw(new RangeException("ProfileID $profileId is not positive"));
+		}
+
+		// enforce that limit is NOT null
+		if($limit === null) {
+			throw(new UnexpectedValueException("ProfileID must not be null"));
+		}
+
+		// ensure that limit is an int
+		if(filter_var($limit, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("Limit $limit is not numeric"));
+		}
+
+		// convert the limit to int and enforce that it is positive
+		$limit = intval($limit);
+		if($limit <= 0) {
+			throw(new RangeException("Limit $limit is not positive"));
 		}
 
 		// create query template
@@ -602,7 +618,8 @@ class Topic {
 					FROM topic
 					WHERE profileId = ?
 					GROUP BY topicId
-					ORDER BY topicDate";
+					ORDER BY topicDate DESC
+					LIMIT ?";
 
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
@@ -610,7 +627,7 @@ class Topic {
 		}
 
 		// bind the variable to the place holder for the template
-		$wasClean = $statement->bind_param("i", $profileId);
+		$wasClean = $statement->bind_param("ii", $profileId, $limit);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}

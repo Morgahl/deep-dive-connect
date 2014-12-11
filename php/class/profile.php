@@ -703,13 +703,13 @@ class Profile
 		// sanitize profileId before searching
 		// first, make sure profile id is an integer
 		if(filter_var($profileId, FILTER_VALIDATE_INT) == false) {
-			throw(new UnexpectedValueException("user id $profileId is not numeric"));
+			throw(new UnexpectedValueException("profile id $profileId is not numeric"));
 		}
 
 		//second, enforce that user id is an integer and positive
 		$profileId = intval($profileId);
 		if($profileId <= 0) {
-			throw(new RangeException("user id $profileId is not positive"));
+			throw(new RangeException("profile id $profileId is not positive"));
 		}
 
 		//create query template

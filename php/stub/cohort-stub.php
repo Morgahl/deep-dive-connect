@@ -24,7 +24,6 @@ echo "</div>";
 echo "<div class=\"row\">";
 if ($profileId === false || $profileId === null){
 	echo "<p>" . count($profiles) . " user(s) signed up for this cohort<br>";
-	// FIXME NEED ACTUAL LINK HERE
 	echo "<a href=\"signupForm.php\">Sign up or log in now!</a></p>";
 } else {
 	if ($profiles !== null){
