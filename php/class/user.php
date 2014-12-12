@@ -432,7 +432,6 @@ class User{
 			throw(new mysqli_sql_exception("Unable to update a user that does not exist"));
 		}
 
-		//Todo: only in update we allow authKey to be updated as null
 		//enforce: if hash, authkey, and salt are null loginsource is not null and vice versa
 		if($this->loginSourceId !== null && ($this->passwordHash !== null /*|| $this->authKey !== null*/ || $this->salt !== null)){
 			throw(new UnexpectedValueException("Sign up with external source or internal not both"));
