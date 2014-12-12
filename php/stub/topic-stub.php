@@ -19,7 +19,8 @@ try {
 	// get topic from database
 	$topic = Topic::getTopicByTopicId($mysqli, $topicId);
 
-	echo "<script src=\"js/topic-modal.js\"></script>
+	echo "<div class=\"col-xs-12\">
+<script src=\"js/topic-modal.js\"></script>
 	<div class=\"modal\" id=\"topicModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal\" aria-hidden=\"true\">
 		<div class=\"modal-dialog\">
 			<div class=\"modal-content\">
@@ -145,6 +146,7 @@ try {
 	} else {
 		echo "<h1>Topic does not exist.</h1>";
 	}
+	echo "</div>";
 } catch(Exception $exception) {
 	echo "<div class=\"alert alert-danger\" role=\"alert\">Unable to load topic: " . $exception->getMessage() . "</div>";
 }

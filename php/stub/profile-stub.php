@@ -18,8 +18,9 @@ if ($profileId !== null) {
 	header("Location: ../../index.php");
 }
 
-
 $profile = Profile::getProfileByProfileId($mysqli, $profileId);
+
+echo "<div class=\"col-xs-12\">";
 
 if ($profile !== null) {
 	echo "<div class=\"row\">";
@@ -78,6 +79,7 @@ if ($profile !== null) {
 		echo "</div>";
 	}
 
+	echo "</div>";
 
 } else {
 	echo "<h2>No Valid Profile can be loaded.</h2>";

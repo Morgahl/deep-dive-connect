@@ -3,10 +3,6 @@
 /**
  * Deep Dive Connect Navigation Stub by
  * @GMedrano, adapted from model by Marc Hayes
- *
- * From Marc's code, onloader
- * !!!!!echo "<form id=\"back\" action=\"loading.html\">
- *       <button type=\"submit\">Back</button>
  */
 
 
@@ -19,7 +15,8 @@ $profileId = isset($_SESSION["profile"]["profileId"]) ? $_SESSION["profile"]["pr
 
 //Code for Onloader - Navigation Bar
 
-echo "<div class= \"btn-group btn-group-justified\">
+echo "<div class=\"col-sm-9 col-xs-12\">
+	<div class= \"btn-group btn-group-justified\">
       <a href=\"index.php\" class=\"btn btn-default\"><h4><strong>Home</strong></h4></a>";
 
 if($profileId !== false) {
@@ -32,5 +29,6 @@ if ($Admin === 1){
 	echo "<a href=\"admin.php\" class=\"btn btn-default\"><h4><strong>Admin</strong></h4></a>";
 }
 
-echo "</div>";
+echo "</div>
+	</div>";
 

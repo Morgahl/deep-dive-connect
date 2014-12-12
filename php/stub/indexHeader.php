@@ -31,19 +31,31 @@ echo "<!DOCTYPE html>
 		<script type=\"text/javascript\" src=\"//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js\"></script>
 		<script type=\"text/javascript\" src=\"//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js\"></script>
 		<style>
+		header{
+		background-color: #000000;
+		}
+		aside{
+		background-color: #f0f0f0;
+		}
 		.btn-right{
 		float: right;
 		}
 		</style>
 	</head>
 	<body>
-		<header class=\"container\">
-			<nav class=\"row\">";
+		<header class=\"container-fluid\">
+			<nav class=\"container\">
+				<div class=\"row\">
+					<div class=\"col-sm-3 hidden-xs\">
+						<img class=\"img-responsive center-block\" src=\"resources/stemuluslogo.png\" />
+					</div>
+					";
 
 require_once("php/stub/navstub.php");
 
 echo
-"</nav>
+"		</div>
+	</nav>
 </header>
 <main class=\"container\">
 	<section class=\"row\">";
