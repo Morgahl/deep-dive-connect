@@ -17,6 +17,7 @@ echo "<table style=\"width:100%; border: solid black 0.1em\">
 				<td>Description</td>
 				<td>isDefault</td>
 				<td>createTopic</td>
+				<td>canEditOther</td>
 				<td>canPromote</td>
 				<td>siteAdmin</td>
 			</tr>";
@@ -28,6 +29,7 @@ for($i = 0; $i < $total; $i++){
 			<td>".$security[0][$i]->getIsDefault()."</td>
 			<td>".$security[0][$i]->getCreateTopic()."</td>
 			<td>".$security[0][$i]->getCanEditOther()."</td>
+			<td>".$security[0][$i]->getCanPromote()."</td>
 			<td>".$security[0][$i]->getSiteAdmin()."</td>
 			</tr>";
 }
