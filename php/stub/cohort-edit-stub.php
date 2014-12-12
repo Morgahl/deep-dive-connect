@@ -12,12 +12,12 @@ $profileId = isset($_SESSION["profile"]["profileId"]) ? $_SESSION["profile"]["pr
 
 $cohorts[] = Cohort::getCohorts($mysqli);
 
-echo "<h3>Cohort Association</h3>";
+//echo "<h3>Cohort Association</h3>";
 
 //obtain cohorts associated with profile
-$proCohort = Cohort::getCohortsByProfileId($mysqli, $profileId);
+//$proCohort = Cohort::getCohortsByProfileId($mysqli, $profileId);
 
-var_dump($proCohort);
+//var_dump($proCohort);
 
 
 
