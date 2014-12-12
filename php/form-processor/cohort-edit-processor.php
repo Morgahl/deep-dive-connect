@@ -45,4 +45,4 @@ else{
 	echo "<div class=\"alert alert-success\" role=\"alert\"><p>Connection Made</p></div>";
 }
 
-header("Location: ../../profile-edit.php");
+header("Location: ../../cohort-edit.php");

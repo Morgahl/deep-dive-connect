@@ -21,7 +21,7 @@ $password = $_POST["password"];
 
 //obtain user by userId
 $user = User::getUserByEmail($mysqli, $email);
-var_dump($user);
+
 if(isset($user) === false){
 	//use bootstrap div alert to echo to user
 	echo "<div class=\"alert alert-danger\" role=\"alert\"><p>No User Found/p></div>";
@@ -35,24 +35,47 @@ else{
 	if($oldPassword === $newHash){
 		// comparing oldPassword with newHash
 
+		require_once("../class/cohort.php");
+		require_once("../class/profileCohort.php");
 		require_once("../class/security.php");
+
 		$userId = $user->getUserId();
 		$profile = Profile::getProfileByUserId($mysqli, $userId);
-		var_dump($profile);
 		$security = Security::getSecurityBySecurityId($mysqli, $user->getSecurityId());
 
+		$cohorts = Cohort::getCohortsByProfileId($mysqli, $profile->getProfileId());
+
+		if(isset($cohorts['Student'][0]['cohort']) === true){
+			$cohort = $cohorts['Student'][0]['cohort'];
+		}
+		elseif(isset($cohorts['Teacher'][0]['cohort']) === true){
+			$cohort = $cohorts['Teacher'][0]['cohort'];
+		}
+
+		//set userId into the session
 		$_SESSION["userId"] = $user->getUserId();
+
+		//set $profile info into session
 		$_SESSION["profile"]["profileId"] = $profile->getProfileId();
 		$_SESSION["profile"]["firstName"] = $profile->getFirstName();
 		$_SESSION["profile"]["lastName"] = $profile->getLastName();
 		$_SESSION["profile"]["profilePicFilename"] = $profile->getProfilePicFileName();
 		$_SESSION["profile"]["location"] = $profile->getLocation();
 		$_SESSION["profile"]["description"] = $profile->getDescription();
+
+		//set security info into session
 		$_SESSION["security"]["description"] = $security->getDescription();
 		$_SESSION["security"]["createTopic"] = $security->getCreateTopic();
 		$_SESSION["security"]["canEditOther"] = $security->getCanEditOther();
 		$_SESSION["security"]["canPromote"] = $security->getCanPromote();
 		$_SESSION["security"]["siteAdmin"] = $security->getSiteAdmin();
+
+		//set cohort info into session
+		$_SESSION["cohort"]["cohortId"] = $cohort->getCohortId();
+		$_SESSION["cohort"]["startDate"] = $cohort->getStartDate()->format("M Y");
+		$_SESSION["cohort"]["endDate"] = $cohort->getEndDate()->format("M Y");
+		$_SESSION["cohort"]["location"] = $cohort->getlocation();
+		$_SESSION["cohort"]["description"] = $cohort->getDescription();
 
 		header("Location: ../../index.php");
 	}
