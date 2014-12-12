@@ -24,9 +24,9 @@ $profile = Profile::getProfileByProfileId($mysqli, $profileId);
 if ($profile !== null) {
 	echo "<div class=\"row\">";
 	if (($fileName = $profile->getProfilePicFileName()) !== null) {
-		echo "<p><div class=\"col-xs-offset-4 col-xs-4\"><img id=\"profilePic\" class=\"img-responsive\" src=\"/ddconnect/avatars/" . $fileName . "\" /></div></p></div>";
+		echo "<p><div class=\"col-xs-offset-4 col-xs-4\"><img id=\"profilePic\" class=\"img-responsive center-block\" src=\"/ddconnect/avatars/" . $fileName . "\" /></div></p></div>";
 	} else {
-		echo "<p><div class=\"col-xs-offset-4 col-xs-4\"><img id=\"profilePic\" class=\"img-responsive\" src=\"resources/avatar-default.png\" /></div></p></div>";
+		echo "<p><div class=\"col-xs-offset-4 col-xs-4\"><img id=\"profilePic\" class=\"img-responsive center-block\" src=\"resources/avatar-default.png\" /></div></p></div>";
 	}
 	echo "<div class=\"row\">";
 	echo "<h3><strong>" . $profile->getFirstName() . " " . $profile->getLastName() . "</strong></h3>";
