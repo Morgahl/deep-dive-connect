@@ -37,13 +37,15 @@ echo "<!DOCTYPE html>
 		</style>
 	</head>
 	<body>
-		<main class=\"container\">
+		<header class=\"container\">
 			<nav class=\"row\">";
 
 require_once("php/stub/navstub.php");
 
 echo
 "</nav>
+</header>
+<main class=\"container\">
 	<section class=\"row\">";
 
 //if $_session["profileId"] is set call aside.php

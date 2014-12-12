@@ -55,7 +55,7 @@ if($description === false) {
 //Cohort
 echo "<p><strong>Cohort:</strong></p>";
 if($cohort["description"] === false){
-	echo "<p><a href=\"cohort-edit.php\">edit-cohort</a>";
+	echo "<p><a href=\"cohort-edit.php\">edit-cohort</a></p>";
 }
 if($cohort["description"] !== false){
 	echo "<p> " . $cohort["description"] . "</p>";

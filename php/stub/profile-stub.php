@@ -31,8 +31,7 @@ if ($profile !== null) {
 	echo "<div class=\"row\">";
 	echo "<h3><strong>" . $profile->getFirstName() . " " . $profile->getLastName() . "</strong></h3>";
 	echo $profile->getLocation() . "<br>";
-	echo $profile->getDescription() . "</p>";
-//echo $profile->getLocation() . "</p>";
+	echo $profile->getDescription();
 	echo "</div>";
 
 	$cohorts = Cohort::getCohortsByProfileId($mysqli, $profileId);
@@ -52,7 +51,7 @@ if ($profile !== null) {
 			}
 			echo "</div>";
 		}
-		echo "</div></div>";
+		echo "</div>";
 	}
 
 	$comments = Comment::getCommentsByProfileId($mysqli, $profileId, 5, 1);
