@@ -45,16 +45,14 @@ try{
 
 	$mysqli = MysqliConfiguration::getMysqli();
 	$signupUser = new User(null, $email, $passwordHash, $salt, $authToken, 2, null);
-	var_dump($signupUser);
 	$signupUser->insert($mysqli);
-	var_dump($signupUser);
 	$signupProfile = new Profile(null, $signupUser->getUserId(), $_POST["firstName"], $_POST["lastName"], null, null, null,
 		null, null);
 	$signupProfile->insert($mysqli);
 
 	// email the user with an activation message
 	$to = $signupUser->getEmail();
-	$from = "noreply@deepdiveconnect.com";
+	$from = "dmcdonald21@cnm.edu"; //"noreply@deepdiveconnect.com";
 
 	// build headers
 	$headers = array();
@@ -69,7 +67,7 @@ try{
 	// build message
 	$pageName = end(explode("/", $_SERVER["PHP_SELF"]));
 	$url = "https://" . $_SERVER["SERVER_NAME"] . $_SERVER["PHP_SELF"];
-	$url = str_replace($pageName, "../../validation/activate.php", $url);
+	$url = str_replace($pageName, "activate.php", $url);
 	$url = "$url?authToken=$authToken";
 	$message = <<< EOF
 <html>
@@ -81,23 +79,11 @@ try{
 </html>
 EOF;
 
-//	// send the email
-//	error_reporting(E_ALL & ~E_STRICT);
-//	$mailer =& Mail::factory("sendmail");
-//	$status = $mailer->send($to, $headers, $message);
-//	if(PEAR::isError($status) === true)
-//	{
-//		echo "<div class=\"alert alert-danger\" role=\"alert\"><strong>Oh snap!</strong> Unable to send mail message:" . $status->getMessage() . "</div>";
-//	}
-//	else
-//	{
-//		echo "<div class=\"alert alert-success\" role=\"alert\"><strong>Sign up successful!</strong> Please check your Email to complete the signup process.</div>";
-//	}
-
 	// send the email
 	error_reporting(E_ALL & ~E_STRICT);
 	$mailer =& Mail::factory("sendmail");
 	$status = $mailer->send($to, $headers, $message);
+	var_dump($status);
 	if(PEAR::isError($status) === true) {
 		echo "<div class=\"alert alert-danger\" role=\"alert\"><strong>Nope!</strong> Unable to send mail message:" . $status->getMessage() . "</div>";
 	} else {
