@@ -15,13 +15,13 @@ $mysqli = MysqliConfiguration::getMysqli();
 $cohort = Cohort::getCohortByCohortId($mysqli, $cohortId);
 $profiles = Profile::getProfilesByCohortId($mysqli, $cohortId);
 
-echo "<div class=\"row\">";
+echo "<div class=\"col-xs-12\">";
 echo "<h3><strong>" . $cohort[0]->getDescription() . "</strong></h3>";
 echo "<p>" . $cohort[0]->getStartDate()->format("M Y") . " - " . $cohort[0]->getEndDate()->format("M Y") . "<br>";
 echo $cohort[0]->getLocation() . "</p>";
 echo "</div>";
 
-echo "<div class=\"row\">";
+echo "<div class=\"col-xs-12\">";
 if ($profileId === false || $profileId === null){
 	echo "<p>" . count($profiles) . " user(s) signed up for this cohort<br>";
 	echo "<a href=\"signupForm.php\">Sign up or log in now!</a></p>";
@@ -29,7 +29,7 @@ if ($profileId === false || $profileId === null){
 	if ($profiles !== null){
 		foreach ($profiles as $index => $element) {
 			echo "<h4>" . $index . "</h4>";
-			echo "<div class=\"row\">";
+			echo "<div>";
 			foreach ($element as $innerIndex => $innerElement){
 				echo "<div class=\"col-xs-2\">";
 //				var_dump($innerElement);
