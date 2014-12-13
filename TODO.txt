@@ -10,6 +10,7 @@ need to clean up table in admin view.
 Clean up recent stub to display topics cleaner
 need footer stub to have data about the project
 
+ABSOLUTELY MUST GET INPUTS INTO form-control CLASS FOR VISUAL CONSISTENCY
 ABSOLUTELY MUST GET COMMENTING IN
 ABSOLUTELY MUST GET FORMS VALIDATING
 ABSOLUTELY MUST GET FUNCUNIT TESTS PASSING
