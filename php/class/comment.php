@@ -6,8 +6,14 @@
  *
  * @author Marc Hayes <marc.hayes.tech@gmail.com>
  */
+$cwd = explode("/",getcwd());
+$bottom = $cwd[count($cwd)-1];
+if ($bottom !== "form-processor") {
+	require_once("php/class/profile.php");
+} else {
+	require_once("../class/profile.php");
+}
 
-require_once("php/class/profile.php");
 
 class Comment {
 	/**
