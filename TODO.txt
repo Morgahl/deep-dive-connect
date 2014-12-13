@@ -1,0 +1,16 @@
+Login does not properly account for authorized users... authToken === null
+sign up does not properly assign default security
+activation does not null out authToken
+activation landing page needs to POST to a form processor that validates CSRF and activation logic
+correct user cohort edit page to only create one distinct link.
+allow user to remove themselves from cohort membership.
+need a page to add or edit existing cohorts
+ned a page to change security permissions for a given user
+need to clean up table in admin view.
+Clean up recent stub to display topics cleaner
+need footer stub to have data about the project
+
+ABSOLUTELY MUST GET COMMENTING IN
+ABSOLUTELY MUST GET FORMS VALIDATING
+ABSOLUTELY MUST GET FUNCUNIT TESTS PASSING
+ABSOLUTELY MUST GET SIMPLETEST CLASS VERIFICATION UPDATED AND PASSING
