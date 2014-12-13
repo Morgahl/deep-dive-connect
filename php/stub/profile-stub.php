@@ -30,7 +30,7 @@ if ($profile !== null) {
 		echo "<p><div class=\"col-xs-offset-4 col-xs-4\"><img id=\"profilePic\" class=\"img-responsive center-block\" src=\"resources/avatar-default.png\" /></div></p></div>";
 	}
 	echo "<div class=\"row\">";
-	echo "<a href=\"profile-edit.php\"><button class=\"btn btn-primary\">edit-profile</button></a><br>";
+	echo "<a href=\"profile-edit.php\"><button class=\"btn btn-primary btn-xs\">edit-profile</button></a><br>";
 	echo "<h3><strong>" . $profile->getFirstName() . " " . $profile->getLastName() . "</strong></h3>";
 	echo $profile->getLocation() . "<br>";
 	echo $profile->getDescription();

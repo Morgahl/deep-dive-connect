@@ -50,7 +50,7 @@ try {
 	}
 
 	if($createTopic === 1){
-	echo	"<button type=\"submit\" id=\"topicCreate\" class=\"btn btn-sm\" data-toggle=\"modal\" data-target=\"#topicModal\" onclick=\"populateTopicModal();\">Create a Topic</button>";
+	echo	"<button type=\"submit\" id=\"topicCreate\" class=\"btn btn-primary btn-xs\" data-toggle=\"modal\" data-target=\"#topicModal\" onclick=\"populateTopicModal();\">Create a Topic</button>";
 	}
 
 } catch(Exception $exception) {

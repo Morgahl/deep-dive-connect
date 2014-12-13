@@ -33,12 +33,12 @@ if ($fileName !== false) {
 
 
 //Always visible
-echo "<a href=\"profile-edit.php\"><button class=\"btn btn-primary\">edit-profile</button></a></p>";
+echo "<a href=\"profile-edit.php\"><button class=\"btn btn-primary btn-xs \">edit-profile</button></a></p>";
 
 //location
 echo "<p><strong>Location:</strong></p>";
 if($location === false) {
-	echo "<p id=\"asideLoc\"><a href=\"profile-edit.php\"><button class=\"btn btn-primary\">edit-profile</button></a></p>";
+	echo "<p id=\"asideLoc\"><a href=\"profile-edit.php\"><button class=\"btn btn-primary btn-xs\">edit-profile</button></a></p>";
 } else {
 	echo "<p>" . $location . "</p>";
 }
@@ -46,7 +46,7 @@ if($location === false) {
 //Description
 echo "<p><strong>Description:</strong></p>";
 if($description === false) {
-	echo "<p id=\"asideDesc\"><a href=\"profile-edit.php\"><button class=\"btn btn-primary\">edit-profile</button></a></p>";
+	echo "<p id=\"asideDesc\"><a href=\"profile-edit.php\"><button class=\"btn btn-primary btn-xs\">edit-profile</button></a></p>";
 } else {
 	echo "<p>" . $description . "</p>";
 }
@@ -54,7 +54,7 @@ if($description === false) {
 //Cohort
 echo "<p><strong>Cohort:</strong></p>";
 if($cohort["description"] === false){
-	echo "<p><a href=\"cohort-edit.php\"><button class=\"btn btn-primary\">edit-cohort</button></a></p>";
+	echo "<p><a href=\"cohort-edit.php\"><button class=\"btn btn-primary btn-xs\">edit-cohort</button></a></p>";
 }
 if($cohort["description"] !== false){
 	echo "<p> " . $cohort["description"] . "</p>";
@@ -69,6 +69,6 @@ if($cohort["startDate"] !== false || $cohort["endDate"] !== false){
 }
 
 //sign out
-echo "<a href=\"php/form-processor/sessionDestroy.php\"><button class=\"btn btn-primary\">Sign Out</button></a>";
+echo "<a href=\"php/form-processor/sessionDestroy.php\"><button class=\"btn btn-primary btn-xs\">Sign Out</button></a>";
 
 echo "</aside>";

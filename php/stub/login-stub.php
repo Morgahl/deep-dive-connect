@@ -12,8 +12,8 @@ echo "<aside class=\"col-sm-3 col-xs-12\">
 		<input type=\"password\" name=\"password\" placeholder=\"password\" required>
 	</div>
 	<div class=\"col-sm-12 col-xs-4\">
-		<button id=\"loginBtn\" type=\"submit\" name=\"submit\">Login</button>
-		<button onclick=\"signupForm.php\">Sign-up</a>
+		<button id=\"loginBtn\" type=\"submit\" class=\"btn btn-primary btn-xs\" name=\"submit\">Login</button>
+		<button class=\"btn btn-primary btn-xs\" onclick=\"signupForm.php\">Sign-up</a>
 	</div>
 	</form>
 </aside>";
