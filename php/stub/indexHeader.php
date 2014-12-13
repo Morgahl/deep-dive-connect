@@ -9,6 +9,9 @@ require_once("php/class/profile.php");
 //CSRF path
 require_once("php/lib/csrf.php");
 
+$Admin = isset($_SESSION["security"]["siteAdmin"]) ? $_SESSION["security"]["siteAdmin"] : false;
+$profileId = isset($_SESSION["profile"]["profileId"]) ? $_SESSION["profile"]["profileId"] : false;
+
 try{
 	// connect to mySQL
 	$mysqli = MysqliConfiguration::getMysqli();
@@ -30,44 +33,41 @@ echo "<!DOCTYPE html>
 		<script type=\"text/javascript\" src=\"//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js\"></script>
 		<script type=\"text/javascript\" src=\"//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js\"></script>
 		<script type=\"text/javascript\" src=\"//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js\"></script>
-		<style>
-		header{
-		background-color: #2e2e2e;
-		}
-		aside{
-		background-color: #f7f7f7
-		}
-		li{
-		background-color: #ffffff;
-		}
-		li a{
-		color: #000000
-		}
-
-		button{
-		color: #000000;
-		}
-		.btn-right{
-		float: right;
-		}
-		</style>
+		<link href=\"css/stylesheet.css\" rel=\"stylesheet\">
+		<-- this is to auto scroll a nav bar height up when folloing a link onto a page's id anchor link due to fixed nav bar at the top -->
+		<script>
+			var shiftWindow = function() { scrollBy(0, -54) };
+			window.addEventListener(\"hashchange\", shiftWindow);
+			function load() { if (window.location.hash) shiftWindow(); }
+		</script>
 	</head>
-	<body>
-		<header class=\"container-fluid\">
+	<body onload=\"load();\">
+		<header class=\"container-fluid navbar-fixed-top\">
 			<nav class=\"container\">
-				<div class=\"row\">
-					<div class=\"col-sm-3 hidden-xs\">
-						<img class=\"img-responsive center-block\" src=\"resources/stemuluslogo.png\"/>
-					</div>";
+				<div class= \"col-sm-3 hidden-xs\">
+					<img class=\"img-responsive\" src=\"resources/stemuluslogo.png\"/>
+				</div>
+				<div class=\"col-sm-9 col-xs-12\">
+					<div class=\"btn-group btn-group-justified\">
+						<a href=\"index.php\" class=\"btn btn-default\"><h4><strong>Home</strong></h4></a>";
 
-require_once("php/stub/navstub.php");
+if($profileId !== false) {
+	echo "<a href=\"profile.php\" class=\"btn btn-default\"><h4><strong>Profile</strong></h4></a>";
+}
 
-echo
-"		</div>
-	</nav>
-</header>
-<main class=\"container\">
-	<section class=\"row\">";
+echo "<a href=\"cohort-main.php\" class=\"btn btn-default\"><h4><strong>Cohort</strong></h4></a>";
+
+if ($Admin === 1){
+	echo "<a href=\"admin.php\" class=\"btn btn-default\"><h4><strong>Admin</strong></h4></a>";
+}
+
+echo "
+					</div>
+				</div>
+			</nav>
+		</header>
+		<main class=\"container\">
+			<section class=\"row\">";
 
 //if $_session["profileId"] is set call aside.php
 //if not call login

@@ -1,95 +1,144 @@
-Prelim Stylesheet
-
-
-#outerContainer{}
-
-#rowContainer{}
-
-#rowContainer aside, section {}
-
-#placeholder {}
-
-#na
-
-header {
-   background-color:#000000;
+header{
+   background-color: #2e2e2e;
+   padding-left: 0 !important;
+   padding-right: 0 !important;
 }
 
-.btn-group-justified {
-   display: table;
-   width: 100%;
-   table-layout: fixed;
-   border-collapse: separate;
-   font-family: fantasy;
-
-}
-.btn-group.btn-group-justified {
+aside{
+   background-color: #f7f7f7
 }
 
-
-body {
-   background:
-   width: 90%;
-   margin: 0 auto;}
-
-
-
-
-
-.main {
-   background-color: whitesmoke;
-
-
+main{
+   padding-top: 54px;
 }
 
-
-
-
-nav {
-   background-color: black;
-   /*<link href='http://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>*/
-   font-family: 'Titillium Web', sans-serif;
-   padding: 0;
-   text-align: auto;
-
-
-
+li{
+   background-color: #ffffff;
 }
 
-
-.section {
-   background-color:
-   width: auto;
-
+li a{
+   color: #000000
 }
 
-
-.aside {
-   backgound-color: white;
-   width:
-
+nav{
+   padding-left: 0 !important;
+   padding-right: 0 !important;
 }
 
-h4,.h4 {
-   font-size: 1.125em;
-   background-color: black
-
+nav div{
+   padding-left: 0 !important;
+   padding-right: 0 !important;
 }
 
-.row {
-   margin-right: -15px;
-   margin-left: -15px;
-   color: blue;
+nav .btn{
+   border-radius: 0;
 }
 
-
-.article {
-   background color: #FAF5F5
-
+nav img{
+   max-height: 54px;
 }
 
-
-@media all {
-
+button{
+   color: #000000;
 }
+
+.btn-default{
+   background-color: #F7F7F7 !important;
+}
+
+.btn-right{
+   float: right;
+}
+
+/*#outerContainer{}*/
+
+/*#rowContainer{}*/
+
+/*#rowContainer aside, section {}*/
+
+/*#placeholder {}*/
+
+/*#na*/
+
+/*header {*/
+   /*background-color:#000000;*/
+/*}*/
+
+/*.btn-group-justified {*/
+   /*display: table;*/
+   /*width: 100%;*/
+   /*table-layout: fixed;*/
+   /*border-collapse: separate;*/
+   /*font-family: fantasy;*/
+
+/*}*/
+/*.btn-group.btn-group-justified {*/
+/*}*/
+
+
+/*body {*/
+   /*background:*/
+   /*width: 90%;*/
+   /*margin: 0 auto;}*/
+
+
+
+
+
+/*.main {*/
+   /*background-color: whitesmoke;*/
+
+
+/*}*/
+
+
+
+
+/*nav {*/
+   /*background-color: black;*/
+   /**/
+   /**/
+   /*padding: 0;*/
+   /*text-align: auto;*/
+
+
+
+/*}*/
+
+
+/*.section {*/
+   /*background-color:*/
+   /*width: auto;*/
+
+/*}*/
+
+
+/*.aside {*/
+   /*backgound-color: white;*/
+   /*width:*/
+
+/*}*/
+
+/*h4,.h4 {*/
+   /*font-size: 1.125em;*/
+   /*background-color: black*/
+
+/*}*/
+
+/*.row {*/
+   /*margin-right: -15px;*/
+   /*margin-left: -15px;*/
+   /*color: blue;*/
+/*}*/
+
+
+/*.article {*/
+   /*background color: #FAF5F5*/
+
+/*}*/
+
+
+/*@media all {*/
+
+/*}*/
 
