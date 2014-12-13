@@ -16,8 +16,8 @@ echo		"<h3>Change Profile Picture</h3>
 				"<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"5000000\">
 				<label for=\"file-upload\">photo location:</label>
 				<p>Max-size: 3 mb</p>
-				<input type=\"file\" id=\"imgUpload\" name=\"imgUpload\"><br>
-				<button id=\"uploadSubmit\" type=\"submit\" name=\"submit\" value=\"send\">Change Image</button>
+				<span class=\"btn btn-primary btn-xs btn-file\">Browse...<input type=\"file\" id=\"imgUpload\" name=\"imgUpload\"></span><br>
+				<button id=\"uploadSubmit\" class=\"btn btn-primary btn-xs\" type=\"submit\" name=\"submit\" value=\"send\">Change Image</button>
 			</form>
 			<p id=\"imgUploadOutput\"></p>
 			<script src=\"js/profile-edit.js\"></script>
@@ -44,12 +44,12 @@ echo		"<h3>Change Profile Picture</h3>
 					<label for=\"description\">Description:</label><br>
 					<input type=\"text\" id=\"description\" name=\"description\">
 				</p>
-				<button id=\"profileSubmit\" type=\"submit\" name=\"submit\">Submit</button>
+				<button id=\"profileSubmit\" class=\"btn btn-primary btn-xs\" type=\"submit\" name=\"submit\">Submit</button>
 			</form>
 			<p id=\"outputProfileEdit\"></p>
 			<h3>Cohort Association</h3>
-			<p><a href=\"cohort-edit.php\">change cohort</a></p>
+			<p><a href=\"cohort-edit.php\"><button class=\"btn btn-primary btn-xs\">Change Cohort</button></a></p>
 
 			<!-- Account Settings -->
 			<h3>Account Settings</h3>
-			<p><a href=\"change-password.php\">change password</a></p>";
+			<p><a href=\"change-password.php\"><button class=\"btn btn-primary btn-xs\">Change Password</button></a></p>";

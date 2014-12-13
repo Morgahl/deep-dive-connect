@@ -23,6 +23,6 @@ echo "<script type=\"text/javascript\" src=\"js/change-password.js\"></script>
 					<label for=\"confirmPassword\">Confirm Password:</label><br>
 					<input type=\"password\" id=\"confirmPassword\" name=\"confirmPassword\">
 				</p>
-				<button type=\"submit\" name=\"confirm\">Confirm</button>
+				<button type=\"submit\" class=\"btn btn-primary btn-xs\" name=\"confirm\">Confirm</button>
 			</form>
 			<p id=\"outputArea\"></p>";

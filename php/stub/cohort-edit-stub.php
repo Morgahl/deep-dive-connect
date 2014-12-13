@@ -39,7 +39,7 @@ for($i = 0; $i < $total; $i++) {
 }
 
 echo "	</select>
-	<button id=\"cohortSubmit\" type=\"submit\" name=\"submit\">Submit</button>
+	<button id=\"cohortSubmit\" class=\"btn btn-primary btn-xs\" type=\"submit\" name=\"submit\">Submit</button>
 </form>
 <p id=\"cohortEditOutput\"></p>
 </row";

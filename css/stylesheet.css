@@ -42,10 +42,6 @@ nav img{
    max-height: 54px;
 }
 
-blockquote{
-   line-height: 1.428571429;
-}
-
 button{
    color: #000000;
 }
@@ -60,6 +56,27 @@ input{
 
 .btn-right{
    float: right;
+}
+
+.btn-file {
+   position: relative;
+   overflow: hidden;
+}
+
+.btn-file input[type=file] {
+   position: absolute;
+   top: 0;
+   right: 0;
+   min-width: 100%;
+   min-height: 100%;
+   font-size: 100px;
+   text-align: right;
+   filter: alpha(opacity=0);
+   opacity: 0;
+   outline: none;
+   background: white;
+   cursor: inherit;
+   display: block;
 }
 
 /*#outerContainer{}*/
