@@ -34,7 +34,7 @@ echo "<!DOCTYPE html>
 		<script type=\"text/javascript\" src=\"//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js\"></script>
 		<script type=\"text/javascript\" src=\"//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js\"></script>
 		<link href=\"css/stylesheet.css\" rel=\"stylesheet\">
-		<-- this is to auto scroll a nav bar height up when following a link onto a page's id anchor link due to fixed nav bar at the top -->
+		<!-- this is to auto scroll a nav bar height up when following a link onto a page's id anchor link due to fixed nav bar at the top -->
 		<script>
 			var shiftWindow = function() { scrollBy(0, -54) };
 			window.addEventListener(\"hashchange\", shiftWindow);
@@ -60,6 +60,9 @@ echo "<a href=\"cohort-main.php\" class=\"btn btn-default\"><h4><strong>Cohort</
 if ($Admin === 1){
 	echo "<a href=\"admin.php\" class=\"btn btn-default\"><h4><strong>Admin</strong></h4></a>";
 }
+if($profileId !== false) {
+	echo "<a href=\"php/form-processor/sessionDestroy.php\" class=\"btn btn-default\"><h4><strong>Sign Out</strong></h4></a>";
+}
 
 echo "
 					</div>
@@ -68,6 +71,7 @@ echo "
 		</header>
 		<main class=\"container\">
 			<section class=\"row\">";
+
 
 //if $_session["profileId"] is set call aside.php
 //if not call login

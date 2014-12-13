@@ -69,6 +69,6 @@ if($cohort["startDate"] !== false || $cohort["endDate"] !== false){
 }
 
 //sign out
-echo "<p><a href=\"php/form-processor/sessionDestroy.php\"><button class=\"btn btn-primary\">sign out</button></a>";
+echo "<a href=\"php/form-processor/sessionDestroy.php\"><button class=\"btn btn-primary\">Sign Out</button></a>";
 
 echo "</aside>";

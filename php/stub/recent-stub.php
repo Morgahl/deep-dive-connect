@@ -30,6 +30,9 @@ try {
 		</div>
 	</div>";
 
+
+	echo "<h1><strong>Welcome to Deep Dive Connect!</strong></h1>";
+
 	$mysqli = MysqliConfiguration::getMysqli();
 
 	// grab topic from database
