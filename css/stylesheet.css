@@ -29,6 +29,10 @@ nav div{
    padding-left: 0 !important;
    padding-right: 0 !important;
 }
+aside form div{
+   padding-left: 5px !important;
+   padding-right: 5px !important;
+}
 
 nav .btn{
    border-radius: 0;
@@ -38,8 +42,16 @@ nav img{
    max-height: 54px;
 }
 
+blockquote{
+   line-height: 1.428571429;
+}
+
 button{
    color: #000000;
+}
+
+input{
+   max-width: 100%;
 }
 
 .btn-default{
