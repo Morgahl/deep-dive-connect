@@ -34,7 +34,7 @@ try {
 		echo "<label for=\"topicSubject\">Subject: </label><br />
 						<textarea id=\"topicSubject\" name=\"topicSubject\" class=\"form-control\" rows=\"2\" maxlength=\"256\">" . $topic["topic"]->getTopicSubject() . "</textarea><br />
 						<label for=\"topicBody\">Body: </label><br />
-						<textarea id=\"topicBody\" name=\"topicBody\" class=\"form-control\" rows=\"10\" maxlength=\"4096\">" . $topic["topic"]->getTopicBody() . "</textarea><br />
+						<textarea id=\"topicBody\" name=\"topicBody\" class=\"form-control\" rows=\"5\" maxlength=\"4096\">" . $topic["topic"]->getTopicBody() . "</textarea><br />
 						<input id=\"topic\" name=\"topic\" type=\"hidden\" value=\"" . $topicId . "\">
 					</div>
 					<div class=\"modal-footer\">
@@ -59,7 +59,7 @@ try {
 	echo "<label for=\"commentSubject\">Subject: </label><br />
 						<textarea id=\"commentSubject\" name=\"commentSubject\" class=\"form-control\" rows=\"2\" maxlength=\"256\"></textarea><br />
 						<label for=\"commentBody\">Body: </label><br />
-						<textarea id=\"commentBody\" name=\"commentBody\" class=\"form-control\" rows=\"10\" maxlength=\"4096\"></textarea><br />
+						<textarea id=\"commentBody\" name=\"commentBody\" class=\"form-control\" rows=\"5\" maxlength=\"4096\"></textarea><br />
 						<input id=\"commentTopicId\" name=\"commentTopicId\" type=\"hidden\" value=\"" . $topicId . "\">
 						<input id=\"commentCommentId\" name=\"commentCommentId\" type=\"hidden\">
 					</div>
@@ -74,7 +74,7 @@ try {
 
 	if ($topic !== null) {
 		// prep topic
-		$topicDate = date_format(DateTime::createFromFormat("Y-m-d H:i:s", $topic["topic"]->getTopicDate()),"F d, Y g:i a");
+		$topicDate = date_format(DateTime::createFromFormat("Y-m-d H:i:s", $topic["topic"]->getTopicDate()),"F d, Y \a\\t g:i a");
 
 		$html =	"<div class=\"row test-unit-topic\">" .
 			"<h2><strong>" . $topic["topic"]->getTopicSubject() . "</strong></h2>" .
@@ -108,7 +108,7 @@ try {
 					$commentId = $element["comment"]->getCommentId();
 					$commentSubject = $element["comment"]->getCommentSubject();
 					$commentBody = $element["comment"]->getCommentBody();
-					$commentDate = date_format(DateTime::createFromFormat("Y-m-d H:i:s", $element["comment"]->getCommentDate()),"F d, Y g:i a");
+					$commentDate = date_format(DateTime::createFromFormat("Y-m-d H:i:s", $element["comment"]->getCommentDate()),"F d, Y \a\\t g:i a");
 
 					$html =	"<div class=\"row test-unit-comment\" id=\"comment$commentId\">" .
 						"<blockquote>" .

@@ -19,7 +19,7 @@ try {
 	echo "<label for=\"topicSubject\">Subject: </label><br />
 						<textarea id=\"topicSubject\" name=\"topicSubject\" class=\"form-control\" rows=\"2\" maxlength=\"256\"></textarea><br />
 						<label for=\"topicBody\">Body: </label><br />
-						<textarea id=\"topicBody\" name=\"topicBody\" class=\"form-control\" rows=\"10\" maxlength=\"4096\"></textarea><br />
+						<textarea id=\"topicBody\" name=\"topicBody\" class=\"form-control\" rows=\"5\" maxlength=\"4096\"></textarea><br />
 					</div>
 					<div class=\"modal-footer\">
 						<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" onclick=\"dePopulateTopicModal();\">Close</button>

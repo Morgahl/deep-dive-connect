@@ -34,7 +34,7 @@ echo "<!DOCTYPE html>
 		<script type=\"text/javascript\" src=\"//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js\"></script>
 		<script type=\"text/javascript\" src=\"//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js\"></script>
 		<link href=\"css/stylesheet.css\" rel=\"stylesheet\">
-		<-- this is to auto scroll a nav bar height up when folloing a link onto a page's id anchor link due to fixed nav bar at the top -->
+		<-- this is to auto scroll a nav bar height up when following a link onto a page's id anchor link due to fixed nav bar at the top -->
 		<script>
 			var shiftWindow = function() { scrollBy(0, -54) };
 			window.addEventListener(\"hashchange\", shiftWindow);
