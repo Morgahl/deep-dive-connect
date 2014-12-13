@@ -31,10 +31,9 @@ if ($fileName !== false) {
 	echo "<div class=\"row\"><div class=\"col-md-6\"><img id=\"profilePic\" class=\"img-responsive\" src=\"resources/avatar-default.png\" /></div></div><br>";
 }
 
-//sign out
-echo "<p><a href=\"php/form-processor/sessionDestroy.php\"><button>sign out</button></a>";
+
 //Always visible
-echo "<a href=\"profile-edit.php\"><button>edit-profile</button></a></p>";
+echo "<a href=\"profile-edit.php\"><button class=\"btn btn-primary\">edit-profile</button></a></p>";
 
 //location
 echo "<p><strong>Location:</strong></p>";
@@ -68,5 +67,8 @@ if($cohort["location"] !== false){
 if($cohort["startDate"] !== false || $cohort["endDate"] !== false){
 	echo "<p>" . $cohort["startDate"]. " - " . $cohort["endDate"] . "</p>";
 }
+
+//sign out
+echo "<p><a href=\"php/form-processor/sessionDestroy.php\"><button class=\"btn btn-primary\">sign out</button></a>";
 
 echo "</aside>";

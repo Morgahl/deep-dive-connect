@@ -32,10 +32,20 @@ echo "<!DOCTYPE html>
 		<script type=\"text/javascript\" src=\"//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js\"></script>
 		<style>
 		header{
-		background-color: #000000;
+		background-color: #2e2e2e;
 		}
 		aside{
-		background-color: #f0f0f0;
+		background-color: #f7f7f7
+		}
+		li{
+		background-color: #ffffff;
+		}
+		li a{
+		color: #000000
+		}
+
+		button{
+		color: #000000;
 		}
 		.btn-right{
 		float: right;
@@ -47,9 +57,8 @@ echo "<!DOCTYPE html>
 			<nav class=\"container\">
 				<div class=\"row\">
 					<div class=\"col-sm-3 hidden-xs\">
-						<img class=\"img-responsive center-block\" src=\"resources/stemuluslogo.png\" />
-					</div>
-					";
+						<img class=\"img-responsive center-block\" src=\"resources/stemuluslogo.png\"/>
+					</div>";
 
 require_once("php/stub/navstub.php");
 
@@ -69,4 +78,4 @@ else{
 	require_once("aside.php");
 }
 
-echo	"<article id=\"content\" class=\"col-sm-9 col-sm-offset-0 col-xs-10 col-xs-offset-1\">";
+echo	"<article id=\"content\" class=\"col-sm-9 col-xs-12\">";
