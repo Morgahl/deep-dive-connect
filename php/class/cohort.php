@@ -610,6 +610,68 @@ class Cohort
 			return (null);
 		}
 	}
+
+   /**
+    * Selects most recent Cohorts regardless of role
+    *
+    * @param resource $mysqli pointer to mySQL connection, by reference
+    * @return null
+    * @throws mysqli_sql_exception when mySQL related errors occur
+    *
+    **/
+   public static function getRecentCohortByProfileId(&$mysqli, $profileId) {
+      // handle degenerate cases
+      if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+         throw(new mysqli_sql_exception("input is not a mysqli object"));
+      }
+
+      // sanitize the cohortId before searching
+      $profileId = trim($profileId);
+      $profileId = filter_var($profileId, FILTER_SANITIZE_NUMBER_INT);
+
+      // create query template for role
+      $query = 	"SELECT cohort.cohortId, startDate, endDate, location, description
+						FROM cohort
+						INNER JOIN profileCohort ON cohort.cohortId = profileCohort.cohortId
+						WHERE profileId = ?
+						ORDER BY startDate";
+      $statement = $mysqli->prepare($query);
+      if($statement === false) {
+         throw(new mysqli_sql_exception("Unable to prepare statement"));
+      }
+
+      // bind the member variables to the place holders in the template
+      $wasClean = $statement->bind_param("i", $profileId);
+      if($wasClean === false) {
+         throw(new mysqli_sql_exception("Unable to bind parameters"));
+      }
+
+      // execute the statement
+      if($statement->execute() === false) {
+         throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+      }
+
+      // get results
+      $results = $statement->get_result();
+      if($results->num_rows > 0) {
+
+         // retrieve results in bulk into an array
+         $results = $results->fetch_all(MYSQL_ASSOC);
+         if($results === false) {
+            throw(new mysqli_sql_exception("Unable to process result set"));
+         }
+
+         // step through results array and convert to Topic objects
+         foreach ($results as $index => $row) {
+            $results = new cohort($row["cohortId"], $row["startDate"], $row["endDate"], $row["location"], $row["description"]);
+         }
+
+         // return resulting array of Topic objects
+         return($results);
+      } else {
+         return (null);
+      }
+   }
 }
 
 

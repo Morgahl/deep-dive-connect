@@ -43,16 +43,9 @@ else{
 		$profile = Profile::getProfileByUserId($mysqli, $userId);
 		$security = Security::getSecurityBySecurityId($mysqli, $user->getSecurityId());
 
-		$cohorts = Cohort::getCohortsByProfileId($mysqli, $profile->getProfileId());
+		$cohort = Cohort::getRecentCohortByProfileId($mysqli, $profile->getProfileId());
 
-		if(isset($cohorts['Student'][0]['cohort']) === true){
-			$cohort = $cohorts['Student'][0]['cohort'];
-		}
-		elseif(isset($cohorts['Teacher'][0]['cohort']) === true){
-			$cohort = $cohorts['Teacher'][0]['cohort'];
-		}
-
-		//set userId into the session
+				//set userId into the session
 		$_SESSION["userId"] = $user->getUserId();
 
 		//set $profile info into session
@@ -70,12 +63,14 @@ else{
 		$_SESSION["security"]["canPromote"] = $security->getCanPromote();
 		$_SESSION["security"]["siteAdmin"] = $security->getSiteAdmin();
 
-		//set cohort info into session
-		$_SESSION["cohort"]["cohortId"] = $cohort->getCohortId();
-		$_SESSION["cohort"]["startDate"] = $cohort->getStartDate()->format("M Y");
-		$_SESSION["cohort"]["endDate"] = $cohort->getEndDate()->format("M Y");
-		$_SESSION["cohort"]["location"] = $cohort->getlocation();
-		$_SESSION["cohort"]["description"] = $cohort->getDescription();
+		if ($cohort !== null) {
+			//set cohort info into session
+			$_SESSION["cohort"]["cohortId"] = $cohort->getCohortId();
+			$_SESSION["cohort"]["startDate"] = $cohort->getStartDate()->format("M Y");
+			$_SESSION["cohort"]["endDate"] = $cohort->getEndDate()->format("M Y");
+			$_SESSION["cohort"]["location"] = $cohort->getlocation();
+			$_SESSION["cohort"]["description"] = $cohort->getDescription();
+		}
 
 		header("Location: ../../index.php");
 	}
