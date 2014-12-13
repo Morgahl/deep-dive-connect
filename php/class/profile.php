@@ -413,7 +413,7 @@ class Profile
 		}
 
 		//create the white list of allowed types
-		$goodExtensions = array("jpg", "jpeg", "png", "gif");
+		$goodExtensions = array("jpg", "jpeg", "png", "gif", "JPG");
 		$goodMimes      = array("image/jpeg", "image/png", "image/gif");
 
 		// verify the file was uploaded OK
