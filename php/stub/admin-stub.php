@@ -11,7 +11,7 @@ $total = count($security[0]);
 $inputTag = generateInputTags();
 
 //create table of Security Objects
-echo "<table style=\"width:100%; border: solid black 0.1em\">
+echo "<table>
 			<tr>
 				<td>Id</td>
 				<td>Description</td>

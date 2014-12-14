@@ -80,6 +80,27 @@ input{
    display: block;
 }
 
+table{
+	margin-top: 2em;
+	width: 100%;
+}
+
+tr{
+	text-align: center;
+}
+
+tr:first-of-type{
+	color: #f6cd0e;
+	font-weight: bold;
+	background-color: #2e2e2e;
+	border-bottom:solid 1px #000000;
+}
+
+.stripedTable{
+	background-color: #dddddd;
+	color: #000000;
+}
+
 /*#outerContainer{}*/
 
 /*#rowContainer{}*/
