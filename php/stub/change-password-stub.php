@@ -13,15 +13,15 @@ echo "<script type=\"text/javascript\" src=\"js/change-password.js\"></script>
 				.$inputTags.
 				"<p>
 					<label for=\"currentPassword\">Current Password:</label><br>
-					<input type=\"password\" id=\"currentPassword\" name=\"currentPassword\">
+					<input type=\"password\" class=\"form-control\" id=\"currentPassword\" name=\"currentPassword\">
 				</p>
 				<p>
 					<label for=\"newPassword\">New Password:</label><br>
-					<input type=\"password\" id=\"newPassword\" name=\"newPassword\">
+					<input type=\"password\" class=\"form-control\" id=\"newPassword\" name=\"newPassword\">
 				</p>
 				<p>
 					<label for=\"confirmPassword\">Confirm Password:</label><br>
-					<input type=\"password\" id=\"confirmPassword\" name=\"confirmPassword\">
+					<input type=\"password\" class=\"form-control\" id=\"confirmPassword\" name=\"confirmPassword\">
 				</p>
 				<button type=\"submit\" class=\"btn btn-primary btn-xs\" name=\"confirm\">Confirm</button>
 			</form>

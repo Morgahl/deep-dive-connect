@@ -26,23 +26,23 @@ echo		"<h3>Change Profile Picture</h3>
 				<h3>Change Profile Information</h3>
 				<p>
 					<label for=\"firstName\">First Name:</label><br>
-					<input type=\"text\" id=\"firstName\" name=\"firstName\">
+					<input type=\"text\" class=\"form-control\" id=\"firstName\" name=\"firstName\">
 				</p>
 				<p>
 					<label for=\"middleName\">Middle Name:</label><br>
-					<input type=\"text\" id=\"middleName\" name=\"middleName\">
+					<input type=\"text\" class=\"form-control\" id=\"middleName\" name=\"middleName\">
 				</p>
 				<p>
 					<label for=\"lastName\">Last Name:</label><br>
-					<input type=\"text\" id=\"lastName\" name=\"lastName\">
+					<input type=\"text\" class=\"form-control\" id=\"lastName\" name=\"lastName\">
 				</p>
 				<p>
 					<label for=\"location\">Location:</label><br>
-					<input type=\"text\" id=\"location\" name=\"location\">
+					<input type=\"text\" class=\"form-control\" id=\"location\" name=\"location\">
 				</p>
 				<p>
 					<label for=\"description\">Description:</label><br>
-					<input type=\"text\" id=\"description\" name=\"description\">
+					<input type=\"text\" class=\"form-control\" id=\"description\" name=\"description\">
 				</p>
 				<button id=\"profileSubmit\" class=\"btn btn-primary btn-xs\" type=\"submit\" name=\"submit\">Submit</button>
 			</form>

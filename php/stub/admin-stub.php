@@ -54,30 +54,30 @@ echo "	<option value=\"new\">*Create*</option>
 			<h3>Change Values</h3>
 			<p>Default:</p>
 				<select id=\"isDefault\" name=\"isDefault\">
-					<option value=\"0\">0</option>
-					<option value=\"1\">1</option>
+					<option value=\"0\">No</option>
+					<option value=\"1\">Yes</option>
 				</select>
 			<p>Create Topic:</p>
 				<select id=\"createTopic\" name=\"createTopic\">
-					<option value=\"0\">0</option>
-					<option value=\"1\">1</option>
+					<option value=\"0\">No</option>
+					<option value=\"1\">Yes</option>
 				</select>
 			<p>Can Edit Other:</p>
 				<select id=\"canEditOther\" name=\"canEditOther\">
-					<option value=\"0\">0</option>
-					<option value=\"1\">1</option>
+					<option value=\"0\">No</option>
+					<option value=\"1\">Yes</option>
 				</select>
 			<p>Can Promote:</p>
 				<select id=\"canPromote\" name=\"canPromote\">
-					<option value=\"0\">0</option>
-					<option value=\"1\">1</option>
+					<option value=\"0\">No</option>
+					<option value=\"1\">Yes</option>
 				</select>
 			<p>Site Admin:</p>
 				<select id=\"siteAdmin\" name=\"siteAdmin\">
-					<option value=\"0\">0</option>
-					<option value=\"1\">1</option>
+					<option value=\"0\">No</option>
+					<option value=\"1\">Yes</option>
 				</select><br>
-	<button id=\"securitySelect\" type=\"Submit\">Select</button>
+	<button id=\"securitySelect\" class=\"btn btn-primary btn-xs\" type=\"Submit\">Select</button>
 </form>
 <p id=\"adminOutput\"></p>";
 
