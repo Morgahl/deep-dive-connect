@@ -30,7 +30,7 @@ try {
 	// connect to mySQL
 	$mysqli = MysqliConfiguration::getMysqli();
 
-	// obtain email from $_POST
+	// obtain form info from $_POST
 	$email = filter_input(INPUT_POST,"email",FILTER_SANITIZE_EMAIL);
 	$password = filter_input(INPUT_POST,"password",FILTER_SANITIZE_STRING);
 

@@ -1,6 +1,5 @@
 ABSULTELY MUST GET DONE:
 
-	sign up does not properly assign default security
 	activation does not null out authToken
 	activation landing page needs to POST to a form processor that validates CSRF and activation logic
 	need a page to add or edit existing cohorts
