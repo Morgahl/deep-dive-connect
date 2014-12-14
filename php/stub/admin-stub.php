@@ -76,8 +76,9 @@ echo "	<option value=\"new\">*Create*</option>
 				<select id=\"siteAdmin\" name=\"siteAdmin\">
 					<option value=\"0\">No</option>
 					<option value=\"1\">Yes</option>
-				</select><br>
+				</select><br><br>
 	<button id=\"securitySelect\" class=\"btn btn-primary btn-xs\" type=\"Submit\">Select</button>
 </form>
-<p id=\"adminOutput\"></p>";
+<p id=\"adminOutput\"></p>
+";
 
