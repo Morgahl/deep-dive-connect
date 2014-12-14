@@ -1,11 +1,10 @@
 <?php
 
 /**
- * Author Joseph Bottone
- * http://josephmichaelbottone.com
- * bottone.joseph@gmail.
- * http://thundermedia.com
- **/
+ * loginSource Class
+ *
+ * @author Joseph Bottone <bottone.joseph@gmail.com>
+ */
 
 class LoginSource
 {

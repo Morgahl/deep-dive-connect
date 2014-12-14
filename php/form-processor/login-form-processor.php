@@ -1,6 +1,6 @@
 <?php
 /**
- * signup and login form processor
+ * Login form processor
  *
  * @author Joseph Bottone <bottone.joseph@gmail.com>
  * @author Marc Hayes <marc.hayes.tehc@gmail.com>
