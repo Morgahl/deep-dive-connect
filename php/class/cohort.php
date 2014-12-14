@@ -563,10 +563,11 @@ class Cohort
 		$profileId = filter_var($profileId, FILTER_SANITIZE_NUMBER_INT);
 
 		// create query template for role
-		$query = 	"SELECT cohort.cohortId, startDate, endDate, location, description, profileCohortId, profileId, profileCohort.cohortId, role
+		$query = 	"SELECT cohort.cohortId, startDate, endDate, location, description, MIN(profileCohortId) as profileCohortId, profileId, profileCohort.cohortId, role
 						FROM cohort
 						INNER JOIN profileCohort ON cohort.cohortId = profileCohort.cohortId
 						WHERE profileId = ?
+						GROUP BY cohort.cohortId, startDate, endDate, location, description, profileId, profileCohort.cohortId, role
 						ORDER BY CASE WHEN role = 'Admin' THEN 0 WHEN role = 'Instructor' THEN 1 WHEN role = 'Student' THEN 2 ELSE 3 END, startDate DESC";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
