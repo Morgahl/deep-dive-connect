@@ -893,10 +893,11 @@ class Profile
 		$cohortId = filter_var($cohortId, FILTER_SANITIZE_NUMBER_INT);
 
 		//create query template
-		$query = 	"SELECT profile.profileId, userId, firstName, lastName, middleName, location, description, profilePicFileName, profilePicFileType, profileCohortId, profileCohort.profileId, cohortId, role
+		$query = 	"SELECT profile.profileId, userId, firstName, lastName, middleName, location, description, profilePicFileName, profilePicFileType, MIN(profileCohortId) as profileCohortId, profileCohort.profileId, cohortId, role
 						FROM profile
 						INNER JOIN profileCohort ON profile.profileId = profileCohort.profileId
 						WHERE cohortId = ?
+						GROUP BY profile.profileId, userId, firstName, lastName, middleName, location, description, profilePicFileName, profilePicFileType, profileCohort.profileId, cohortId, role
 						ORDER BY CASE WHEN role = 'Admin' THEN 0 WHEN role = 'Instructor' THEN 1 WHEN role = 'Student' THEN 2 ELSE 3 END, firstName";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
