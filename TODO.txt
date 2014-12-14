@@ -1,7 +1,5 @@
 ABSULTELY MUST GET DONE:
 
-	activation does not null out authToken
-	activation landing page needs to POST to a form processor that validates CSRF and activation logic
 	need a page to add or edit existing cohorts
 	need a page to change security permissions for a given user
 	FORM PROCESSOR AUDIT - check for GET, POST and SESSION validation.
