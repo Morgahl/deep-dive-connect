@@ -11,6 +11,7 @@ require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 require_once("../lib/csrf.php");
 require_once("../class/profile.php");
 require_once("../class/user.php");
+require_once("../class/security.php");
 require_once("Mail.php");
 
 try{
@@ -82,7 +83,7 @@ try{
 		$headers["Content-Type"] = "text/html; charset=UTF-8";
 
 		// build message
-		$pageName = end(explode("/", $_SERVER["PHP_SELF"]));
+		$pageName = "php/form-processor/" . end(explode("/", $_SERVER["PHP_SELF"]));
 		$url = "https://" . $_SERVER["SERVER_NAME"] . $_SERVER["PHP_SELF"];
 		$url = str_replace($pageName, "activate.php", $url);
 		$url = "$url?authToken=$authToken";
@@ -100,15 +101,14 @@ EOF;
 		error_reporting(E_ALL & ~E_STRICT);
 		$mailer =& Mail::factory("sendmail");
 		$status = $mailer->send($to, $headers, $message);
-		var_dump($status);
+
 		if(PEAR::isError($status) === true) {
 			echo "<div class=\"alert alert-danger\" role=\"alert\"><strong>Nope!</strong> Unable to send mail message:" . $status->getMessage() . "</div>";
 		} else {
 			echo "<div class=\"alert alert-success\" role=\"alert\"><strong>Yay!</strong> Please check your Email to complete the signup process.</div>";
 		}
 	}
-}
-catch(Exception $exception){
+} catch(Exception $exception){
 	$_SESSION[$csrfName] = $csrfToken;
 	echo "<div class=\"alert alert-danger\" role=\"alert\"><strong>Nope!</strong> Unable to sign up: " . $exception->getMessage() . "</div>";
 }

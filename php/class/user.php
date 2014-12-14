@@ -433,10 +433,10 @@ class User{
 		}
 
 		//enforce: if hash, authkey, and salt are null loginsource is not null and vice versa
-		if($this->loginSourceId !== null && ($this->passwordHash !== null /*|| $this->authKey !== null*/ || $this->salt !== null)){
+		if($this->loginSourceId !== null && ($this->passwordHash !== null || $this->salt !== null)){
 			throw(new UnexpectedValueException("Sign up with external source or internal not both"));
 		}
-		elseif($this->loginSourceId === null && ($this->passwordHash === null || $this->authKey === null || $this->salt === null)){
+		elseif($this->loginSourceId === null && ($this->passwordHash === null || $this->salt === null)){
 			throw(new UnexpectedValueException("Sign up with external source or internal not both"));
 		}
 

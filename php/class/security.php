@@ -480,8 +480,7 @@ class Security
 	 * @throws mysqli_sql_exception when mySQL related errors occur
 	 * @throws Exception if unable to convert row to user
 	 */
-	public static function getSecurityBySecurityId(&$mysqli, $securityId)
-	{
+	public static function getSecurityBySecurityId(&$mysqli, $securityId){
 		// handle degenerate cases
 		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
@@ -541,12 +540,24 @@ class Security
 	/**
 	 * @return null|Security
 	 */
-	public static function getIdForDefault(){
+	public static function getIdForDefault(&$mysqli){
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
+
 		$query = "SELECT securityId, description, isDefault, createTopic, canEditOther, canPromote, siteAdmin FROM security WHERE isDefault = 1";
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
 
-		$query->execute();
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
 
-		$result = $query->get_result();
+		$result = $statement->get_result();
 		if($result === false) {
 			throw(new mysqli_sql_exception("Unable to get result set"));
 		}

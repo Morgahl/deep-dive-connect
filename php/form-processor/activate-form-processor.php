@@ -10,12 +10,15 @@ session_start();
 require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 require_once("../class/profile.php");
 require_once("../class/user.php");
+require_once("../lib/csrf.php");
 
 try {
 	$mysqli = MysqliConfiguration::getMysqli();
 
 	$csrfName = isset($_POST["csrfName"]) ? $_POST["csrfName"] : false;
 	$csrfToken = isset($_POST["csrfToken"]) ? $_POST["csrfToken"] : false;
+	var_dump($csrfName);
+	var_dump($csrfToken);
 
 	// verify CSRF tokens
 	if(verifyCsrf($csrfName, $csrfToken) === false){
@@ -23,6 +26,8 @@ try {
 	}
 
 	$authToken = filter_input(INPUT_POST, "authToken", FILTER_SANITIZE_STRING);
+	var_dump($authToken);
+
 
 	if ($csrfName === null || $csrfToken === null || $authToken === null) {
 		throw(new RuntimeException("Form variables incomplete or missing."));
@@ -32,7 +37,7 @@ try {
 		throw(new RuntimeException("Form variables are malformed."));
 	}
 
-	$newUser = User::getUserByAuthToken($mysqli, $authToken);
+	$newUser = User::getUserByAuthKey( $mysqli, $authToken);
 	$newProfile = Profile::getProfileByUserId($mysqli, $newUser->getUserId());
 
 	if ($newUser !== null || $newProfile !== null) {
@@ -40,12 +45,11 @@ try {
 		$newUser->update($mysqli);
 	}
 
-	echo "<div class='alert alert-success' role='alert'> <a href='#' class='alert-link'>Your account has been authenticated. </a></div>
-			<p><a href='../../index.php'>Home</a></p>";
+	echo "<div class='alert alert-success' role='alert'>Your account has been authenticated.</div>";
 
 	header("Location: ../../index.php");
 
 } catch(Exception $e) {
-	echo "<div class='alert alert-danger' role='alert'><a href='#' class='alert-link'>".$e->getMessage()."</a></div>";
+	echo "<div class='alert alert-danger' role='alert'>".$e->getMessage()."</div>";
 }
 ?>

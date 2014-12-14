@@ -40,7 +40,7 @@ try {
 	if(isset($user) === false) {
 		//use bootstrap div alert to echo to user
 		echo "<div class=\"alert alert-danger\" role=\"alert\"><p>No User Found</p></div>";
-	} elseif ($user->getAuthKey() === null) {
+	} elseif ($user->getAuthKey() !== null) {
 		//use bootstrap div alert to echo to user
 		echo "<div class=\"alert alert-danger\" role=\"alert\"><p>Please check your email to verify your email address.</p></div>";
 	} else {

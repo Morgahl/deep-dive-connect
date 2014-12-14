@@ -16,7 +16,11 @@ echo "<script type=\"text/javascript\" src=\"js/login.js\"></script>
 echo generateInputTags();
 echo "		<div class=\"col-sm-12 col-xs-4\">
 			<button id=\"loginBtn\" type=\"submit\" class=\"btn btn-primary btn-sm\" name=\"submit\">Login</button>
-			<button class=\"btn btn-primary btn-sm\" onclick=\"signupForm.php\">Sign-up</a>
+		</div>
+	</form>
+	<form name=\"signUp\" id=\"signup-form\" action=\"signupForm.php\">
+		<div class=\"col-sm-12 col-xs-4\">
+			<button id=\"signupbtn\" type=\"submit\" class=\"btn btn-primary btn-sm\" name=\"submit\">Sign-up</button>
 		</div>
 	</form>
 </aside>";
