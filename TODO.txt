@@ -1,12 +1,12 @@
 ABSULTELY MUST GET DONE:
 
-	inputs set as form-control class for visual consistency
-	Login to properly account for authorized users... authToken === null
 	sign up does not properly assign default security
 	activation does not null out authToken
 	activation landing page needs to POST to a form processor that validates CSRF and activation logic
 	need a page to add or edit existing cohorts
 	need a page to change security permissions for a given user
+	FORM PROCESSOR AUDIT - check for GET, POST and SESSION validation.
+	CSRF AUDIT
 	COMMENTING!!!
 	FORMS VALIDATING
 	FUNCUNIT TESTS PASSING
