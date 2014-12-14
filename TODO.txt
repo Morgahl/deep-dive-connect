@@ -1,5 +1,6 @@
 ABSULTELY MUST GET DONE:
 
+	page content titles
 	need a page to add or edit existing cohorts
 	need a page to change security permissions for a given user
 	FORM PROCESSOR AUDIT - check for GET, POST and SESSION validation.
