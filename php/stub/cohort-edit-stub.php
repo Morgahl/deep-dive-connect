@@ -12,12 +12,24 @@ $profileId = isset($_SESSION["profile"]["profileId"]) ? $_SESSION["profile"]["pr
 
 $cohorts[] = Cohort::getCohorts($mysqli);
 
-//echo "<h3>Cohort Association</h3>";
+echo "<h3>Cohort Association</h3>";
 
 //obtain cohorts associated with profile
-//$proCohort = Cohort::getCohortsByProfileId($mysqli, $profileId);
+$proCohort = Cohort::getCohortsByProfileId($mysqli, $profileId);
 
-//var_dump($proCohort);
+foreach($proCohort as $i => $firstDem){
+	echo "<row class=\"row\">";
+	foreach($firstDem as $j => $secondDem){
+		echo "<section class=\"col-md-3\">";
+		echo "<strong>". $i . "</strong><br>";
+		echo $secondDem["cohort"]->getDescription(). "<br>";
+		echo $secondDem["cohort"]->getStartDate()->format("M Y") . " - " . $secondDem["cohort"]->getEndDate()->format("M Y")."<br>";
+		echo $secondDem["cohort"]->getLocation(). "<br>";
+		echo "</section>";
+	}
+	echo "</row>";
+}
+
 
 
 
