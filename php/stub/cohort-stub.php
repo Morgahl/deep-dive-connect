@@ -23,7 +23,22 @@ echo "</div>";
 
 echo "<div class=\"col-xs-12\">";
 if ($profileId === false || $profileId === null){
-	echo "<p>" . count($profiles) . " user(s) signed up for this cohort<br>";
+	// get count of instructors
+	if (array_key_exists("Instructor", $profiles)) {
+		$instructors = count($profiles["Instructor"]);
+	} else {
+		$instructors = 0;
+	}
+
+	// get count of students
+	if (array_key_exists("Student", $profiles)) {
+		$students = count($profiles["Student"]);
+	} else {
+		$students = 0;
+	}
+
+	echo "<p>$instructors instructor(s) signed up for this cohort<br>";
+	echo "<p>$students student(s) signed up for this cohort<br>";
 	echo "<a class=\"btn btn-primary btn-xs\" href=\"signupForm.php\">Sign up or log in now!</a></p>";
 } else {
 	if ($profiles !== null){

@@ -9,7 +9,7 @@ require_once("php/class/profile.php");
 //CSRF path
 require_once("php/lib/csrf.php");
 
-$Admin = isset($_SESSION["security"]["siteAdmin"]) ? $_SESSION["security"]["siteAdmin"] : false;
+$admin = isset($_SESSION["security"]["siteAdmin"]) ? $_SESSION["security"]["siteAdmin"] : false;
 $profileId = isset($_SESSION["profile"]["profileId"]) ? $_SESSION["profile"]["profileId"] : false;
 
 try{
@@ -57,7 +57,7 @@ if($profileId !== false) {
 
 echo "<a href=\"cohort-main.php\" class=\"btn btn-default\"><h4><strong>Cohort</strong></h4></a>";
 
-if ($Admin === 1){
+if ($admin === 1){
 	echo "<a href=\"admin.php\" class=\"btn btn-default\"><h4><strong>Admin</strong></h4></a>";
 }
 if($profileId !== false) {
