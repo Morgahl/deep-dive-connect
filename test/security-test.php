@@ -1,12 +1,10 @@
 <?php
 
 /**
- * Author Joseph Bottone
- * http://josephmichaelbottone.com
- * bottone.joseph@gmail.
- * thundermedia.com
- * Unit test for Security
- **/
+ * Security test
+ *
+ * @author Joseph Bottone <bottone.joseph@gmail.com>
+ */
 
 // require mysqli connection object
 require_once("/etc/apache2/capstone-mysql/ddconnect.php");

@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * Login stub
+ *
+ * @author Joseph Bottone <bottone.joseph@gmail.com>
+ */
+
 require_once("php/lib/csrf.php");
 
 echo "<script type=\"text/javascript\" src=\"js/login.js\"></script>

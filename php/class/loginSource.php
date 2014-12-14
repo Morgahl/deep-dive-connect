@@ -1,7 +1,7 @@
 <?php
 
 /**
- * loginSource Class
+ * LoginSource Class
  *
  * @author Joseph Bottone <bottone.joseph@gmail.com>
  */

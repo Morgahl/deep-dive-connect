@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 
-
+/**
+* Login form
+*
+* @author Joseph Bottone <bottone.joseph@gmail.com>
+*/
 
 <html>
 <body>

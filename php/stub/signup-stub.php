@@ -1,10 +1,11 @@
 <?php
 
 /**
-* Signup HTML form
-*
-* Author Joseph Bottone  bottone.joseph@gmail.com
-*/
+ * Signup stub
+ *
+ * @author Joseph Bottone <bottone.joseph@gmail.com>
+ */
+
 require_once("php/lib/csrf.php");
 
 
