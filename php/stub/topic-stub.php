@@ -39,7 +39,7 @@ try {
 					</div>
 					<div class=\"modal-footer\">
 						<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" onclick=\"dePopulateTopicModal();\">Close</button>
-						<button type=\"submit\" id=\"modTopicSubmit\"  class=\"btn btn-default\">Save changes</button>
+						<button type=\"submit\" id=\"modTopicSubmit\"  class=\"btn btn-primary\">Save changes</button>
 					</div>
 				</form>
 			</div>
@@ -65,7 +65,7 @@ try {
 					</div>
 					<div class=\"modal-footer\">
 						<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" onclick=\"dePopulateCommentModal();\">Close</button>
-						<button type=\"submit\" id=\"modCommentSubmit\"  class=\"btn btn-default\">Save changes</button>
+						<button type=\"submit\" id=\"modCommentSubmit\"  class=\"btn btn-primary\">Save changes</button>
 					</div>
 				</form>
 			</div>

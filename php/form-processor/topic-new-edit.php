@@ -45,18 +45,19 @@ try {
 
 			// grab from the database
 			$topic = Topic::getTopicByTopicId($mysqli, $topicId);
+			var_dump($topic);
 
 			// if edit: verify that user is owner of topic or can editOther: then update.
-			if($topic->getProfileId() === $profileId || $canEditOther === 1) {
+			if($topic["topic"]->getProfileId() === $profileId || $canEditOther === 1) {
 				// make sure we got something
 				if ($topic === null) {
 					throw (new UnexpectedValueException("Not a valid Topic"));
 				}
 
 				// set values and update
-				$topic->setTopicSubject($subject);
-				$topic->setTopicBody($body);
-				$topic->update($mysqli);
+				$topic["topic"]->setTopicSubject($subject);
+				$topic["topic"]->setTopicBody($body);
+				$topic["topic"]->update($mysqli);
 			}
 		}
 		// return created topicId to calling JS
