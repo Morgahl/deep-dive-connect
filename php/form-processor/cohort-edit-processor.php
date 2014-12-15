@@ -76,7 +76,6 @@ try {
 			echo "<div class=\"alert alert-danger\" role=\"alert\"><p>Cohort Doesn't Exist.</p></div>";
 		}
 		else{
-			var_dump($cohortDelete);
 			foreach($cohortDelete as $i => $element){
 				if($element->getCohortId() === $cohortId && $element->getRole() === $cohortRole){
 					$delete = $cohortDelete[$i];
@@ -85,7 +84,7 @@ try {
 			}
 			$_SESSION["cohort"] = null;
 		}
-//		header("Location: ../../cohort-edit.php");
+		header("Location: ../../cohort-edit.php");
 	}
 
 } catch(Exception $exception) {
