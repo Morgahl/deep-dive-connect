@@ -6,7 +6,7 @@
  * for filtering and if the information is sanitized inserted into the
  * database.
  *
- *  @author Steven Chavez <schavez256@yahoo.com>
+ * @author Steven Chavez <schavez256@yahoo.com>
  * @see Profile
  */
 session_start();
@@ -18,6 +18,8 @@ require_once("../class/profile.php");
 require_once("../lib/csrf.php");
 
 try{
+
+	// verify csrfName and csrfToken isset
 	$csrfName = isset($_POST["csrfName"]) ? $_POST["csrfName"] : false;
 	$csrfToken = isset($_POST["csrfToken"]) ? $_POST["csrfToken"] : false;
 
@@ -29,15 +31,17 @@ try{
 	// connect to mySQL
 	$mysqli = MysqliConfiguration::getMysqli();
 
-//obtain profileId from $_SESSION
+	//obtain profileId from $_SESSION
 	$profileId = $_SESSION["profile"]["profileId"];
 
-//obtain profile by userId
+	//obtain profile by userId
 	$profile = Profile::getProfileByProfileId($mysqli, $profileId);
 
+	//if boolField stays false then no entries were filled when submitted
 	$boolField = false;
-// obtain info from the form-processor and set the values into the
-// object if it has a value
+
+	// obtain info from post
+	//set first name if not empty
 	$firstName = $_POST["firstName"];
 	if(empty($firstName) === false){
 		$profile->setFirstName($firstName);
@@ -45,6 +49,7 @@ try{
 		$boolField = true;
 	}
 
+	//set last name if not empty
 	$lastName = $_POST["lastName"];
 	if(empty($lastName) === false){
 		$profile->setLastName($lastName);
@@ -52,12 +57,14 @@ try{
 		$boolField = true;
 	}
 
+	// set middle name if not empty
 	$middleName = $_POST["middleName"];
 	if(empty($middleName) === false){
 		$profile->setMiddleName($middleName);
 		$boolField = true;
 	}
 
+	// set location if not empty
 	$location = $_POST["location"];
 	if(empty($location) === false){
 		$profile->setLocation($location);
@@ -65,6 +72,7 @@ try{
 		$boolField = true;
 	}
 
+	// set description if not empty
 	$description = $_POST["description"];
 	if(empty($description) === false){
 		$profile->setDescription($description);
@@ -72,10 +80,10 @@ try{
 		$boolField = true;
 	}
 
+	// if boolField equals true update profile with new information if not alert user
 	if($boolField === true){
 		$profile->update($mysqli);
 		echo "<div class=\"alert alert-success\" role=\"alert\"><p>Updated Successful</p></div>";
-
 	}
 	else{
 		echo "<div class=\"alert alert-danger\" role=\"alert\"><p><strong>WARNING!</strong> no entries</p></div>";
