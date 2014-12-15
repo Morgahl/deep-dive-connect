@@ -96,35 +96,3 @@ if ($profile !== null) {
 } else {
 	echo "<h2>No Valid Profile can be loaded.</h2>";
 }
-
-
-
-
-
-//echo "<div class=\"row\">";
-//if ($profileId === false || $profileId === null){
-//	echo "<p>" . count($profiles) . " user(s) signed up for this cohort<br>";
-//	echo "<a href=\"signupForm.php\">Sign up or log in now!</a></p>";
-//} else {
-//	if ($profiles !== null){
-//		foreach ($profiles as $index => $element) {
-//			echo "<h4>" . $index . "</h4>";
-//			echo "<div class=\"row\">";
-//			foreach ($element as $innerIndex => $innerElement){
-//				echo "<div class=\"col-xs-2\">";
-////				var_dump($innerElement);
-//				if (($fileName = $innerElement["profile"]->getProfilePicFileName()) !== null) {
-//					echo "<div class=\"row\"><img id=\"profilePic\" class=\"img-responsive\" src=\"/ddconnect/avatars/" . $fileName . "\" /></div>";
-//				} else {
-//					echo "<div class=\"row\"><img id=\"profilePic\" class=\"img-responsive\" src=\"resources/avatar-default.png\" /></div><br>";
-//				}
-//				echo "<p><a href=\"profile.php?profile=" . $innerElement["profile"]->getProfileId() . "\">" . $innerElement["profile"]->getFirstName() . " " . $innerElement["profile"]->getLastName() . "</a>";
-//				echo "</div>";
-//			}
-//			echo "</div>";
-//		}
-//	} else {
-//		echo "<p>0 user(s) signed up for this cohort</p>";
-//	}
-//}
-//echo "</div>";

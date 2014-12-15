@@ -17,7 +17,7 @@ require_once("../class/cohort.php");
 require_once("../class/security.php");
 
 try {
-	// store CSRF tokens
+	// verify csrf tokens are set
 	$csrfName = isset($_POST["csrfName"]) ? $_POST["csrfName"] : false;
 	$csrfToken = isset($_POST["csrfToken"]) ? $_POST["csrfToken"] : false;
 

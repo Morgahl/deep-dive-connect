@@ -19,13 +19,12 @@ require_once("../class/profile.php");
 require_once("../lib/csrf.php");
 
 try{
-
 	// verify csrf tokens are set
 	$csrfName = isset($_POST["csrfName"]) ? $_POST["csrfName"] : false;
 	$csrfToken = isset($_POST["csrfToken"]) ? $_POST["csrfToken"] : false;
 
 	// verify CSRF tokens
-	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false){
+	if(verifyCsrf($csrfName, $csrfToken) === false){
 		throw (new RuntimeException("External call made."));
 	}
 
@@ -33,7 +32,12 @@ try{
 	$mysqli = MysqliConfiguration::getMysqli();
 
 	//obtain profileId from $_SESSION
-	$profileId = $_SESSION["profile"]["profileId"];
+	$profileId = isset($_SESSION["profile"]["profileId"]) ? $_SESSION["profile"]["profileId"] : false;
+
+	//acquire passwords from POST
+	$currentPassword = filter_input(INPUT_POST,"currentPassword",FILTER_SANITIZE_STRING);
+	$newPassword = filter_input(INPUT_POST,"newPassword",FILTER_SANITIZE_STRING);
+	$confirmPassword = filter_input(INPUT_POST,"confirmPassword",FILTER_SANITIZE_STRING);
 
 	//obtain profile by userId
 	$profile = Profile::getProfileByProfileId($mysqli, $profileId);
@@ -44,11 +48,6 @@ try{
 
 	//get password from user
 	$oldPassword = $user->getPasswordHash();
-
-	//acquire passwords from POST
-	$currentPassword = $_POST["currentPassword"];
-	$newPassword = $_POST["newPassword"];
-	$confirmPassword = $_POST["confirmPassword"];
 
 	//hash the current password
 	$salt		= $user->getSalt();

@@ -18,12 +18,12 @@ require_once("../lib/csrf.php");
 require_once("../class/security.php");
 
 try{
-	// verify that csrfName and csrfToken are set
+	// verify csrf tokens are set
 	$csrfName = isset($_POST["csrfName"]) ? $_POST["csrfName"] : false;
 	$csrfToken = isset($_POST["csrfToken"]) ? $_POST["csrfToken"] : false;
 
 	// verify CSRF tokens
-	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false){
+	if(verifyCsrf($csrfName, $csrfToken) === false){
 		throw (new RuntimeException("External call made."));
 	}
 
@@ -31,18 +31,17 @@ try{
 	$mysqli = MysqliConfiguration::getMysqli();
 
 	//acquire option values from form and see if they are set
-	$securityId = isset($_POST["securityOption"]) ? $_POST["securityOption"] : false;
-	$isDefault = isset($_POST["isDefault"]) ? $_POST["isDefault"] : false;
-	$createTopic = isset($_POST["createTopic"]) ? $_POST["createTopic"]	: false;
-	$canEditOther = isset($_POST["canEditOther"]) ? $_POST["canEditOther"] : false;
-	$canPromote = isset($_POST["canPromote"]) ? $_POST["canPromote"] : false;
-	$siteAdmin = isset($_POST["siteAdmin"]) ? $_POST["siteAdmin"] : false;
+	$securityId = filter_input(INPUT_POST,"securityOption",FILTER_VALIDATE_INT);
+	$isDefault = filter_input(INPUT_POST,"isDefault",FILTER_VALIDATE_INT);
+	$createTopic = filter_input(INPUT_POST,"createTopic",FILTER_VALIDATE_INT);
+	$canEditOther = filter_input(INPUT_POST,"canEditOther",FILTER_VALIDATE_INT);
+	$canPromote = filter_input(INPUT_POST,"canPromote",FILTER_VALIDATE_INT);
+	$siteAdmin = filter_input(INPUT_POST,"siteAdmin",FILTER_VALIDATE_INT);
+	$newPermission = filter_input(INPUT_POST,"newPermission",FILTER_SANITIZE_STRING);
+	$deletePermission = filter_input(INPUT_POST,"deletePermission",FILTER_VALIDATE_INT);
 
 	// process depending on $securityId
 	if($securityId === "new"){
-		// acquires value from jQuery input which is only available if Admin selects *create*
-		$newPermission = $_POST["newPermission"];
-
 		// creates new security object with new name and values
 		$security = new Security(null, $newPermission, $isDefault, $createTopic, $canEditOther, $canPromote, $siteAdmin);
 
@@ -51,11 +50,6 @@ try{
 		header("Location: ../../admin.php");
 	}
 	elseif($securityId === "delete"){
-		// acquires value from jQuery input which is only available if Admin selects *delete*
-		$deletePermission = $_POST["deletePermission"];
-
-		// ensures variable is an int
-		$deletePermission = filter_var($deletePermission, FILTER_VALIDATE_INT);
 		$deletePermission = intval($deletePermission);
 
 		// gets object by id

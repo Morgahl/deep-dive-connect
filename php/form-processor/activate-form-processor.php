@@ -13,27 +13,25 @@ require_once("../class/user.php");
 require_once("../lib/csrf.php");
 
 try {
-	$mysqli = MysqliConfiguration::getMysqli();
-
+	// verify csrf tokens are set
 	$csrfName = isset($_POST["csrfName"]) ? $_POST["csrfName"] : false;
 	$csrfToken = isset($_POST["csrfToken"]) ? $_POST["csrfToken"] : false;
-	var_dump($csrfName);
-	var_dump($csrfToken);
 
 	// verify CSRF tokens
 	if(verifyCsrf($csrfName, $csrfToken) === false){
 		throw (new RuntimeException("External call made."));
 	}
 
+	$mysqli = MysqliConfiguration::getMysqli();
+
 	$authToken = filter_input(INPUT_POST, "authToken", FILTER_SANITIZE_STRING);
-	var_dump($authToken);
 
 
-	if ($csrfName === null || $csrfToken === null || $authToken === null) {
+	if ($authToken === null) {
 		throw(new RuntimeException("Form variables incomplete or missing."));
 	}
 
-	if ($csrfName === false || $csrfToken === false || $authToken === false) {
+	if ($authToken === false) {
 		throw(new RuntimeException("Form variables are malformed."));
 	}
 

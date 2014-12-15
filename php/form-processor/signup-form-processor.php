@@ -3,6 +3,7 @@
  * Signup form processor
  *
  * @author Joseph Bottone <bottone.joseph@gmail.com>
+ * @author Marc Hayes <Marc.Hayes.Tech@gmail.com>
  */
 
 session_start();
@@ -14,10 +15,7 @@ require_once("../class/security.php");
 require_once("Mail.php");
 
 try{
-	$mysqli = MysqliConfiguration::getMysqli();
-	//verify the form was submitted properly
-
-	// store CSRF tokens
+	// verify csrf tokens are set
 	$csrfName = isset($_POST["csrfName"]) ? $_POST["csrfName"] : false;
 	$csrfToken = isset($_POST["csrfToken"]) ? $_POST["csrfToken"] : false;
 
@@ -26,6 +24,9 @@ try{
 		throw (new RuntimeException("External call made."));
 	}
 
+	$mysqli = MysqliConfiguration::getMysqli();
+
+	// get from's POST data
 	$email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
 	$password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
 	$confPassword = filter_input(INPUT_POST, "confPassword", FILTER_SANITIZE_STRING);

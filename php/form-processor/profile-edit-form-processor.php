@@ -17,8 +17,7 @@ require_once("../class/profile.php");
 require_once("../lib/csrf.php");
 
 try{
-
-	// verify csrfName and csrfToken isset
+	// verify csrf tokens are set
 	$csrfName = isset($_POST["csrfName"]) ? $_POST["csrfName"] : false;
 	$csrfToken = isset($_POST["csrfToken"]) ? $_POST["csrfToken"] : false;
 
@@ -30,8 +29,13 @@ try{
 	// connect to mySQL
 	$mysqli = MysqliConfiguration::getMysqli();
 
-	//obtain profileId from $_SESSION
-	$profileId = $_SESSION["profile"]["profileId"];
+	//obtain form data from $_SESSION
+	$profileId = isset($_SESSION["profile"]["profileId"]) ? $_SESSION["profile"]["profileId"] : false;
+	$firstName = filter_input(INPUT_POST, "firstName", FILTER_SANITIZE_STRING);
+	$lastName = filter_input(INPUT_POST, "lastName", FILTER_SANITIZE_STRING);
+	$middleName = filter_input(INPUT_POST, "middleName", FILTER_SANITIZE_STRING);
+	$location = filter_input(INPUT_POST, "location", FILTER_SANITIZE_STRING);
+	$description = filter_input(INPUT_POST, "description", FILTER_SANITIZE_STRING);
 
 	//obtain profile by userId
 	$profile = Profile::getProfileByProfileId($mysqli, $profileId);
@@ -41,7 +45,6 @@ try{
 
 	// obtain info from post
 	//set first name if not empty
-	$firstName = $_POST["firstName"];
 	if(empty($firstName) === false){
 		$profile->setFirstName($firstName);
 		$_SESSION["profile"]["firstName"] = $profile->getFirstName();
@@ -49,7 +52,6 @@ try{
 	}
 
 	//set last name if not empty
-	$lastName = $_POST["lastName"];
 	if(empty($lastName) === false){
 		$profile->setLastName($lastName);
 		$_SESSION["profile"]["lastName"] = $profile->getLastName();
@@ -57,14 +59,12 @@ try{
 	}
 
 	// set middle name if not empty
-	$middleName = $_POST["middleName"];
 	if(empty($middleName) === false){
 		$profile->setMiddleName($middleName);
 		$boolField = true;
 	}
 
 	// set location if not empty
-	$location = $_POST["location"];
 	if(empty($location) === false){
 		$profile->setLocation($location);
 		$_SESSION["profile"]["location"]= $profile->getLocation();
@@ -72,7 +72,6 @@ try{
 	}
 
 	// set description if not empty
-	$description = $_POST["description"];
 	if(empty($description) === false){
 		$profile->setDescription($description);
 		$_SESSION["profile"]["description"]= $profile->getDescription();

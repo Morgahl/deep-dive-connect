@@ -5,6 +5,7 @@ require_once("../class/topic.php");
 require_once("../lib/csrf.php");
 
 try {
+	// verify csrf tokens are set
 	$csrfName = isset($_POST["csrfName"]) ? $_POST["csrfName"] : false;
 	$csrfToken = isset($_POST["csrfToken"]) ? $_POST["csrfToken"] : false;
 
