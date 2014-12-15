@@ -1,17 +1,23 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Steven
- * Date: 12/11/2014
- * Time: 9:04 AM
+ * Form for change-password-stub
+ *
+ * Allows users to change their password by entering their
+ * current password, new password, and confirmation of new
+ * password.
+ *
+ * @author Steven Chavez <schavez256@yahoo.com>
  */
-$inputTags = generateInputTags();
 
+// form that allows user to change password
 echo "<script type=\"text/javascript\" src=\"js/change-password.js\"></script>
 		<h3>Change Password</h3>
-			<form id=\"changePasswordForm\" action=\"/php/form-processor/change-password-form-processor.php\" method=\"post\">"
-				.$inputTags.
-				"<p>
+			<form id=\"changePasswordForm\" action=\"/php/form-processor/change-password-form-processor.php\" method=\"post\">";
+
+// generates csrf token
+generateInputTags();
+
+echo			"<p>
 					<label for=\"currentPassword\">Current Password:</label><br>
 					<input type=\"password\" class=\"form-control\" id=\"currentPassword\" name=\"currentPassword\" autocomplete=\"off\">
 				</p>

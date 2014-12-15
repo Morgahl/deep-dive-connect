@@ -1,6 +1,10 @@
 <?php
 /**
- * change password form-processor processor
+ * Form processor for change-password-stub.php
+ *
+ * Acquires values from form and ensures that password matches old one
+ * from database and that the new password matches the password confirm
+ * before moving on to setting the newly hashed password into database.
  *
  * @author Steven Chavez <schavez256@yahoo.com>
  */
@@ -15,10 +19,12 @@ require_once("../class/profile.php");
 require_once("../lib/csrf.php");
 
 try{
+
+	// verify csrf tokens are set
 	$csrfName = isset($_POST["csrfName"]) ? $_POST["csrfName"] : false;
 	$csrfToken = isset($_POST["csrfToken"]) ? $_POST["csrfToken"] : false;
 
-// verify CSRF tokens
+	// verify CSRF tokens
 	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false){
 		throw (new RuntimeException("External call made."));
 	}
@@ -39,9 +45,6 @@ try{
 	//get password from user
 	$oldPassword = $user->getPasswordHash();
 
-	$currentPassword = null;
-	$newPassword = null;
-	$confirmPassword = null;
 	//acquire passwords from POST
 	$currentPassword = $_POST["currentPassword"];
 	$newPassword = $_POST["newPassword"];
@@ -64,7 +67,7 @@ try{
 		echo "<div class=\"alert alert-danger\" role=\"alert\"><p>Passwords must match</p></div>";
 	}
 	else{
-		//No that you made it this far set new password
+		//Now that you made it this far set new password
 		$salt		= $user->getSalt();
 		$newHash 	= hash_pbkdf2("sha512", $newPassword, $salt, 2048, 128);
 
