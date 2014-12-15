@@ -19,7 +19,7 @@ echo "<script type=\"text/javascript\" src=\"js/change-password.js\"></script>
 			<form id=\"changePasswordForm\" action=\"/php/form-processor/change-password-form-processor.php\" method=\"post\">";
 
 // generates csrf token
-generateInputTags();
+echo generateInputTags();
 
 echo			"<p>
 					<label for=\"currentPassword\">Current Password:</label><br>
