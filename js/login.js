@@ -20,7 +20,7 @@ $(document).ready(function()
 
 			messages: {
 				email: {
-					email: "Please enter a valid email.",
+					email: "Please enter a lawful email.",
 					required: "Please enter your email."
 				},
 				password: {
