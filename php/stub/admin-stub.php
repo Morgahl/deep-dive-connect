@@ -63,7 +63,7 @@ echo"<h3>Select Security Description</h3>
 		<form id=\"securityDropDown\" action=\"php/form-processor/admin-processor.php\" method=\"POST\">";
 
 // generate csrf token
-generateInputTags();
+echo generateInputTags();
 
 // creates drop down with dynamic content of security description
 echo	"<select id=\"securityOption\" name=\"securityOption\" >";
