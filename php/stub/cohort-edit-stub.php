@@ -17,32 +17,31 @@ $profileId = isset($_SESSION["profile"]["profileId"]) ? $_SESSION["profile"]["pr
 $cohorts[] = Cohort::getCohorts($mysqli);
 
 
-echo "<row class=\"row\">";
-echo "<section class=\"col-md-12\">
-			<h3>Cohort Association</h3>
-		</section>";
+echo "<div class=\"col-xs-12\">";
+echo "<h3>Cohort Association</h3>";
 
 //obtain cohorts associated with profile
 $proCohort = Cohort::getCohortsByProfileId($mysqli, $profileId);
 
 if(empty($proCohort) === false){
 	foreach($proCohort as $i => $firstDem){
+		echo "<strong>". $i . ":</strong><br>";
+		echo "<div class=\"row\">";
 		foreach($firstDem as $j => $secondDem){
-			echo "<section class=\"col-md-3\">";
-			echo "<strong>". $i . "</strong><br>";
-			echo $secondDem["cohort"]->getDescription(). "<br>";
-			echo $secondDem["cohort"]->getStartDate()->format("M Y") . " - " . $secondDem["cohort"]->getEndDate()->format("M Y")."<br>";
-			echo $secondDem["cohort"]->getLocation(). "<br>";
+			echo "<section class=\"col-sm-4 col-xs-6\">";
+			echo "<a href=\"cohort.php?cohort=" . $secondDem["cohort"]->getCohortId() . "\"><p><strong>" . $secondDem["cohort"]->getDescription() . "</strong><br>";
+			echo "" . $secondDem["cohort"]->getStartDate()->format("M Y") . " - " . $secondDem["cohort"]->getEndDate()->format("M Y") . "<br>";
+			echo $secondDem["cohort"]->getLocation() . "</p></a>";
 			echo "</section>";
 		}
-		echo "</row>";
+		echo "</div>";
 	}
 }
 else{
 	echo "<section><div class=\"alert alert-info\" role=\"alert\"><p>You are not associated with any cohorts.</p></div></section>";
 }
 
-
+echo "</div>";
 
 // drop down of Cohorts
 $total = count($cohorts[0]);
