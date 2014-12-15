@@ -5,6 +5,7 @@ require_once("php/class/profile.php");
 require_once("php/class/topic.php");
 require_once("php/class/comment.php");
 
+$admin = isset($_SESSION["security"]["siteAdmin"]) ? $_SESSION["security"]["siteAdmin"] : false;
 $sessionProfileId = isset($_SESSION["profile"]["profileId"]) ? $_SESSION["profile"]["profileId"] : false;
 $profileId = filter_input(INPUT_GET,"profile", FILTER_VALIDATE_INT);
 
@@ -32,6 +33,13 @@ if ($profile !== null) {
 	echo "<div class=\"row\">";
 	if ($profileId === $sessionProfileId){
 		echo "<a href=\"profile-edit.php\"><button class=\"btn btn-primary btn-xs\">edit-profile</button></a><br>";
+	}
+
+	//allows admin to edit permissions for everyone but the admin
+	if($admin === 1 && filter_input(INPUT_GET,"profile", FILTER_VALIDATE_INT) !== null) {
+		echo "<br><a href=\"permissions.php?profile=".
+			urlencode($profileId)
+			."\"><button class=\"btn btn-danger btn-xs\">edit-permissions</button></a><br>";
 	}
 
 	echo "<h3><strong>" . $profile->getFirstName() . " " . $profile->getLastName() . "</strong></h3>";
