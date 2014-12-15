@@ -1,5 +1,5 @@
 <?php
-
+   //add some comments for footer
    echo
    "<div class = footer>
 		<p>DEEP DIVE CONNECT is a social forum created by, and for, Deep Dive Coders (past, present and future) and their friends.</p>
