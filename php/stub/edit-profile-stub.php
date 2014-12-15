@@ -1,28 +1,42 @@
 <?php
  /**
- * Created by PhpStorm.
- * User: Steven
- * Date: 12/5/2014
- * Time: 11:07 AM
- */
+  * Form to edit profile
+  *
+  * Allows user to upload avatars, edit their information(name, description, location),
+  * also provides links to forms to edit cohorts and change their password
+  *
+  * @author Steven Chavez <schavez256@yahoo.com>
+  * @see Profile
+  */
+
+//require to verify csrf
 require_once("php/lib/csrf.php");
 
-$inputTagPic = generateInputTags();
-$inputTagProfile = generateInputTags();
-
+//form that allows user to upload images
 echo		"<h3>Change Profile Picture</h3>
 			<script src=\"js/do-upload.js\"></script>
-			<form id=\"imgUploadForm\" action=\"php/form-processor/do-upload.php\" enctype=\"multipart/form-data\" method=\"post\">". $inputTagPic .
-				"<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"5000000\">
+			<form id=\"imgUploadForm\" action=\"php/form-processor/do-upload.php\" enctype=\"multipart/form-data\" method=\"post\">";
+
+//generate input tags for img upload form
+generateInputTags();
+
+echo  		"<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"5000000\">
 				<label for=\"file-upload\">photo location:</label>
 				<p>Max-size: 3 mb</p>
 				<span class=\"btn btn-primary btn-md btn-file\">Browse...<input type=\"file\" id=\"imgUpload\" name=\"imgUpload\"></span>
 				<button id=\"uploadSubmit\" class=\"btn btn-primary btn-md\" type=\"submit\" name=\"submit\" value=\"send\">Change Image</button>
 			</form>
 			<p id=\"imgUploadOutput\"></p>
-			<script src=\"js/profile-edit.js\"></script>
-			<form id=\"profileEditForm\" action=\"php/form-processor/profile-edit-form-processor.php\" method=\"post\">". $inputTagProfile ."
-				<!-- Change profile information -->
+			<script src=\"js/profile-edit.js\"></script>";
+
+
+//form to update basic information
+echo			"<form id=\"profileEditForm\" action=\"php/form-processor/profile-edit-form-processor.php\" method=\"post\">";
+
+//generate input tags for basic information form
+generateInputTags();
+
+echo 			"<!-- Change profile information -->
 				<h3>Change Profile Information</h3>
 				<p>
 					<label for=\"firstName\">First Name:</label><br>
@@ -46,8 +60,10 @@ echo		"<h3>Change Profile Picture</h3>
 				</p>
 				<button id=\"profileSubmit\" class=\"btn btn-primary btn-md\" type=\"submit\" name=\"submit\">Submit</button>
 			</form>
-			<p id=\"outputProfileEdit\"></p>
-			<h3>Cohort Association</h3>
+			<p id=\"outputProfileEdit\"></p>";
+
+//links to cohort edit and password change forms
+echo		"<h3>Cohort Association</h3>
 			<p><a href=\"cohort-edit.php\"><button class=\"btn btn-primary btn-xs\">Change Cohort</button></a></p>
 
 			<!-- Account Settings -->
