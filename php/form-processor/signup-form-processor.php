@@ -3,7 +3,7 @@
  * Signup form processor
  *
  * @author Joseph Bottone <bottone.joseph@gmail.com>
- * @contributor Marc Hayes <marc.hayes.tech@gmail.com>
+ * @author Marc Hayes <marc.hayes.tech@gmail.com>
  */
 
 session_start();
