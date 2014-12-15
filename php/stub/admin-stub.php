@@ -3,6 +3,11 @@
 require_once("php/class/security.php");
 require_once("php/lib/csrf.php");
 
+
+if(empty($_SESSION["profile"]["profileId"]) === true) {
+	header("Location: index.php");
+}
+
 //create array to catch security objects
 $security[] = Security::getSecurityObjects($mysqli);
 

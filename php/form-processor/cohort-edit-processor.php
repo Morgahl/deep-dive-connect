@@ -24,25 +24,46 @@ $profileId = $_SESSION["profile"]["profileId"];
 
 //get the value of the selection they made
 $cohortId = $_POST["cohortOption"];
+$radio = $_POST["cohortEditOptions"];
 
-$profileCohort = new profileCohort(null, $profileId, $cohortId, "Student");
-$profileCohort->insert($mysqli);
+if($radio === "add"){
+	$profileCohort = new profileCohort(null, $profileId, $cohortId, "Student");
+	$profileCohort->insert($mysqli);
 
-$cohort = Cohort::getCohortByCohortId($mysqli, $cohortId);
+	$cohort = Cohort::getCohortByCohortId($mysqli, $cohortId);
 
 //$_SESSION["cohort"] = Cohort::getCohortByProfileId($mysqli, $profileId);
 
-$_SESSION["cohort"]["cohortId"] = $cohort[0]->getCohortId();
-$_SESSION["cohort"]["startDate"] = $cohort[0]->getStartDate()->format("M Y");
-$_SESSION["cohort"]["endDate"] = $cohort[0]->getEndDate()->format("M Y");
-$_SESSION["cohort"]["location"] = $cohort[0]->getlocation();
-$_SESSION["cohort"]["description"] = $cohort[0]->getDescription();
+	$_SESSION["cohort"]["cohortId"] = $cohort[0]->getCohortId();
+	$_SESSION["cohort"]["startDate"] = $cohort[0]->getStartDate()->format("M Y");
+	$_SESSION["cohort"]["endDate"] = $cohort[0]->getEndDate()->format("M Y");
+	$_SESSION["cohort"]["location"] = $cohort[0]->getlocation();
+	$_SESSION["cohort"]["description"] = $cohort[0]->getDescription();
 
-if(isset($profileCohort) === false){
-	echo "<div class=\"alert alert-danger\" role=\"alert\"><p>Unable to connect you to your Cohort.</p></div>";
+	if(isset($profileCohort) === false){
+		echo "<div class=\"alert alert-danger\" role=\"alert\"><p>Unable to connect you to your Cohort.</p></div>";
+	}
+	else{
+		echo "<div class=\"alert alert-success\" role=\"alert\"><p>Connection Made</p></div>";
+	}
+	header("Location: ../../cohort-edit.php");
 }
 else{
-	echo "<div class=\"alert alert-success\" role=\"alert\"><p>Connection Made</p></div>";
+	$cohortDelete = profileCohort::getCohortByProfileId($mysqli, $profileId);
+
+	if($cohortDelete === null){
+		echo "<div class=\"alert alert-danger\" role=\"alert\"><p>Cohort Doesn't Exist.</p></div>";
+	}
+	else{
+
+		foreach($cohortDelete as $i => $element){
+			if($element->getCohortId() == $cohortId){
+				$delete = $cohortDelete[$i];
+				$delete->delete($mysqli);
+			}
+		}
+		$_SESSION["cohort"] = null;
+	}
+	header("Location: ../../cohort-edit.php");
 }
 
-header("Location: ../../cohort-edit.php");
