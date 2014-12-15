@@ -9,6 +9,10 @@
  * @author Steven Chavez <schavez256@yahoo.com>
  */
 
+
+require_once("php/lib/csrf.php");
+
+
 // form that allows user to change password
 echo "<script type=\"text/javascript\" src=\"js/change-password.js\"></script>
 		<h3>Change Password</h3>

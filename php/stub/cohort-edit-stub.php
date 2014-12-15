@@ -5,6 +5,7 @@
  * Date: 12/8/2014
  * Time: 11:53 AM
  */
+require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 require_once("php/class/cohort.php");
 require_once("php/class/profileCohort.php");
 require_once("php/lib/csrf.php");
@@ -12,6 +13,8 @@ require_once("php/lib/csrf.php");
 if(empty($_SESSION["profile"]["profileId"]) === true) {
 	header("Location: index.php");
 }
+
+$mysqli = MysqliConfiguration::getMysqli();
 
 $profileId = isset($_SESSION["profile"]["profileId"]) ? $_SESSION["profile"]["profileId"] : false;
 $canPromote = isset($_SESSION["security"]["canPromote"]) ? $_SESSION["security"]["canPromote"] : false;

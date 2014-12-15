@@ -9,6 +9,7 @@
  */
 
 // require files necessary
+require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 require_once("php/class/security.php");
 require_once("php/lib/csrf.php");
 
@@ -19,6 +20,8 @@ $admin = isset($_SESSION["security"]["siteAdmin"]) ? $_SESSION["security"]["site
 if(empty($_SESSION["profile"]["profileId"]) === true || $admin !== 1) {
 	header("Location: index.php");
 }
+
+$mysqli = MysqliConfiguration::getMysqli();
 
 //create array to catch security objects
 $security[] = Security::getSecurityObjects($mysqli);

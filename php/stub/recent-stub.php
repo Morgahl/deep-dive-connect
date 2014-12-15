@@ -2,6 +2,7 @@
 try {
 	require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 	require_once("php/class/topic.php");
+	require_once("php/lib/csrf.php");
 
 	$createTopic = isset($_SESSION["security"]["createTopic"]) ? $_SESSION["security"]["createTopic"] : false;
 

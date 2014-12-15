@@ -1,26 +1,6 @@
 <?php
-//path to mysqli class
-require_once("/etc/apache2/capstone-mysql/ddconnect.php");
-
-//require the files needed
-require_once("php/class/user.php");
-require_once("php/class/profile.php");
-
-//CSRF path
-require_once("php/lib/csrf.php");
-
 $admin = isset($_SESSION["security"]["siteAdmin"]) ? $_SESSION["security"]["siteAdmin"] : false;
 $profileId = isset($_SESSION["profile"]["profileId"]) ? $_SESSION["profile"]["profileId"] : false;
-
-try{
-	// connect to mySQL
-	$mysqli = MysqliConfiguration::getMysqli();
-
-
-}
-catch (Exception $exception){
-
-}
 
 echo "<!DOCTYPE html>
 <html>
