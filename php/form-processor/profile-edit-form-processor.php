@@ -2,12 +2,11 @@
 /**
  * Form processor for profile-edit.php
  *
- * Takes the information from the form-processor and sends it to the profile class
+ * Takes the information from the form and sends it to the profile class
  * for filtering and if the information is sanitized inserted into the
  * database.
  *
  * @author Steven Chavez <schavez256@yahoo.com>
- * @see Profile
  */
 session_start();
 //path to mysqli class
