@@ -33,10 +33,14 @@ try {
 
 	// obtain profileId from $_SESSION
 	$profileId = isset($_SESSION["profile"]["profileId"]) ? $_SESSION["profile"]["profileId"] : false;
+	$fileSize = isset($_FILES["imgUpload"]["size"]) ? $_FILES["imgUpload"]["size"] : false;
 
 	//does not all images over 3mb
-	if($_FILES["imgUpload"]["size"] > 3145728){
+	if($fileSize > 3145728){
 		echo"<div class=\"alert alert-danger\" role=\"alert\"><p>File to large</p></div>";
+	}
+	elseif ($fileSize <= 0) {
+		echo"<div class=\"alert alert-danger\" role=\"alert\"><p>No file selected</p></div>";
 	}
 	else{
 		// obtain profile by userId which acquires file to sanitize from $_FILES
