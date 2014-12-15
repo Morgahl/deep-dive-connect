@@ -9,7 +9,7 @@ try {
 	$csrfToken = isset($_POST["csrfToken"]) ? $_POST["csrfToken"] : false;
 
 	// verify CSRF tokens
-	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false){
+	if(verifyCsrf($csrfName, $csrfToken) === false){
 		throw (new RuntimeException("External call made."));
 	}
 

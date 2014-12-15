@@ -7,12 +7,14 @@
  */
 require_once("php/class/cohort.php");
 require_once("php/class/profileCohort.php");
+require_once("php/lib/csrf.php");
 
 if(empty($_SESSION["profile"]["profileId"]) === true) {
 	header("Location: index.php");
 }
 
 $profileId = isset($_SESSION["profile"]["profileId"]) ? $_SESSION["profile"]["profileId"] : false;
+$canPromote = isset($_SESSION["security"]["canPromote"]) ? $_SESSION["security"]["canPromote"] : false;
 
 $cohorts[] = Cohort::getCohorts($mysqli);
 
@@ -51,13 +53,15 @@ echo "<row class=\"row\">
 		<h3>Cohort Edit</h3>
 		<form id=\"cohortEditForm\" action=\"php/form-processor/cohort-edit-processor.php\" method=\"POST\">";
 
+echo generateInputTags();
+
 //radio buttons
 
 echo "<label for=\"cohortEditOptions\">options</label><br>
 		<input type=\"radio\" name=\"cohortEditOptions\" value=\"add\" checked>Add
 		<input type=\"radio\" name=\"cohortEditOptions\" value=\"delete\">Delete<br><br>";
 
-echo "<label for=\"cohortOption\">Cohorts</label>
+echo "<label for=\"cohortOption\">Cohort:</label>
    	<select class=\"form-control\" id=\"cohortOption\" name=\"cohortOption\">";
 
 for($i = 0; $i < $total; $i++) {
@@ -65,8 +69,17 @@ for($i = 0; $i < $total; $i++) {
 	$endDate = $cohorts[0][$i]->getEndDate();
 
 	echo "<option value=\"" . $cohorts[0][$i]->getCohortId() . "\">";
-	echo $startDate->format("M Y") . " - " . $endDate->format("M Y");
+	echo $startDate->format("M Y") . " - " . $endDate->format("M Y") . ": " . $cohorts[0][$i]->getDescription();
 	echo "</option>";
+}
+
+echo "	</select><br>
+		<label for=\"cohortRole\">Role:</label>
+		<select class=\"form-control\" id=\"cohortRole\" name=\"cohortRole\">
+			<option value=\"Student\">Student</option>";
+if ($canPromote === 1) {
+echo "<option value=\"Instructor\">Instructor</option>";
+echo "<option value=\"Admin\">Admin</option>";
 }
 
 echo "	</select><br>
