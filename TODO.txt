@@ -1,6 +1,5 @@
 ABSULTELY MUST GET DONE:
 
-	page content titles
 	need a page to add or edit existing cohorts\
 	FORM PROCESSOR AUDIT - check for GET, POST and SESSION validation.
 	CSRF AUDIT
@@ -13,11 +12,9 @@ ABSULTELY MUST GET DONE:
 
 NEED TO GET TO:
 
-	need footer stub to have data about the project
-	correct user cohort edit page to only create one distinct link.
-	allow user to remove themselves from cohort membership.
+	page content titles
+   need footer stub to have data about the project
 
 WILL TRY TO GET TO:
 
-	need to clean up table in admin view.
 	Clean up recent stub to display topics cleaner
