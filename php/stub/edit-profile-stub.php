@@ -56,7 +56,7 @@ echo 			"<!-- Change profile information -->
 				</p>
 				<p>
 					<label for=\"description\">Description:</label><br>
-					<input type=\"text\" class=\"form-control\" id=\"description\" name=\"description\">
+					<textarea id=\"description\" name=\"description\" class=\"form-control\" rows=\"2\" maxlength=\"256\"></textarea>
 				</p>
 				<button id=\"profileSubmit\" class=\"btn btn-primary btn-md\" type=\"submit\" name=\"submit\">Submit</button>
 			</form>
