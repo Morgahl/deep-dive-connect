@@ -18,7 +18,7 @@ echo		"<h3>Change Profile Picture</h3>
 			<form id=\"imgUploadForm\" action=\"php/form-processor/do-upload.php\" enctype=\"multipart/form-data\" method=\"post\">";
 
 //generate input tags for img upload form
-generateInputTags();
+echo generateInputTags();
 
 echo  		"<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"5000000\">
 				<label for=\"file-upload\">photo location:</label>
@@ -31,10 +31,10 @@ echo  		"<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"5000000\">
 
 
 //form to update basic information
-echo			"<form id=\"profileEditForm\" action=\"php/form-processor/profile-edit-form-processor.php\" method=\"post\">";
+echo			"<form id=\"profileEditForm\" action=\"php/form-processor/profile-edit-form-processor.php\" method=\"POST\">";
 
 //generate input tags for basic information form
-generateInputTags();
+echo generateInputTags();
 
 echo 			"<!-- Change profile information -->
 				<h3>Change Profile Information</h3>
