@@ -1,8 +1,9 @@
 /**
- * Login Javascript form
+ * Login Javascript
  *
- * @autor Marc Hayes <marc.hayes.tech@gmail.com>
+ * @author Joseph Bottone <bottone.joseph@gmail.com>
  */
+
 $(document).ready(function()
 {
 	$("#login-form").validate(

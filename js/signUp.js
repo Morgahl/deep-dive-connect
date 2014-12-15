@@ -1,8 +1,9 @@
 /**
- * Signup Javascript form
+ * Signup Javascript
  *
- * @author Marc Hayes <marc.hayes.tech@gmail.com>
+ * @author Joseph Bottone <bottone.joseph@gmail.com>
  */
+
 $(document).ready(function()
 {
 	$("#signUp").validate(
