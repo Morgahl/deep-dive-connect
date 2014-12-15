@@ -21,8 +21,9 @@ echo "<p>" . $cohort[0]->getStartDate()->format("M Y") . " - " . $cohort[0]->get
 echo $cohort[0]->getLocation() . "</p>";
 echo "</div>";
 
-echo "<div class=\"col-xs-12\">";
+
 if ($profileId === false || $profileId === null){
+	echo "<div class=\"col-xs-12\">";
 	// get count of instructors
 	if (array_key_exists("Instructor", $profiles)) {
 		$instructors = count($profiles["Instructor"]);
@@ -43,8 +44,8 @@ if ($profileId === false || $profileId === null){
 } else {
 	if ($profiles !== null){
 		foreach ($profiles as $index => $element) {
-			echo "<h4>" . $index . "</h4>";
-			echo "<div>";
+			echo "<div class=\"col-xs-12\">";
+			echo "<h4>" . $index . ":</h4>";
 			foreach ($element as $innerIndex => $innerElement){
 				echo "<div class=\"col-xs-2\">";
 //				var_dump($innerElement);
