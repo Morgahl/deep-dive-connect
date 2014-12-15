@@ -16,7 +16,7 @@ require_once("php/lib/csrf.php");
 $admin = isset($_SESSION["security"]["siteAdmin"]) ? $_SESSION["security"]["siteAdmin"] : false;
 
 // relocates user to index if not logged in or not a siteAdmin
-if(empty($_SESSION["profile"]["profileId"]) === true || $Admin !== 1) {
+if(empty($_SESSION["profile"]["profileId"]) === true || $admin !== 1) {
 	header("Location: index.php");
 }
 
