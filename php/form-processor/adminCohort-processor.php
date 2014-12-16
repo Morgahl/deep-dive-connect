@@ -36,7 +36,7 @@ $deleteId = filter_input(INPUT_POST, "deleteSelect", FILTER_SANITIZE_STRING);
 
 if(isset($deleteId) !== true){
 
-	if(isset($description) === false || isset($location) === false || isset($startDate) === false || isset($startDate) === false){
+	if(empty($description) !== false || empty($location) !== false || empty($startDate) !== false || empty($endDate) !== false){
 		$msg = "All fields required";
 		setStatusMessage("cohortAdmin", "fail", $msg);
 		header("Location: ../../adminCohort.php");
