@@ -51,6 +51,8 @@ if(isset($deleteId) !== true){
 
 		$newCohort = new Cohort(null, $startDate, $endDate, $location, $description);
 		$newCohort->insert($mysqli);
+		$msg = "Cohort Added";
+		setStatusMessage("cohortAdmin", "success", $msg);
 		header("Location: ../../adminCohort.php");
 	}
 }
@@ -59,6 +61,8 @@ else{
 	//delete cohort from id associated with selection
 	$cohort = Cohort::getCohortByCohortId($mysqli, $deleteId);
 	$cohort[0]->delete($mysqli);
+	$msg = "Cohort Deleted";
+	setStatusMessage("cohortAdmin", "success", $msg);
 	header("Location: ../../adminCohort.php");
 }
 

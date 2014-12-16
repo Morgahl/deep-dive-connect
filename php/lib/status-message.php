@@ -10,7 +10,7 @@ function getStatusMessage($form) {
 			$message = "<div class=\"alert alert-danger\" role=\"alert\"><p><strong>WARNING!</strong> $message</p></div>";
 		} elseif (array_key_exists('success', $postArray)) {
 			$message = filter_var($postArray['success'], FILTER_SANITIZE_STRING);
-			$message = "<div class=\"alert alert-success\" role=\"alert\"><p>$message</p></div>";
+			$message = "<div class=\"alert alert-success\" role=\"alert\"><p><strong>SUCCESS!</strong> $message</p></div>";
 		}
 	}
 	unset($_SESSION[$form]);
