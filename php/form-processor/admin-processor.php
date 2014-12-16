@@ -15,6 +15,7 @@ require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 
 // require files needed
 require_once("../lib/csrf.php");
+require_once("../lib/status-message.php");
 require_once("../class/security.php");
 
 try{
@@ -30,8 +31,10 @@ try{
 	// connect to mysqli
 	$mysqli = MysqliConfiguration::getMysqli();
 
+	var_dump($_POST);
+
 	//acquire option values from form and see if they are set
-	$securityId = filter_input(INPUT_POST,"securityOption",FILTER_VALIDATE_INT);
+	$securityId = filter_input(INPUT_POST,"securityOption",FILTER_SANITIZE_STRING);
 	$isDefault = filter_input(INPUT_POST,"isDefault",FILTER_VALIDATE_INT);
 	$createTopic = filter_input(INPUT_POST,"createTopic",FILTER_VALIDATE_INT);
 	$canEditOther = filter_input(INPUT_POST,"canEditOther",FILTER_VALIDATE_INT);
@@ -47,21 +50,42 @@ try{
 
 		// inserts new security object into database and redirects
 		$security->insert($mysqli);
+		setStatusMessage("admin","success",$newPermission . " created!");
 		header("Location: ../../admin.php");
 	}
 	elseif($securityId === "delete"){
-		$deletePermission = intval($deletePermission);
+		$array = Security::getSecurityObjects($mysqli);
+		$idExist = false;
 
-		// gets object by id
-		$security = Security::getSecurityBySecurityId($mysqli, $deletePermission);
 
-		// deletes object from the database and redirects
-		$security->delete($mysqli);
-		header("Location: ../../admin.php");
+
+		foreach($array as $i =>$element){
+			if($array[$i]->getSecurityId() === $deletePermission){
+				$idExist = true;
+			}
+		}
+
+		if($idExist === true){
+			// gets object by id
+			$security = Security::getSecurityBySecurityId($mysqli, $deletePermission);
+
+			// deletes object from the database and redirects
+			$security->delete($mysqli);
+			setStatusMessage("admin", "success", " security option deleted!");
+			header("Location: ../../admin.php");
+		}
+		else{
+			setStatusMessage("admin", "fail", " id does not exist!");
+			header("Location: ../../admin.php");
+		}
+
+
+
 	}
 	else{
 		// acquire security object by Id associated with description
 		$security = Security::getSecurityBySecurityId($mysqli, $securityId);
+		$securityDesc = $security->getDescription();
 
 		// Sets values inputted by Admin
 		$security->setIsDefault($isDefault);
@@ -72,6 +96,7 @@ try{
 
 		// updates security object and redirects
 		$security->update($mysqli);
+		setStatusMessage("admin", "success", $securityDesc . " values updated!");
 		header("Location: ../../admin.php");
 	}
 }

@@ -11,6 +11,7 @@
 require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 require_once("php/class/security.php");
 require_once("php/lib/csrf.php");
+require_once("php/lib/status-message.php");
 
 // verify that only siteAdmin can use this page
 $admin = isset($_SESSION["security"]["siteAdmin"]) ? $_SESSION["security"]["siteAdmin"] : false;
@@ -75,6 +76,8 @@ for($i = 0; $i <$total; $i++){
 echo "	<option value=\"new\">*Create*</option>
 			<option value=\"delete\">*Delete*</option>
 			</select>";
+
+echo getStatusMessage("admin");
 
 // place holder to add inputs for delete or create with jQuery
 echo		"<p id=\"newOutput\"></p>";
