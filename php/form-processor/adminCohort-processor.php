@@ -54,4 +54,11 @@ if(isset($deleteId) !== true){
 		header("Location: ../../adminCohort.php");
 	}
 }
+else{
+
+	//delete cohort from id associated with selection
+	$cohort = Cohort::getCohortByCohortId($mysqli, $deleteId);
+	$cohort[0]->delete($mysqli);
+	header("Location: ../../adminCohort.php");
+}
 

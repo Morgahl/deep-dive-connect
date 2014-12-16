@@ -59,7 +59,6 @@ echo "<section class=\"col-md-4\">
 		<button id=\"deleteBtn\" class=\"btn btn-danger btn-xs\"type=\"button\">Delete</button>
 		<br><br>
 		";
-var_dump($_POST);
 
 echo getStatusMessage("cohortAdmin");
 
@@ -78,9 +77,9 @@ echo	"<h3>Add Cohort Form</h3>
 		</form>
 		";
 
-echo "<form id=\"cohortDelete\" action=\"\" method=\"Post\">". $deleteTag .
+echo "<form id=\"cohortDelete\" action=\"php/form-processor/adminCohort-processor.php\" method=\"Post\">". $deleteTag .
 		"<h3>Delete Cohort Form</h3>";
-echo "<select id=\"deleteSelect\">";
+echo "<select id=\"deleteSelect\" name=\"deleteSelect\">";
 
 foreach($cohorts as $i => $element){
 	echo "<option value=\"". $cohorts[$i]->getCohortId() ."\">".
