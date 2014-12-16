@@ -20,7 +20,12 @@ if(empty($_SESSION["profile"]["profileId"]) === true || $admin !== 1) {
 	header("Location: index.php");
 }
 
+// connect to mysqli
 $mysqli = MysqliConfiguration::getMysqli();
+
+//generate input tags
+$addTag = generateInputTags();
+$deleteTag = generateInputTags();
 
 echo "<h3>Cohorts</h3>
 		<script src=\"js/adminCohort.js\"></script>";
@@ -54,10 +59,11 @@ echo "<section class=\"col-md-4\">
 		<button id=\"deleteBtn\" class=\"btn btn-danger btn-xs\"type=\"button\">Delete</button>
 		<br><br>
 		";
+var_dump($_POST);
 
-echo getStatusMessage("profile-edit");
+echo getStatusMessage("cohortAdmin");
 
-echo "<form id=\"cohortAdd\" action=\"php/form-processor/adminCohort-processor.php\" method=\"POST\">";
+echo "<form id=\"cohortAdd\" action=\"php/form-processor/adminCohort-processor.php\" method=\"POST\">". $addTag;
 
 echo	"<h3>Add Cohort Form</h3>
 			<label for=\"cohortDesc\">Description</label><br>
@@ -65,25 +71,25 @@ echo	"<h3>Add Cohort Form</h3>
 			<label for=\"cohortLoc\">Location</label><br>
 			<input class=\"form-control\" type=\"text\" id=\"cohortLoc\" name=\"cohortLoc\"><br>
 			<label for=\"startDate\">Start Date</label><br>
-			<input class=\"form-control\" type=\"text\" id=\"startDate\"><br>
+			<input class=\"form-control\" type=\"text\" id=\"startDate\" name=\"startDate\"><br>
 			<label for=\"endDate\">End Date</label><br>
-			<input class=\"form-control\" type=\"text\" id=\"endDate\"><br>
-		<button id=\"securitySelect\" class=\"btn btn-primary btn-xs\"type=\"Submit\">Submit</button>
+			<input class=\"form-control\" type=\"text\" id=\"endDate\" name=\"endDate\"><br>
+		<button id=\"securitySelect\" class=\"btn btn-primary btn-xs\"type=\"Submit\">Add</button>
 		</form>
 		";
 
-echo "<form id=\"cohortDelete\" action=\"\" method=\"Post\">
-		<h3>Delete Cohort Form</h3>";
+echo "<form id=\"cohortDelete\" action=\"\" method=\"Post\">". $deleteTag .
+		"<h3>Delete Cohort Form</h3>";
 echo "<select id=\"deleteSelect\">";
 
 foreach($cohorts as $i => $element){
-	echo "<option id=\"". $cohorts[$i]->getCohortId() ."\">".
+	echo "<option value=\"". $cohorts[$i]->getCohortId() ."\">".
 		$cohorts[$i]->getDescription()
 		."</option>";
 };
 echo "
 		</select>
-		<button id=\"deleteSubmit\" class=\"btn btn-primary btn-xs\"type=\"Submit\">Submit</button>
+		<button id=\"deleteSubmit\" class=\"btn btn-primary btn-xs\"type=\"Submit\">Delete</button>
 		</form>
 	</section>";
 
