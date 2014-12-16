@@ -60,7 +60,7 @@ $total = count($securityOpt[0]);
 
 //shows dynamic table of Security Objects
 echo "<table>
-			<tr>
+			<tr class=\"trHeader\">
 				<td>Id</td>
 				<td>Description</td>
 			</tr>";

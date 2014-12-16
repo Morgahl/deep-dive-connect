@@ -85,6 +85,7 @@ try{
 	}
 	else{
 		echo "<div class=\"alert alert-danger\" role=\"alert\"><p><strong>WARNING!</strong> no entries</p></div>";
+		//header("Location: ../../profile-edit.php");
 	}
 }
 catch (Exception $exception){

@@ -673,6 +673,46 @@ class Cohort
          return (null);
       }
    }
+
+	public static function getCohortObjects(&$mysqli) {
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
+
+		// create query template for role
+		$query = "SELECT cohortId, startDate, endDate, location, description FROM cohort ORDER BY startDate DESC";
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
+		// get results
+		$results = $statement->get_result();
+		if($results->num_rows > 0) {
+
+			// retrieve results in bulk into an array
+			$results = $results->fetch_all(MYSQL_ASSOC);
+			if($results === false) {
+				throw(new mysqli_sql_exception("Unable to process result set"));
+			}
+
+			// step through results array and convert to Cohort objects
+			foreach($results as $index => $row) {
+				$results[$index] = new Cohort($row["cohortId"], $row["startDate"], $row["endDate"], $row["location"], $row["description"]);
+			}
+
+			// return resulting array of Cohort objects
+			return ($results);
+		} else {
+			return (null);
+		}
+	}
 }
 
 

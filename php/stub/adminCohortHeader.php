@@ -9,10 +9,12 @@ echo "<!DOCTYPE html>
 		<meta name=\"viewport\" content=\"width=device-width, initial-scale=0.8\">
 		<title>Deep Dive Connect</title>
 		<link type=\"text/css\" href=\"//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css\" rel=\"stylesheet\" />
+		<link rel=\"stylesheet\" href=\"//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css\">
 		<script type=\"text/javascript\" src=\"//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"></script>
 		<script type=\"text/javascript\" src=\"//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js\"></script>
 		<script type=\"text/javascript\" src=\"//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js\"></script>
 		<script type=\"text/javascript\" src=\"//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js\"></script>
+		 <script src=\"//code.jquery.com/ui/1.11.2/jquery-ui.js\"></script>
 		<link href=\"css/stylesheet.css\" rel=\"stylesheet\">
 		<!-- this is to auto scroll a nav bar height up when following a link onto a page's id anchor link due to fixed nav bar at the top -->
 		<script>
