@@ -5,7 +5,6 @@
  * Allows admin to edit, delete or add new security roles
  *
  * @author Steven Chavez <schavez256@yahoo.com>
- * @see Profile
  */
 
 // require files necessary
