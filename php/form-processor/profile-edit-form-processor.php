@@ -15,6 +15,7 @@ require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 //require the classes you need
 require_once("../class/profile.php");
 require_once("../lib/csrf.php");
+require_once("../lib/status-message.php");
 
 try{
 	// verify csrf tokens are set
@@ -81,11 +82,13 @@ try{
 	// if boolField equals true update profile with new information if not alert user
 	if($boolField === true){
 		$profile->update($mysqli);
-		echo "<div class=\"alert alert-success\" role=\"alert\"><p>Updated Successful</p></div>";
+
+		setStatusMessage("profile-edit", "success", "update complete");
+		header("Location: ../../profile-edit.php");
 	}
 	else{
-		echo "<div class=\"alert alert-danger\" role=\"alert\"><p><strong>WARNING!</strong> no entries</p></div>";
-		//header("Location: ../../profile-edit.php");
+		setStatusMessage("profile-edit", "fail", "no entries");
+		header("Location: ../../profile-edit.php");
 	}
 }
 catch (Exception $exception){

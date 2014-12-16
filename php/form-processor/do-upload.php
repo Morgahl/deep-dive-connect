@@ -17,6 +17,7 @@ require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 //require the classes you need
 require_once("../class/profile.php");
 require_once("../lib/csrf.php");
+require_once("../lib/status-message.php");
 
 try {
 	// verify csrf tokens are set
@@ -36,11 +37,13 @@ try {
 	$fileSize = isset($_FILES["imgUpload"]["size"]) ? $_FILES["imgUpload"]["size"] : false;
 
 	//does not all images over 3mb
-	if($fileSize > 3145728){
-		echo"<div class=\"alert alert-danger\" role=\"alert\"><p>File to large</p></div>";
+	if($fileSize > 3000000){
+		setStatusMessage("do-upload", "fail", "file to large");
+		header("Location: ../../profile-edit.php");
 	}
 	elseif ($fileSize <= 0) {
-		echo"<div class=\"alert alert-danger\" role=\"alert\"><p>No file selected</p></div>";
+		setStatusMessage("do-upload", "fail", "no file selected");
+		header("Location: ../../profile-edit.php");
 	}
 	else{
 		// obtain profile by userId which acquires file to sanitize from $_FILES
@@ -56,8 +59,9 @@ try {
 			$_SESSION["profile"]["profilePicFilename"] = $filename;
 
 			// echo success alert
-			echo "<div class=\"alert alert-success\" role=\"alert\"><p>Upload Successful</p></div>";
+			setStatusMessage("do-upload", "success", "upload complete");
 			$profile->update($mysqli);
+			header("Location: ../../profile-edit.php");
 		}
 	}
 } catch(Exception $exception) {

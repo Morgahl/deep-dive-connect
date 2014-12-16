@@ -11,10 +11,10 @@
 
 //require to verify csrf
 require_once("php/lib/csrf.php");
+require_once("php/lib/status-message.php");
 
 //form that allows user to upload images
 echo		"<h3>Change Profile Picture</h3>
-			<script src=\"js/do-upload.js\"></script>
 			<form id=\"imgUploadForm\" action=\"php/form-processor/do-upload.php\" enctype=\"multipart/form-data\" method=\"post\">";
 
 //generate input tags for img upload form
@@ -26,10 +26,10 @@ echo  		"<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"5000000\">
 				<span class=\"btn btn-primary btn-md btn-file\">Browse...<input type=\"file\" id=\"imgUpload\" name=\"imgUpload\"></span>
 				<button id=\"uploadSubmit\" class=\"btn btn-primary btn-md\" type=\"submit\" name=\"submit\" value=\"send\">Change Image</button>
 			</form>
-			<p id=\"imgUploadOutput\"></p>
-			<script src=\"js/profile-edit.js\"></script>";
+			<p id=\"imgUploadOutput\"></p>";
 
-
+echo getStatusMessage("do-upload");
+echo getStatusMessage("profile-edit");
 //form to update basic information
 echo			"<form id=\"profileEditForm\" action=\"php/form-processor/profile-edit-form-processor.php\" method=\"POST\">";
 

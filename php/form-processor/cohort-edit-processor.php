@@ -1,11 +1,11 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Steven
- * Date: 12/9/2014
- * Time: 9:07 AM
+ * Form processor for cohort-edit-stub.php
+ *
+ * Acquires
+ *
+ * @author Steven Chavez <schavez256@yahoo.com>
  */
-
 session_start();
 
 //path to mysqli class
