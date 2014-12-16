@@ -36,7 +36,7 @@ if ($profile !== null) {
 	}
 
 	//allows admin to edit permissions for everyone but the admin
-	if($admin === 1 && filter_input(INPUT_GET,"profile", FILTER_VALIDATE_INT) !== null && filter_input(INPUT_GET,"profile", FILTER_VALIDATE_INT) !== $profileId) {
+	if($admin === 1 && filter_input(INPUT_GET,"profile", FILTER_VALIDATE_INT) !== null && filter_input(INPUT_GET,"profile", FILTER_VALIDATE_INT) !== $_SESSION["profile"]["profileId"]) {
 		echo "<br><a href=\"permissions.php?profile=".
 			urlencode($profileId)
 			."\"><button class=\"btn btn-danger btn-xs\">edit-permissions</button></a><br>";

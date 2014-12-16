@@ -8,6 +8,8 @@ require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 require_once("../lib/csrf.php");
 require_once("../class/security.php");
 require_once("../class/user.php");
+require_once("../class/profile.php");
+require_once("../lib/status-message.php");
 
 try{
 	// verify csrf tokens are set
@@ -30,6 +32,11 @@ try{
 
 	$user->setSecurityId($securityId);
 	$user->update($mysqli);
+
+	$security = Security::getSecurityBySecurityId($mysqli, $securityId);
+	$profile = Profile::getProfileByProfileId($mysqli, $profileId);
+
+	setStatusMessage("permissions", "success", $profile->getFirstName() . " is now a ". $security->getDescription() );
 
 	header("Location: ../../permissions.php?profile=" . urlencode($profileId));
 }

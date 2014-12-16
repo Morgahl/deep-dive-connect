@@ -5,7 +5,9 @@
  * Date: 12/14/2014
  * Time: 10:20 PM
  */
+require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 require_once("php/lib/csrf.php");
+require_once("php/lib/status-message.php");
 require_once("php/class/profile.php");
 require_once("php/class/user.php");
 require_once("php/class/security.php");
@@ -17,6 +19,8 @@ $admin = isset($_SESSION["security"]["siteAdmin"]) ? $_SESSION["security"]["site
 if(empty($_SESSION["profile"]["profileId"]) === true || $admin !== 1) {
 	header("Location: index.php");
 }
+
+$mysqli = MysqliConfiguration::getMysqli();
 
 //get profileId from url
 $profileId = filter_input(INPUT_GET,"profile", FILTER_VALIDATE_INT);
@@ -78,7 +82,7 @@ echo"<h3>Select Security Description</h3>
 		<script src=\"js/admin.js\"></script>
 		<p>Select title to change permissions </p>
 		<form id=\"permissionsDropDown\" action=\"php/form-processor/permissions-processor.php\" method=\"POST\">";
-
+echo generateInputTags();
 
 echo "<input type=\"hidden\" id=\"userId\" name=\"userId\" value=\"".$profile->getUserId()."\">";
 echo "<input type=\"hidden\" id=\"profileId\" name=\"profileId\" value=\"".$profileId."\">";
@@ -92,3 +96,5 @@ for($i = 0; $i <$total; $i++){
 echo "</select>
 		<button id=\"securitySelect\" class=\"btn btn-primary btn-xs\" type=\"Submit\">Change</button>
 </form>";
+
+echo getStatusMessage("permissions");
