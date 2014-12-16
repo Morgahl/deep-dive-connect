@@ -101,10 +101,12 @@ tr.trHeader{
 	color: #000000;
 }
 
-footer {
+footer div {
+   font-size: 0.8em;
+   text-align: center;
 	padding-top: 2em;
 	margin-top: 2em;
-	border-top: 0.2em solid #9ca7a1;
+	border-top: 0.2em solid #2e2e2e;
 }
 
 /*#outerContainer{}*/
