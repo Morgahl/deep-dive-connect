@@ -3,7 +3,7 @@
 /**
 * Login form
 *
-* @author Joseph Bottone <bottone.joseph@gmail.com>
+* Author Joseph Bottone  hi@oofolio.com
 */
 
 <html>

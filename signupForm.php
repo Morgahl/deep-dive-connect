@@ -3,7 +3,7 @@
 /**
  * Signup HTML form
  *
- * Author Joseph Bottone  bottone.joseph@gmail.com
+ * Author Joseph Bottone  hi@oofolio.com
  */
 
 session_start();

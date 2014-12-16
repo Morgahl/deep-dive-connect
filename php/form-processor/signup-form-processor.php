@@ -2,7 +2,7 @@
 /**
  * Signup form processor
  *
- * @author Joseph Bottone <bottone.joseph@gmail.com>
+ * Author Joseph Bottone  hi@oofolio.com
  * @author Marc Hayes <Marc.Hayes.Tech@gmail.com>
  */
 

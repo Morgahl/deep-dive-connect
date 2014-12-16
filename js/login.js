@@ -1,7 +1,7 @@
 /**
  * Login Javascript
  *
- * Author and Writer: Joseph Bottone <hi@oofolio.com>
+ * Author Joseph Bottone  hi@oofolio.com
  */
 
 $(document).ready(function()
