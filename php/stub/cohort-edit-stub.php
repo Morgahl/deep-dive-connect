@@ -1,9 +1,10 @@
 <?php
 /**
- Associationby PhpStorm.
- * User: Steven
- * Date: 12/8/2014
- * Time: 11:53 AM
+ * Form processor for cohort-edit-stub.php
+ *
+ * Acquires
+ *
+ * @author Steven Chavez <schavez256@yahoo.com>
  */
 require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 require_once("php/class/cohort.php");

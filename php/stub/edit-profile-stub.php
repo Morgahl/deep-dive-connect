@@ -13,23 +13,24 @@
 require_once("php/lib/csrf.php");
 require_once("php/lib/status-message.php");
 
+
 //form that allows user to upload images
 echo		"<h3>Change Profile Picture</h3>
-			<form id=\"imgUploadForm\" action=\"php/form-processor/do-upload.php\" enctype=\"multipart/form-data\" method=\"post\">";
+		<form id=\"imgUploadForm\" action=\"php/form-processor/do-upload.php\" enctype=\"multipart/form-data\" method=\"post\">
+		<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"5000000\">
+				<label for=\"file-upload\">photo location:</label>
+				<p>Max-size: 3 mb</p>";
 
 //generate input tags for img upload form
 echo generateInputTags();
+echo getStatusMessage("do-upload");
 
-echo  		"<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"5000000\">
-				<label for=\"file-upload\">photo location:</label>
-				<p>Max-size: 3 mb</p>
-				<span class=\"btn btn-primary btn-md btn-file\">Browse...<input type=\"file\" id=\"imgUpload\" name=\"imgUpload\"></span>
+echo		"<span class=\"btn btn-primary btn-md btn-file\">Browse...<input type=\"file\" id=\"imgUpload\" name=\"imgUpload\"></span>
 				<button id=\"uploadSubmit\" class=\"btn btn-primary btn-md\" type=\"submit\" name=\"submit\" value=\"send\">Change Image</button>
 			</form>
 			<p id=\"imgUploadOutput\"></p>";
 
-echo getStatusMessage("do-upload");
-echo getStatusMessage("profile-edit");
+
 //form to update basic information
 echo			"<form id=\"profileEditForm\" action=\"php/form-processor/profile-edit-form-processor.php\" method=\"POST\">";
 
@@ -37,8 +38,11 @@ echo			"<form id=\"profileEditForm\" action=\"php/form-processor/profile-edit-fo
 echo generateInputTags();
 
 echo 			"<!-- Change profile information -->
-				<h3>Change Profile Information</h3>
-				<p>
+				<h3>Change Profile Information</h3>";
+
+echo getStatusMessage("profile-edit");
+
+echo				"<p>
 					<label for=\"firstName\">First Name:</label><br>
 					<input type=\"text\" class=\"form-control\" id=\"firstName\" name=\"firstName\">
 				</p>

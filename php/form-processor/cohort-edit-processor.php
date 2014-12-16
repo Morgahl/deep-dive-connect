@@ -2,7 +2,8 @@
 /**
  * Form processor for cohort-edit-stub.php
  *
- * Acquires
+ * Acquires form values and sets them into the database
+ * and links the cohort(s) to the user
  *
  * @author Steven Chavez <schavez256@yahoo.com>
  */
@@ -34,10 +35,11 @@ try {
 	$profileId = isset($_SESSION["profile"]["profileId"]) ? $_SESSION["profile"]["profileId"] : false;
 	$canPromote = isset($_SESSION["security"]["canPromote"]) ? $_SESSION["security"]["canPromote"] : false;
 
-	//get the value of the selection they made
+	//get the value of the selection made
 	$cohortId = filter_input(INPUT_POST,"cohortOption",FILTER_VALIDATE_INT);
 	$cohortRole = filter_input(INPUT_POST,"cohortRole",FILTER_SANITIZE_STRING);
 	$radio = filter_input(INPUT_POST,"cohortEditOptions",FILTER_SANITIZE_STRING);
+
 
 	if ($cohortRole !== "Student" && $cohortRole !== "Instructor" && $cohortRole !== "Admin"){
 		throw (new RuntimeException("Not a valid role for you."));
@@ -47,13 +49,12 @@ try {
 		throw (new RuntimeException("Not a valid role for your permission level."));
 	}
 
+
 	if($radio === "add"){
 		$profileCohort = new profileCohort(null, $profileId, $cohortId, $cohortRole);
 		$profileCohort->insert($mysqli);
 
 		$cohort = Cohort::getCohortByCohortId($mysqli, $cohortId);
-
-//$_SESSION["cohort"] = Cohort::getCohortByProfileId($mysqli, $profileId);
 
 		$_SESSION["cohort"]["cohortId"] = $cohort[0]->getCohortId();
 		$_SESSION["cohort"]["startDate"] = $cohort[0]->getStartDate()->format("M Y");
@@ -69,6 +70,8 @@ try {
 		}
 		header("Location: ../../cohort-edit.php");
 	}
+
+	// process data depending on the value of the radio button
 	elseif ($radio === "delete"){
 		$cohortDelete = profileCohort::getCohortByProfileId($mysqli, $profileId);
 
