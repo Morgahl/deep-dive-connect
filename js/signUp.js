@@ -1,8 +1,7 @@
 /**
  * Signup Javascript
  *
- * @author Joseph Bottone <bottone.joseph@gmail.com>
- * @author Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Author and Writer: Joseph Bottone <hi@oofolio.com>
  */
 
 $(document).ready(function()
