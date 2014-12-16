@@ -89,7 +89,7 @@ tr{
 	text-align: center;
 }
 
-tr:first-of-type{
+tr.trHeader{
 	color: #f6cd0e;
 	font-weight: bold;
 	background-color: #2e2e2e;
@@ -99,6 +99,12 @@ tr:first-of-type{
 .stripedTable{
 	background-color: #dddddd;
 	color: #000000;
+}
+
+footer {
+	padding-top: 2em;
+	margin-top: 2em;
+	border-top: 0.2em solid #9ca7a1;
 }
 
 /*#outerContainer{}*/
