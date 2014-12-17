@@ -1,10 +1,14 @@
 <?php
 /**
- * MySQL Enabled Comment
+ * Created in collaboration by:
  *
+ * Gerardo Medrano GMedranoCode@gmail.com
+ * Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Steven Chavez <schavez256@yahoo.com>
+ * Joseph Bottone hi@oofolio.com
  * This is a MySQL enabled container for Comment creation and handling.
- *
- * @author Marc Hayes <marc.hayes.tech@gmail.com>
+ * This is a container for class Cohort
+ * Wrote Cohort class below; primary key is the cohortId;
  */
 $cwd = explode("/",getcwd());
 $bottom = $cwd[count($cwd)-1];

@@ -1,12 +1,17 @@
 <?php
 /**
+ * Created in collaboration by:
+ *
+ * Gerardo Medrano GMedranoCode@gmail.com
+ * Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Steven Chavez <schavez256@yahoo.com>
+ * Joseph Bottone hi@oofolio.com
+ *
  * Form processor for image upload
  *
  * Acquires file from form and inserts it into the profile
  * class and if successfully sanitized filename is set and
  * image for profile moved to image directory
- *
- * @author Steven Chavez <schavez256@yahoo.com>
  */
 
 session_start();

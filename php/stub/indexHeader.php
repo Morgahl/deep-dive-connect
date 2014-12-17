@@ -1,4 +1,13 @@
 <?php
+/**
+ * Created in collaboration by:
+ *
+ * Gerardo Medrano GMedranoCode@gmail.com
+ * Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Steven Chavez <schavez256@yahoo.com>
+ * Joseph Bottone hi@oofolio.com
+ *
+ */
 $admin = isset($_SESSION["security"]["siteAdmin"]) ? $_SESSION["security"]["siteAdmin"] : false;
 $profileId = isset($_SESSION["profile"]["profileId"]) ? $_SESSION["profile"]["profileId"] : false;
 

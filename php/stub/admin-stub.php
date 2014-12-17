@@ -1,10 +1,17 @@
 <?php
+
 /**
+ * Created in collaboration by:
+ *
+ * Gerardo Medrano GMedranoCode@gmail.com
+ * Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Steven Chavez <schavez256@yahoo.com>
+ * Joseph Bottone hi@oofolio.com
+ *
+ *
  * Form to edit security roles
  *
  * Allows admin to edit, delete or add new security roles
- *
- * @author Steven Chavez <schavez256@yahoo.com>
  */
 
 // require files necessary

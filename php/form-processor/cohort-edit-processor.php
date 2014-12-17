@@ -1,12 +1,22 @@
 <?php
 /**
+ * Created in collaboration by:
+ *
+ * Gerardo Medrano GMedranoCode@gmail.com
+ * Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Steven Chavez <schavez256@yahoo.com>
+ * Joseph Bottone hi@oofolio.com
+ * Form processor for admin-stub.php
+ *
+ * Form processor for change-password-stub.php
+ *
  * Form processor for cohort-edit-stub.php
  *
  * Acquires form values and sets them into the database
  * and links the cohort(s) to the user
  *
- * @author Steven Chavez <schavez256@yahoo.com>
  */
+
 session_start();
 
 //path to mysqli class

@@ -1,13 +1,17 @@
 <?php
- /**
-  * Form to edit profile
-  *
-  * Allows user to upload avatars, edit their information(name, description, location),
-  * also provides links to forms to edit cohorts and change their password
-  *
-  * @author Steven Chavez <schavez256@yahoo.com>
-  * @see Profile
-  */
+/**
+ * Created in collaboration by:
+ *
+ * Gerardo Medrano GMedranoCode@gmail.com
+ * Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Steven Chavez <schavez256@yahoo.com>
+ * Joseph Bottone hi@oofolio.com
+ *
+ * Form to edit profile
+ *
+ * Allows user to upload avatars, edit their information(name, description, location),
+ * also provides links to forms to edit cohorts and change their password
+ */
 
 //require to verify csrf
 require_once("php/lib/csrf.php");

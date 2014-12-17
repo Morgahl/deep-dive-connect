@@ -1,13 +1,20 @@
 <?php
 /**
+ * Created in collaboration by:
+ *
+ * Gerardo Medrano GMedranoCode@gmail.com
+ * Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Steven Chavez <schavez256@yahoo.com>
+ * Joseph Bottone hi@oofolio.com
  * Form processor for admin-stub.php
  *
+ * Form processor for admin-stub.php
  * Acquires values from form and updates, deletes, or inserts values
  * depending on Admin input and if csrf if valid and if successfully filtered
  * entered into the database
  *
- * @author Steven Chavez <schavez256@yahoo.com>
  */
+
 session_start();
 
 // path to mysqli class

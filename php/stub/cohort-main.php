@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * Created in collaboration by:
+ *
+ * Gerardo Medrano GMedranoCode@gmail.com
+ * Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Steven Chavez <schavez256@yahoo.com>
+ * Joseph Bottone hi@oofolio.com
+ *
+ */
+
 //calls the databases
 require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 require_once("php/class/cohort.php");

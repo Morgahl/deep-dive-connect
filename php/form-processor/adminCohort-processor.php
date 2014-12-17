@@ -1,12 +1,21 @@
 <?php
+
 /**
+ * Created in collaboration by:
+ *
+ * Gerardo Medrano GMedranoCode@gmail.com
+ * Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Steven Chavez <schavez256@yahoo.com>
+ * Joseph Bottone hi@oofolio.com
+ * Form processor for admin-stub.php
+ *
  * form processor for AdminCohort-stub
  *
  * Allows admin to add new cohorts for every class and
  * delete cohorts if user errors occur while adding a cohort
  *
- * @author Steven Chavez <schavez256@yahoo.com>
  */
+
 session_start();
 
 // require the files needed

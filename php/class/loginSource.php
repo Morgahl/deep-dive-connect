@@ -1,11 +1,13 @@
 <?php
-
 /**
- * LoginSource Class
+ * Created in collaboration by:
  *
- * @author Joseph Bottone <bottone.joseph@gmail.com>
+ * Gerardo Medrano GMedranoCode@gmail.com
+ * Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Steven Chavez <schavez256@yahoo.com>
+ * Joseph Bottone hi@oofolio.com
+ *
  */
-
 class LoginSource
 {
 	/**

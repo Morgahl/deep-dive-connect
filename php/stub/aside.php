@@ -1,9 +1,12 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Steven
- * Date: 12/4/2014
- * Time: 4:11 PM
+ * Created in collaboration by:
+ *
+ * Gerardo Medrano GMedranoCode@gmail.com
+ * Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Steven Chavez <schavez256@yahoo.com>
+ * Joseph Bottone hi@oofolio.com
+ *
  */
 
 //If session is new or session timed out show login if not show profile

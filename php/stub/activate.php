@@ -1,9 +1,12 @@
 <?php
 /**
- * Signup HTML form
+ * Created in collaboration by:
  *
- * @author Joseph Bottone  <bottone.joseph@gmail.com>
- * @author Marc Hayes <marc.hayes.tehc@gmail.com>
+ * Gerardo Medrano GMedranoCode@gmail.com
+ * Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Steven Chavez <schavez256@yahoo.com>
+ * Joseph Bottone hi@oofolio.com
+ *
  */
 
 require_once("/etc/apache2/capstone-mysql/ddconnect.php");

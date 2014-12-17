@@ -1,12 +1,16 @@
 <?php
+
 /**
- * mySQL Enabled User
+ * Created in collaboration by:
+ *
+ * Gerardo Medrano GMedranoCode@gmail.com
+ * Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Steven Chavez <schavez256@yahoo.com>
+ * Joseph Bottone hi@oofolio.com
  *
  * This is a mySQl enabled container for User authentication.
- *
- * @author Steven Chavez <schavez256@yahoo.com>
- * @see Profile
  */
+
 class User{
 	/**
 	 * user id for User; primary key

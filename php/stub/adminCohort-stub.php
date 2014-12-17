@@ -1,11 +1,13 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Steven
- * Date: 12/15/2014
- * Time: 9:47 AM
+ * Created in collaboration by:
+ *
+ * Gerardo Medrano GMedranoCode@gmail.com
+ * Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Steven Chavez <schavez256@yahoo.com>
+ * Joseph Bottone hi@oofolio.com
+ *
  */
-
 
 require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 require_once("php/lib/csrf.php");

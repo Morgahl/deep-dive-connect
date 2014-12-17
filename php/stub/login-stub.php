@@ -1,11 +1,14 @@
 <?php
 
 /**
- * Login stub
+ * Created in collaboration by:
  *
- * Author Joseph Bottone  hi@oofolio.com
+ * Gerardo Medrano GMedranoCode@gmail.com
+ * Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Steven Chavez <schavez256@yahoo.com>
+ * Joseph Bottone hi@oofolio.com
+ *
  */
-
 require_once("php/lib/csrf.php");
 
 echo "<script type=\"text/javascript\" src=\"js/login.js\"></script>

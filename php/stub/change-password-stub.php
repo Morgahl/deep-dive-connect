@@ -1,14 +1,18 @@
 <?php
 /**
+ * Created in collaboration by:
+ *
+ * Gerardo Medrano GMedranoCode@gmail.com
+ * Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Steven Chavez <schavez256@yahoo.com>
+ * Joseph Bottone hi@oofolio.com
+ *
  * Form for change-password-stub
  *
  * Allows users to change their password by entering their
  * current password, new password, and confirmation of new
  * password.
- *
- * @author Steven Chavez <schavez256@yahoo.com>
  */
-
 
 require_once("php/lib/csrf.php");
 

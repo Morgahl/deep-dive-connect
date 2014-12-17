@@ -1,13 +1,21 @@
 <?php
 /**
+ * Created in collaboration by:
+ *
+ * Gerardo Medrano GMedranoCode@gmail.com
+ * Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Steven Chavez <schavez256@yahoo.com>
+ * Joseph Bottone hi@oofolio.com
+ * Form processor for admin-stub.php
+ *
  * Form processor for change-password-stub.php
  *
  * Acquires values from form and ensures that password matches old one
  * from database and that the new password matches the password confirm
  * before moving on to setting the newly hashed password into database.
  *
- * @author Steven Chavez <schavez256@yahoo.com>
  */
+
 session_start();
 
 //path to mysqli class

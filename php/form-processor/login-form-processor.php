@@ -1,9 +1,12 @@
 <?php
 /**
- * Login form processor
+ * Created in collaboration by:
  *
- * Author Joseph Bottone  hi@oofolio.com
- * @author Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Gerardo Medrano GMedranoCode@gmail.com
+ * Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Steven Chavez <schavez256@yahoo.com>
+ * Joseph Bottone hi@oofolio.com
+ *
  */
 session_start();
 

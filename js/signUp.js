@@ -1,7 +1,11 @@
 /**
- * Signup Javascript
+ * Created in collaboration by:
  *
- * Author Joseph Bottone  hi@oofolio.com
+ * Gerardo Medrano GMedranoCode@gmail.com
+ * Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Steven Chavez <schavez256@yahoo.com>
+ * Joseph Bottone hi@oofolio.com
+ *
  */
 
 $(document).ready(function()

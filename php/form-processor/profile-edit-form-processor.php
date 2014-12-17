@@ -1,13 +1,20 @@
 <?php
 /**
+ * Created in collaboration by:
+ *
+ * Gerardo Medrano GMedranoCode@gmail.com
+ * Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Steven Chavez <schavez256@yahoo.com>
+ * Joseph Bottone hi@oofolio.com
+ *
  * Form processor for profile-edit.php
  *
  * Takes the information from the form and sends it to the profile class
  * for filtering and if the information is sanitized inserted into the
  * database.
  *
- * @author Steven Chavez <schavez256@yahoo.com>
  */
+
 session_start();
 //path to mysqli class
 require_once("/etc/apache2/capstone-mysql/ddconnect.php");

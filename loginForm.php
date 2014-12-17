@@ -1,11 +1,5 @@
 <!DOCTYPE html>
 
-/**
-* Login form
-*
-* Author Joseph Bottone  hi@oofolio.com
-*/
-
 <html>
 <body>
 <br>

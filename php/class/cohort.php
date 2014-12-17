@@ -1,16 +1,15 @@
 <?php
-
 /**
+ * Created in collaboration by:
+ *
+ * Gerardo Medrano GMedranoCode@gmail.com
+ * Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Steven Chavez <schavez256@yahoo.com>
+ * Joseph Bottone hi@oofolio.com
+ *
  * This is a container for class Cohort
- *
- * This class will identify elements of Cohort class to link to Deep Dive Coders Alumni Site
- * Created by Gerardo Medrano, adapted from template by Dylan McDonald
- *
- * Date: 11/6/2014
- * Time: 3:16 PM
- **/
-
-//**Wrote Cohort class below; primary key is the cohortId;
+ * Wrote Cohort class below; primary key is the cohortId;
+ */
 
 require_once("profileCohort.php");
 

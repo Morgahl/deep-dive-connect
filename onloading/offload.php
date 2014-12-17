@@ -1,4 +1,13 @@
 <?php
+/**
+ * Created in collaboration by:
+ *
+ * Gerardo Medrano GMedranoCode@gmail.com
+ * Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Steven Chavez @schavez256
+ * Joseph Bottone hi@oofolio.com
+ *
+ */
 session_start();
 require_once("/etc/apache2/capstone-mysql/ddconnect.php");
 require_once("../php/class/user.php");

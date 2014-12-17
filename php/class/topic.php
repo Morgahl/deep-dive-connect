@@ -1,4 +1,15 @@
 <?php
+
+/**
+ * Created in collaboration by:
+ *
+ * Gerardo Medrano GMedranoCode@gmail.com
+ * Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * Steven Chavez <schavez256@yahoo.com>
+ * Joseph Bottone hi@oofolio.com
+ *
+ */
+
 /**
  * MySQL Enabled Topic
  *
@@ -6,7 +17,6 @@
  *
  * @author Marc Hayes <marc.hayes.tech@gmail.com>
  */
-
 
 $cwd = explode("/",getcwd());
 $bottom = $cwd[count($cwd)-1];
