@@ -54,20 +54,19 @@ try {
 		// obtain profile by userId which acquires file to sanitize from $_FILES
 		$profile = Profile::getProfileByProfileId($mysqli, $profileId);
 
-		// ensure object exists
-		if($profile->getProfilePicFileName() !== null){
-			// move image
-			$profile->uploadNewProfilePic();
 
-			// acquire file name form profile object to place into session
-			$filename = $profile->getProfilePicFileName();
-			$_SESSION["profile"]["profilePicFilename"] = $filename;
+		// move image
+		$profile->uploadNewProfilePic();
 
-			// echo success alert
-			setStatusMessage("do-upload", "success", "upload complete");
-			$profile->update($mysqli);
-			header("Location: ../../profile-edit.php");
-		}
+		// acquire file name form profile object to place into session
+		$filename = $profile->getProfilePicFileName();
+		$_SESSION["profile"]["profilePicFilename"] = $filename;
+
+		// echo success alert
+		setStatusMessage("do-upload", "success", "upload complete");
+		$profile->update($mysqli);
+		header("Location: ../../profile-edit.php");
+
 	}
 } catch(Exception $exception) {
 	$_SESSION[$csrfName] = $csrfToken;

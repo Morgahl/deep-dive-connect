@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created in collaboration by:
  *
@@ -27,13 +28,15 @@ echo		"<h3>Change Profile Picture</h3>
 
 //generate input tags for img upload form
 echo generateInputTags();
-echo getStatusMessage("do-upload");
+
 
 echo		"<span class=\"btn btn-primary btn-md btn-file\">Browse...<input type=\"file\" id=\"imgUpload\" name=\"imgUpload\"></span>
 				<button id=\"uploadSubmit\" class=\"btn btn-primary btn-md\" type=\"submit\" name=\"submit\" value=\"send\">Change Image</button>
 			</form>
 			<p id=\"imgUploadOutput\"></p>";
 
+echo getStatusMessage("do-upload");
+echo getStatusMessage("profile-edit");
 
 //form to update basic information
 echo			"<form id=\"profileEditForm\" action=\"php/form-processor/profile-edit-form-processor.php\" method=\"POST\">";
@@ -44,7 +47,7 @@ echo generateInputTags();
 echo 			"<!-- Change profile information -->
 				<h3>Change Profile Information</h3>";
 
-echo getStatusMessage("profile-edit");
+
 
 echo				"<p>
 					<label for=\"firstName\">First Name:</label><br>
