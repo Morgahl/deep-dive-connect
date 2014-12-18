@@ -2,10 +2,10 @@
 /**
  * Created in collaboration by:
  *
- * Gerardo Medrano <GMedranoCode@gmail.com>
- * Marc Hayes <Marc.Hayes.Tech@gmail.com>
- * Steven Chavez <schavez256@yahoo.com>
- * Joseph Bottone <hi@oofolio.com>
+ * @author Gerardo Medrano <GMedranoCode@gmail.com>
+ * @author Marc Hayes <Marc.Hayes.Tech@gmail.com>
+ * @author Steven Chavez <schavez256@yahoo.com>
+ * @author Joseph Bottone <hi@oofolio.com>
  *
  */
 session_start();
